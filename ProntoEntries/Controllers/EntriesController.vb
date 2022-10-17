@@ -20,6 +20,7 @@ Namespace Controllers
         Function NewEntry(ByVal id As Integer?) As ActionResult
             Dim raceEvent As RaceEvent = db.RaceEvents.Find(id)
             Dim Organiser As Organiser = db.Organisers.Find(raceEvent.OrgID)
+            ViewBag.DivisionID = New SelectList(db.Divisions.Where(Function(a) a.RaceID = id), "DivisionID", "Category")
             ViewBag.RaceName = raceEvent.RaceName
             ViewBag.Background = raceEvent.Background
             ViewBag.OrgID = Organiser.OrgName

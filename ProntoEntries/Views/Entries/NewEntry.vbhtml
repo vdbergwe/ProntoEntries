@@ -33,7 +33,8 @@ End Code
                 <div Class="form-group">
                     @Html.LabelFor(Function(model) model.DivisionID, htmlAttributes:=New With {.class = "control-label col-md-2"})
                     <div Class="col-md-10">
-                        @Html.EditorFor(Function(model) model.DivisionID, New With {.htmlAttributes = New With {.class = "form-control"}})
+                        @Html.DropDownList("DivisionID", Nothing, htmlAttributes:=New With {.class = "form-controlDDL"}, optionLabel:="Select Category")
+                        @*@Html.EditorFor(Function(model) model.DivisionID, New With {.htmlAttributes = New With {.class = "form-control"}})*@
                         @Html.ValidationMessageFor(Function(model) model.DivisionID, "", New With {.class = "text-danger"})
                     </div>
                 </div>
