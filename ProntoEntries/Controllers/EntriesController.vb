@@ -17,10 +17,12 @@ Namespace Controllers
 
 
         ' GET: Entries/Create
-        Function NewEntry(ByVal id As Integer?) As ActionResult
+        Function NewEntry(ByVal id As Integer?, ByVal DivisionSelect As Integer?) As ActionResult
             Dim raceEvent As RaceEvent = db.RaceEvents.Find(id)
             Dim Organiser As Organiser = db.Organisers.Find(raceEvent.OrgID)
+            ViewBag.DivisionSelect = DivisionSelect
             ViewBag.DivisionID = New SelectList(db.Divisions.Where(Function(a) a.RaceID = id), "DivisionID", "Category")
+            ViewBag.RaceID = id
             ViewBag.RaceName = raceEvent.RaceName
             ViewBag.Background = raceEvent.Background
             ViewBag.OrgID = Organiser.OrgName
@@ -29,12 +31,12 @@ Namespace Controllers
             Return View()
         End Function
 
-        ' POST: Entries/Create
-        'To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        'more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        <HttpPost()>
-        <ValidateAntiForgeryToken()>
-        Function NewEntry(<Bind(Include:="EntryID,ParticipantID,RaceID,DivisionID,Amount,Status,PaymentReference,DistanceChange,ChangePaymentRef,TransferID,Result")> ByVal entry As Entry) As ActionResult
+        Function Addtocart(<Bind(Include:="EntryID,ParticipantID,RaceID,DivisionID,Amount,Status,PaymentReference,DistanceChange,ChangePaymentRef,TransferID,Result")> ByVal entry As Entry, ByVal id As Integer?, ByVal RaceID As Integer?, ByVal DivisionID As Integer?) As ActionResult
+            entry.ParticipantID = id
+            entry.RaceID = RaceID
+            entry.DivisionID = DivisionID
+            entry.Amount = db.Divisions.Where(Function(a) a.DivisionID = DivisionID).Select(Function(a) a.Price).FirstOrDefault
+            entry.Status = "UnPaid"
             If ModelState.IsValid Then
                 db.Entries.Add(entry)
                 db.SaveChanges()

@@ -15,7 +15,9 @@ Namespace Controllers
         Private db As New EntriesDBEntities
 
         ' GET: Entries/Details/5
-        Function ViewParticipants(ByVal id As Integer?) As ActionResult
+        Function ViewParticipants(ByVal id As Integer?, ByVal DivisionSelect As Integer?) As ActionResult
+            ViewBag.RaceID = id
+            ViewBag.DivisionSelect = DivisionSelect
             If IsNothing(id) Then
                 Return New HttpStatusCodeResult(HttpStatusCode.BadRequest)
             End If

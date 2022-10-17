@@ -27,7 +27,7 @@ End Code
                     @Html.ActionLink("Back to List", "Index")
                 </li>
                 <li>
-                    @Html.ActionLink("Enter Now", "NewEntry", "Entries", New With {.id = Model.RaceID}, Nothing)
+                    @Html.ActionLink("Enter Now", "NewEntry", "Entries", New With {.id = Model.RaceID, .DivisionSelect = 0}, Nothing)
                 </li>
             </ul>
         </div>
