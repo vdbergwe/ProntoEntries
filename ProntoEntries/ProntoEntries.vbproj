@@ -791,6 +791,7 @@
     <Content Include="Views\Participants\Details.vbhtml" />
     <Content Include="Views\Participants\Edit.vbhtml" />
     <Content Include="Views\Participants\Index.vbhtml" />
+    <Content Include="Views\Participants\ViewParticipants.vbhtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />

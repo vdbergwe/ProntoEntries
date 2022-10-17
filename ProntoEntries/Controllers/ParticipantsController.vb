@@ -14,6 +14,18 @@ Namespace Controllers
 
         Private db As New EntriesDBEntities
 
+        ' GET: Entries/Details/5
+        Function ViewParticipants(ByVal id As Integer?) As ActionResult
+            If IsNothing(id) Then
+                Return New HttpStatusCodeResult(HttpStatusCode.BadRequest)
+            End If
+            Dim Participant = db.Participants.ToList()
+            If IsNothing(Participant) Then
+                Return HttpNotFound()
+            End If
+            Return PartialView(Participant)
+        End Function
+
         ' GET: Participants
         Function Index() As ActionResult
             Return View(db.Participants.ToList())

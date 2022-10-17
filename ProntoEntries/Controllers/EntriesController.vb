@@ -14,6 +14,8 @@ Namespace Controllers
 
         Private db As New EntriesDBEntities
 
+
+
         ' GET: Entries/Create
         Function NewEntry(ByVal id As Integer?) As ActionResult
             Dim raceEvent As RaceEvent = db.RaceEvents.Find(id)
