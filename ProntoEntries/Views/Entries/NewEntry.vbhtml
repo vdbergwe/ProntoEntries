@@ -29,7 +29,6 @@ End Code
 
         @<div class="NewEntryPage">
             <div class="RaceSelection">
-                @ViewBag.RaceName
                 <div Class="form-group">
                     @Html.LabelFor(Function(model) model.DivisionID, htmlAttributes:=New With {.class = "control-label col-md-2"})
                     <div Class="col-md-10", id="divisionselect">
@@ -45,11 +44,11 @@ End Code
                 </div>
             </div>
 
-            <div Class="form-group">
+            @*<div Class="form-group">
                 <div Class="col-md-offset-2 col-md-10">
                     <input type="submit" value="Create" Class="btn btn-default" />
                 </div>
-            </div>
+            </div>*@
         </div>
 
     End Using

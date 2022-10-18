@@ -15,13 +15,31 @@ Namespace Controllers
         Private db As New EntriesDBEntities
 
 
+        ' GET: Entries/Cart
+        Function Cart(ByVal id As Integer?, ByVal DivisionSelect As Integer?) As ActionResult
+
+            Dim CartContent = db.Entries.Where(Function(a) a.Status = "UnPaid")
+            ViewBag.Total = db.Entries.Where(Function(a) a.Status = "UnPaid").Sum(Function(b) b.Amount)
+            'Dim raceEvent As RaceEvent = db.RaceEvents.Find(id)
+            'Dim Organiser As Organiser = db.Organisers.Find(raceEvent.OrgID)
+            'ViewBag.DivisionSelect = DivisionSelect
+            'ViewBag.DivisionID = New SelectList(db.Divisions.Where(Function(a) a.RaceID = id), "DivisionID", "Category", DivisionSelect)
+            'ViewBag.RaceID = id
+            'ViewBag.RaceName = raceEvent.RaceName
+            'ViewBag.Background = raceEvent.Background
+            'ViewBag.OrgID = Organiser.OrgName
+            'ViewBag.OrgImage = Organiser.Image
+            'ViewBag.RaceDate = raceEvent.RaceDate.Value.ToString("dddd, dd MMMM yyyy")
+            Return View(CartContent.ToList())
+        End Function
+
 
         ' GET: Entries/Create
         Function NewEntry(ByVal id As Integer?, ByVal DivisionSelect As Integer?) As ActionResult
             Dim raceEvent As RaceEvent = db.RaceEvents.Find(id)
             Dim Organiser As Organiser = db.Organisers.Find(raceEvent.OrgID)
             ViewBag.DivisionSelect = DivisionSelect
-            ViewBag.DivisionID = New SelectList(db.Divisions.Where(Function(a) a.RaceID = id), "DivisionID", "Category")
+            ViewBag.DivisionID = New SelectList(db.Divisions.Where(Function(a) a.RaceID = id), "DivisionID", "Category", DivisionSelect)
             ViewBag.RaceID = id
             ViewBag.RaceName = raceEvent.RaceName
             ViewBag.Background = raceEvent.Background

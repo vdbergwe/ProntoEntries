@@ -48,10 +48,12 @@ End Code
                     @Html.DisplayFor(Function(modelItem) item.EmailAddress)
                 </td>
                 <td>
-                    @Html.ActionLink("Add to Cart", "Addtocart", "Entries", New With {.id = item.ParticipantID, .RaceID = ViewBag.RaceID, .DivisionSelect = ViewBag.DivisionSelect}, Nothing)
+                    @If (ViewBag.DivisionSelect > 0) Then
+                        @Html.ActionLink("Add to Cart", "Addtocart", "Entries", New With {.id = item.ParticipantID, .RaceID = ViewBag.RaceID, .DivisionID = ViewBag.DivisionSelect}, Nothing)
+                    End If
                     @*@Html.ActionLink("Edit", "Edit", New With {.id = item.ParticipantID}) |
-                    @Html.ActionLink("Details", "Details", New With {.id = item.ParticipantID}) |
-                    @Html.ActionLink("Delete", "Delete", New With {.id = item.ParticipantID })*@
+        @Html.ActionLink("Details", "Details", New With {.id = item.ParticipantID}) |
+        @Html.ActionLink("Delete", "Delete", New With {.id = item.ParticipantID })*@
                 </td>
             </tr>
         Next

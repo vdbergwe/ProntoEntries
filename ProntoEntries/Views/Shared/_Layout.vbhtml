@@ -26,7 +26,7 @@
                     <li>@Html.ActionLink("Participants", "Index", "Participants")</li>
                     <li>@Html.ActionLink("Results", "RaceEvents", "RaceEvents")</li>
                     <li>@Html.ActionLink("Search", "Index", "RaceEvents")</li>
-                    <li>@Html.ActionLink("Cart", "Index", "Entries")</li>
+                    <li>@Html.ActionLink("Cart", "Cart", "Entries")</li>
                 </ul>
             </div>
             <div class="loginarea">

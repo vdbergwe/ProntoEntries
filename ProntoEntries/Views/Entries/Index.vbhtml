@@ -49,47 +49,50 @@ End Code
             </th>
             <th></th>
         </tr>
-    
-    @For Each item In Model
-        @<tr>
-            <td>
-                @Html.DisplayFor(Function(modelItem) item.ParticipantID)
-            </td>
-            <td>
-                @Html.DisplayFor(Function(modelItem) item.RaceID)
-            </td>
-            <td>
-                @Html.DisplayFor(Function(modelItem) item.DivisionID)
-            </td>
-            <td>
-                @Html.DisplayFor(Function(modelItem) item.Amount)
-            </td>
-            <td>
-                @Html.DisplayFor(Function(modelItem) item.Status)
-            </td>
-            <td>
-                @Html.DisplayFor(Function(modelItem) item.PaymentReference)
-            </td>
-            <td>
-                @Html.DisplayFor(Function(modelItem) item.DistanceChange)
-            </td>
-            <td>
-                @Html.DisplayFor(Function(modelItem) item.ChangePaymentRef)
-            </td>
-            <td>
-                @Html.DisplayFor(Function(modelItem) item.TransferID)
-            </td>
-            <td>
-                @Html.DisplayFor(Function(modelItem) item.Result)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", New With {.id = item.EntryID }) |
-                @Html.ActionLink("Details", "Details", New With {.id = item.EntryID }) |
-                @Html.ActionLink("Delete", "Delete", New With {.id = item.EntryID })
-            </td>
-        </tr>
-    Next
-    
+
+        @For Each item In Model
+            @If (item.Status = "Paid") Then
+                @<tr>
+                    <td>
+                        @Html.DisplayFor(Function(modelItem) item.ParticipantID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(Function(modelItem) item.RaceID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(Function(modelItem) item.DivisionID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(Function(modelItem) item.Amount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(Function(modelItem) item.Status)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(Function(modelItem) item.PaymentReference)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(Function(modelItem) item.DistanceChange)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(Function(modelItem) item.ChangePaymentRef)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(Function(modelItem) item.TransferID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(Function(modelItem) item.Result)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", New With {.id = item.EntryID}) |
+                        @Html.ActionLink("Details", "Details", New With {.id = item.EntryID}) |
+                        @Html.ActionLink("Delete", "Delete", New With {.id = item.EntryID})
+                    </td>
+                </tr>
+            End If
+
+        Next
+
     </table>
 </body>
 </html>
