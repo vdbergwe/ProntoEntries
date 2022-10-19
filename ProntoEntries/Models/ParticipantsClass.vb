@@ -15,9 +15,10 @@ Partial Public Class Meta_Participant
     Public Property LastName As String
     <DisplayName("ID/Passport")>
     Public Property IDNumber As String
-    Public Property Day As String
-    Public Property Month As String
-    Public Property Year As String
+    <DisplayName("Date of Birth")>
+    <DataType(DataType.Date)>
+    <DisplayFormat(DataFormatString:="{0:yyyy-MM-dd}", ApplyFormatInEditMode:=True)>
+    Public Property DOB As Nullable(Of Date)
     <DisplayName("Race Number")>
     Public Property RaceNumber As String
     <DisplayName("Email")>

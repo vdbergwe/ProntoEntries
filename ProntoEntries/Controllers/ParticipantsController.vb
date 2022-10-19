@@ -21,7 +21,9 @@ Namespace Controllers
             If IsNothing(id) Then
                 Return New HttpStatusCodeResult(HttpStatusCode.BadRequest)
             End If
-            Dim Participant = db.Participants.ToList()
+
+            Dim Participant = db.Participants.Where(Function(a) a.UserID = User.Identity.Name And db.Entries.Where(Function(b) b.RaceID = id And b.ParticipantID = a.ParticipantID).Count() = 0).ToList()
+            'Dim Participant = db.Participants.ToList()
             If IsNothing(Participant) Then
                 Return HttpNotFound()
             End If
@@ -30,7 +32,8 @@ Namespace Controllers
 
         ' GET: Participants
         Function Index() As ActionResult
-            Return View(db.Participants.ToList())
+            Dim Participant = db.Participants.Where(Function(a) a.UserID = User.Identity.Name)
+            Return View(Participant.ToList())
         End Function
 
         ' GET: Participants/Details/5
@@ -56,6 +59,7 @@ Namespace Controllers
         <HttpPost()>
         <ValidateAntiForgeryToken()>
         Function Create(<Bind(Include:="ParticipantID,FirstName,MiddleNames,LastName,IDNumber,Day,Month,Year,RaceNumber,EmailAddress,MedicalName,MedicalNumber,EmergencyContact,EmergencyNumber,BoodType,Allergies,AdditionalInfo,DoctorName,DoctorContact,Clubname,Country,Address,City,Province,UserID,EventMailer,Offers")> ByVal participant As Participant) As ActionResult
+            participant.UserID = User.Identity.Name
             If ModelState.IsValid Then
                 db.Participants.Add(participant)
                 db.SaveChanges()

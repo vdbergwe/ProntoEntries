@@ -41,8 +41,8 @@ End Code
                     @Html.ValidationMessageFor(Function(model) model.IDNumber, "", New With {.class = "text-danger"})
             </div>
 
-            <div class="partelement">
-                @Html.LabelFor(Function(model) model.Day, htmlAttributes:=New With {.class = "control-label col-md-2"})
+            @*<div class="partelement">
+                @Html.LabelFor(Function(model) model., htmlAttributes:=New With {.class = "control-label col-md-2"})
                     @Html.EditorFor(Function(model) model.Day, New With {.htmlAttributes = New With {.class = "form-control"}})
                     @Html.ValidationMessageFor(Function(model) model.Day, "", New With {.class = "text-danger"})
             </div>
@@ -57,7 +57,7 @@ End Code
                 @Html.LabelFor(Function(model) model.Year, htmlAttributes:=New With {.class = "control-label col-md-2"})
                     @Html.EditorFor(Function(model) model.Year, New With {.htmlAttributes = New With {.class = "form-control"}})
                     @Html.ValidationMessageFor(Function(model) model.Year, "", New With {.class = "text-danger"})
-            </div>
+            </div>*@
 
             <div class="partelement">
                 @Html.LabelFor(Function(model) model.RaceNumber, htmlAttributes:=New With {.class = "control-label col-md-2"})

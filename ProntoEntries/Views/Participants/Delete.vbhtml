@@ -43,30 +43,6 @@ End Code
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(Function(model) model.Day)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(Function(model) model.Day)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(Function(model) model.Month)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(Function(model) model.Month)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(Function(model) model.Year)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(Function(model) model.Year)
-        </dd>
-
-        <dt>
             @Html.DisplayNameFor(Function(model) model.RaceNumber)
         </dt>
 

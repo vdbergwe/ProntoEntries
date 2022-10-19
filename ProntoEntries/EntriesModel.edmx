@@ -88,11 +88,14 @@
           <Property Name="DivisionID" Type="int" />
           <Property Name="Amount" Type="float" />
           <Property Name="Status" Type="nvarchar" MaxLength="50" />
-          <Property Name="PaymentReference" Type="nvarchar" MaxLength="50" />
+          <Property Name="PaymentReference" Type="int" />
+          <Property Name="PayFastReference" Type="nvarchar" MaxLength="50" />
+          <Property Name="PayFastStatus" Type="nvarchar" MaxLength="50" />
           <Property Name="DistanceChange" Type="bit" />
           <Property Name="ChangePaymentRef" Type="nvarchar" MaxLength="50" />
           <Property Name="TransferID" Type="int" />
           <Property Name="Result" Type="nvarchar" MaxLength="50" />
+          <Property Name="MainUserID" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Organiser">
           <Key>
@@ -116,9 +119,7 @@
           <Property Name="MiddleNames" Type="nvarchar" MaxLength="50" />
           <Property Name="LastName" Type="nvarchar" MaxLength="50" />
           <Property Name="IDNumber" Type="nvarchar" MaxLength="50" />
-          <Property Name="Day" Type="nvarchar" MaxLength="50" />
-          <Property Name="Month" Type="nvarchar" MaxLength="50" />
-          <Property Name="Year" Type="nvarchar" MaxLength="50" />
+          <Property Name="DOB" Type="datetime" />
           <Property Name="RaceNumber" Type="nvarchar" MaxLength="50" />
           <Property Name="EmailAddress" Type="nvarchar" MaxLength="50" />
           <Property Name="MedicalName" Type="nvarchar" MaxLength="50" />
@@ -135,7 +136,7 @@
           <Property Name="Address" Type="nvarchar" MaxLength="50" />
           <Property Name="City" Type="nvarchar" MaxLength="50" />
           <Property Name="Province" Type="nvarchar" MaxLength="50" />
-          <Property Name="UserID" Type="int" />
+          <Property Name="UserID" Type="nvarchar" MaxLength="50" />
           <Property Name="EventMailer" Type="bit" />
           <Property Name="Offers" Type="bit" />
         </EntityType>
@@ -147,6 +148,7 @@
           <Property Name="OrgID" Type="int" />
           <Property Name="MerchantID" Type="nvarchar" MaxLength="50" />
           <Property Name="MerchantKey" Type="nvarchar" MaxLength="50" />
+          <Property Name="MerchantPassPhrase" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="RaceEvent">
           <Key>
@@ -390,7 +392,7 @@
           <Property Name="Distance" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="Category" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="StartTime" Type="DateTime" />
+          <Property Name="StartTime" Type="DateTime" Precision="3" />
           <Property Name="Price" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="RaceID" Type="Int32" />
         </EntityType>
@@ -404,11 +406,14 @@
           <Property Name="DivisionID" Type="Int32" />
           <Property Name="Amount" Type="Double" />
           <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="PaymentReference" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PaymentReference" Type="Int32" />
           <Property Name="DistanceChange" Type="Boolean" />
           <Property Name="ChangePaymentRef" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="TransferID" Type="Int32" />
           <Property Name="Result" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PayFastReference" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PayFastStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MainUserID" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
         </EntityType>
         <EntityType Name="Organiser">
           <Key>
@@ -432,9 +437,6 @@
           <Property Name="MiddleNames" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="IDNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Day" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Month" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Year" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="RaceNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="EmailAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="MedicalName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -451,9 +453,10 @@
           <Property Name="Address" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Province" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="UserID" Type="Int32" />
+          <Property Name="UserID" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
           <Property Name="EventMailer" Type="Boolean" />
           <Property Name="Offers" Type="Boolean" />
+          <Property Name="DOB" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="RaceEvent">
           <Key>
@@ -549,6 +552,7 @@
           <Property Name="OrgID" Type="Int32" />
           <Property Name="MerchantID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="MerchantKey" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MerchantPassPhrase" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -627,6 +631,9 @@
           <EntitySetMapping Name="Entries">
             <EntityTypeMapping TypeName="EntriesDBModel.Entry">
               <MappingFragment StoreEntitySet="Entries">
+                <ScalarProperty Name="MainUserID" ColumnName="MainUserID" />
+                <ScalarProperty Name="PayFastStatus" ColumnName="PayFastStatus" />
+                <ScalarProperty Name="PayFastReference" ColumnName="PayFastReference" />
                 <ScalarProperty Name="Result" ColumnName="Result" />
                 <ScalarProperty Name="TransferID" ColumnName="TransferID" />
                 <ScalarProperty Name="ChangePaymentRef" ColumnName="ChangePaymentRef" />
@@ -658,6 +665,7 @@
           <EntitySetMapping Name="Participants">
             <EntityTypeMapping TypeName="EntriesDBModel.Participant">
               <MappingFragment StoreEntitySet="Participants">
+                <ScalarProperty Name="DOB" ColumnName="DOB" />
                 <ScalarProperty Name="Offers" ColumnName="Offers" />
                 <ScalarProperty Name="EventMailer" ColumnName="EventMailer" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
@@ -677,9 +685,6 @@
                 <ScalarProperty Name="MedicalName" ColumnName="MedicalName" />
                 <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
                 <ScalarProperty Name="RaceNumber" ColumnName="RaceNumber" />
-                <ScalarProperty Name="Year" ColumnName="Year" />
-                <ScalarProperty Name="Month" ColumnName="Month" />
-                <ScalarProperty Name="Day" ColumnName="Day" />
                 <ScalarProperty Name="IDNumber" ColumnName="IDNumber" />
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
                 <ScalarProperty Name="MiddleNames" ColumnName="MiddleNames" />
@@ -757,6 +762,7 @@
           <EntitySetMapping Name="PaymentDetails">
             <EntityTypeMapping TypeName="EntriesDBModel.PaymentDetail">
               <MappingFragment StoreEntitySet="PaymentDetails">
+                <ScalarProperty Name="MerchantPassPhrase" ColumnName="MerchantPassPhrase" />
                 <ScalarProperty Name="MerchantKey" ColumnName="MerchantKey" />
                 <ScalarProperty Name="MerchantID" ColumnName="MerchantID" />
                 <ScalarProperty Name="OrgID" ColumnName="OrgID" />

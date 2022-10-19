@@ -51,7 +51,6 @@ End Code
         </tr>
 
         @For Each item In Model
-            @If (item.Status = "Paid") Then
                 @<tr>
                     <td>
                         @Html.DisplayFor(Function(modelItem) item.ParticipantID)
@@ -89,7 +88,6 @@ End Code
                         @Html.ActionLink("Delete", "Delete", New With {.id = item.EntryID})
                     </td>
                 </tr>
-            End If
 
         Next
 
