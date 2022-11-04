@@ -89,12 +89,12 @@
           <Property Name="Amount" Type="float" />
           <Property Name="Status" Type="nvarchar" MaxLength="50" />
           <Property Name="PaymentReference" Type="int" />
-          <Property Name="PayFastReference" Type="nvarchar" MaxLength="50" />
-          <Property Name="PayFastStatus" Type="nvarchar" MaxLength="50" />
           <Property Name="DistanceChange" Type="bit" />
           <Property Name="ChangePaymentRef" Type="nvarchar" MaxLength="50" />
           <Property Name="TransferID" Type="int" />
           <Property Name="Result" Type="nvarchar" MaxLength="50" />
+          <Property Name="PayFastReference" Type="nvarchar" MaxLength="50" />
+          <Property Name="PayFastStatus" Type="nvarchar" MaxLength="50" />
           <Property Name="MainUserID" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Organiser">
@@ -119,7 +119,7 @@
           <Property Name="MiddleNames" Type="nvarchar" MaxLength="50" />
           <Property Name="LastName" Type="nvarchar" MaxLength="50" />
           <Property Name="IDNumber" Type="nvarchar" MaxLength="50" />
-          <Property Name="DOB" Type="datetime" />
+          <Property Name="DOB" Type="date" />
           <Property Name="RaceNumber" Type="nvarchar" MaxLength="50" />
           <Property Name="EmailAddress" Type="nvarchar" MaxLength="50" />
           <Property Name="MedicalName" Type="nvarchar" MaxLength="50" />
@@ -456,7 +456,7 @@
           <Property Name="UserID" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
           <Property Name="EventMailer" Type="Boolean" />
           <Property Name="Offers" Type="Boolean" />
-          <Property Name="DOB" Type="DateTime" Precision="3" />
+          <Property Name="DOB" Type="DateTime" Precision="0" />
         </EntityType>
         <EntityType Name="RaceEvent">
           <Key>
@@ -552,7 +552,6 @@
           <Property Name="OrgID" Type="Int32" />
           <Property Name="MerchantID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="MerchantKey" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="MerchantPassPhrase" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -762,7 +761,6 @@
           <EntitySetMapping Name="PaymentDetails">
             <EntityTypeMapping TypeName="EntriesDBModel.PaymentDetail">
               <MappingFragment StoreEntitySet="PaymentDetails">
-                <ScalarProperty Name="MerchantPassPhrase" ColumnName="MerchantPassPhrase" />
                 <ScalarProperty Name="MerchantKey" ColumnName="MerchantKey" />
                 <ScalarProperty Name="MerchantID" ColumnName="MerchantID" />
                 <ScalarProperty Name="OrgID" ColumnName="OrgID" />

@@ -80,7 +80,7 @@ End Code
             <input type="hidden" name="amount" value=@ViewBag.Amount id="amount">
             <input type="hidden" name="item_name" value=@ViewBag.item_name id="item_name">
             <input type="hidden" name="confirmation_address" value=@ViewBag.EmailAddress id="confirmation_address" />
-            <input type="hidden" name="signature" value=@ViewBag.Signature id="signature">
+            @*<input type="hidden" name="signature" value=@ViewBag.Signature id="signature">*@
             @*<meta name="signature" value=@ViewBag.Signature id="signature" />*@
         </form>
     </div>

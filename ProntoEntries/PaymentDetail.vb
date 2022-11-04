@@ -15,6 +15,5 @@ Partial Public Class PaymentDetail
     Public Property OrgID As Nullable(Of Integer)
     Public Property MerchantID As String
     Public Property MerchantKey As String
-    Public Property MerchantPassPhrase As String
 
 End Class
