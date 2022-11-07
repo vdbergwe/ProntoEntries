@@ -215,6 +215,7 @@
       <DependentUpon>EntriesModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Controllers\AccountController.vb" />
+    <Compile Include="Controllers\AddonSalesController.vb" />
     <Compile Include="Controllers\DivisionsController.vb" />
     <Compile Include="Controllers\EntriesController.vb" />
     <Compile Include="Controllers\ManageController.vb" />
@@ -798,6 +799,11 @@
     <Content Include="Views\Participants\Index.vbhtml" />
     <Content Include="Views\Participants\ViewParticipants.vbhtml" />
     <Content Include="Views\Entries\Cart.vbhtml" />
+    <Content Include="Views\AddonSales\Create.vbhtml" />
+    <Content Include="Views\AddonSales\Delete.vbhtml" />
+    <Content Include="Views\AddonSales\Details.vbhtml" />
+    <Content Include="Views\AddonSales\Edit.vbhtml" />
+    <Content Include="Views\AddonSales\Index.vbhtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />
