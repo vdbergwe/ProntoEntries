@@ -16,31 +16,102 @@ Namespace Controllers
 
         Private db As New EntriesDBEntities
 
-        ' GET: Entries/Cart
-        Function Cart(ByVal id As Integer?, ByVal DivisionSelect As Integer?) As ActionResult
-            Dim CartContent = db.Entries.Where(Function(a) a.Status = "UnPaid" And a.MainUserID = User.Identity.Name)
-            ViewBag.Total = db.Entries.Where(Function(a) a.Status = "UnPaid" And a.MainUserID = User.Identity.Name).Sum(Function(b) b.Amount)
-            ViewBag.PaymentReference = db.Entries.Where(Function(a) a.Status = "UnPaid" And a.MainUserID = User.Identity.Name).Select(Function(b) b.PaymentReference).FirstOrDefault()
 
+        ' POST: Entries/ConfirmPayment
+        Function ConfirmPayment(ByVal paymentdata As ITN_Payload) As ActionResult
+            Dim Transaction As Entry = db.Entries.Where(Function(a) a.Status = "UnPaid" And a.MainUserID = paymentdata.custom_str1).FirstOrDefault()
+            Dim OrgID = db.RaceEvents.Where(Function(a) a.RaceID = Transaction.RaceID).Select(Function(b) b.OrgID).FirstOrDefault()
+            Dim OrgPassphrase = db.PaymentDetails.Where(Function(a) a.OrgID = OrgID).Select(Function(b) b.MerchantPassPhrase).FirstOrDefault()
+            Dim Total = db.Entries.Where(Function(a) a.Status = "UnPaid" And a.MainUserID = paymentdata.custom_str1).Sum(Function(b) b.Amount)
+
+            If (paymentdata.amount_gross = Total) Then
+                Dim MD5String = "m_payment_id=" + System.Net.WebUtility.UrlEncode(paymentdata.m_payment_id) _
+                                + "&pf_payment_id=" + System.Net.WebUtility.UrlEncode(paymentdata.pf_payment_id) _
+                                + "&payment_status=" + System.Net.WebUtility.UrlEncode(paymentdata.payment_status) _
+                                + "&item_name=" + System.Net.WebUtility.UrlEncode(paymentdata.item_name) _
+                                + "&item_description=" + System.Net.WebUtility.UrlEncode(paymentdata.item_description) _
+                                + "&amount_gross=" + System.Net.WebUtility.UrlEncode(paymentdata.amount_gross) _
+                                + "&amount_fee=" + System.Net.WebUtility.UrlEncode(paymentdata.amount_fee) _
+                                + "&amount_net=" + System.Net.WebUtility.UrlEncode(paymentdata.amount_net) _
+                                + "&custom_str1=" + System.Net.WebUtility.UrlEncode(paymentdata.custom_str1) _
+                                + "&custom_str2=" + System.Net.WebUtility.UrlEncode(paymentdata.custom_str2) _
+                                + "&custom_str3=" + System.Net.WebUtility.UrlEncode(paymentdata.custom_str3) _
+                                + "&custom_str4=" + System.Net.WebUtility.UrlEncode(paymentdata.custom_str4) _
+                                + "&custom_str5=" + System.Net.WebUtility.UrlEncode(paymentdata.custom_str5) _
+                                + "&custom_int1=" _
+                                + "&custom_int2=" _
+                                + "&custom_int3=" _
+                                + "&custom_int4=" _
+                                + "&custom_int5=" _
+                                + "&name_first=" + System.Net.WebUtility.UrlEncode(paymentdata.name_first) _
+                                + "&name_last=" + System.Net.WebUtility.UrlEncode(paymentdata.name_last) _
+                                + "&email_address=" + System.Net.WebUtility.UrlEncode(paymentdata.email_address) _
+                                + "&merchant_id=" + System.Net.WebUtility.UrlEncode(paymentdata.merchant_id) _
+                                + "&passphrase=" + System.Net.WebUtility.UrlEncode(OrgPassphrase)
+
+                Dim md5 As MD5 = MD5.Create()
+                Dim Bytes As Byte() = Encoding.ASCII.GetBytes(MD5String)
+                Dim hash As Byte() = md5.ComputeHash(Bytes)
+                Dim sBuilder As New StringBuilder()
+                For i As Integer = 0 To hash.Length - 1
+                    sBuilder.Append(hash(i).ToString("x2"))
+                Next
+
+                If (paymentdata.signature = sBuilder.ToString()) Then
+                    Dim UpdatedEntry = db.Entries.Where(Function(a) a.PaymentReference = paymentdata.m_payment_id)
+                    Dim entry As Entry
+                    Dim counter As Integer
+                    counter = UpdatedEntry.Count()
+
+                    For i = 1 To UpdatedEntry.Count()
+                        entry = UpdatedEntry.ToArray(i - 1)
+                        entry.Status = "Paid"
+                        entry.PayFastReference = paymentdata.pf_payment_id.ToString()
+                        entry.PayFastStatus = paymentdata.payment_status
+                        db.Entry(entry).State = EntityState.Modified
+                        db.SaveChanges()
+                    Next
+
+                    Return New HttpStatusCodeResult(HttpStatusCode.OK)
+                Else
+                    Return New HttpStatusCodeResult(HttpStatusCode.NotAcceptable)
+                End If
+            Else
+                Return New HttpStatusCodeResult(HttpStatusCode.NotFound)
+            End If
+
+
+
+        End Function
+
+        Function SubmitToPayfast() As ActionResult
             Dim Transaction As Entry = db.Entries.Where(Function(a) a.Status = "UnPaid" And a.MainUserID = User.Identity.Name).FirstOrDefault()
             Dim OrgID = db.RaceEvents.Where(Function(a) a.RaceID = Transaction.RaceID).Select(Function(b) b.OrgID).FirstOrDefault()
             Dim OrgPassphrase = db.PaymentDetails.Where(Function(a) a.OrgID = OrgID).Select(Function(b) b.MerchantPassPhrase).FirstOrDefault()
+            Dim hosturl = "https://30e1-105-245-100-240.in.ngrok.io"
 
+            ViewBag.Total = db.Entries.Where(Function(a) a.Status = "UnPaid" And a.MainUserID = User.Identity.Name).Sum(Function(b) b.Amount)
+            ViewBag.PaymentReference = db.Entries.Where(Function(a) a.Status = "UnPaid" And a.MainUserID = User.Identity.Name).Select(Function(b) b.PaymentReference).FirstOrDefault()
             ViewBag.EmailAddress = db.Participants.Where(Function(a) a.EmailAddress = User.Identity.Name).Select(Function(b) b.EmailAddress).FirstOrDefault()
             ViewBag.Emailconfirmation = "1"
             ViewBag.MerchantID = db.PaymentDetails.Where(Function(a) a.OrgID = OrgID).Select(Function(b) b.MerchantID).FirstOrDefault()
             ViewBag.Merchant_key = db.PaymentDetails.Where(Function(a) a.OrgID = OrgID).Select(Function(b) b.MerchantKey).FirstOrDefault()
-            ViewBag.ReturnURL = "https://bf0e-105-245-102-65.eu.ngrok.io"
-            ViewBag.CancelURL = "https://bf0e-105-245-102-65.eu.ngrok.io"
-            ViewBag.NotifyURL = "https://bf0e-105-245-102-65.eu.ngrok.io"
+            ViewBag.ReturnURL = hosturl + "/Entries/Index"
+            ViewBag.CancelURL = hosturl + "/Entries/Cart"
+            ViewBag.NotifyURL = hosturl + "/Entries/Confirmpayment"
             ViewBag.item_name = db.RaceEvents.Where(Function(a) a.RaceID = Transaction.RaceID).Select(Function(b) b.RaceName).FirstOrDefault()
-            ViewBag.item_name = Replace(ViewBag.item_name, " ", "+")
             ViewBag.Amount = db.Entries.Where(Function(a) a.Status = "UnPaid" And a.MainUserID = User.Identity.Name).Sum(Function(b) b.Amount).ToString()
-            Dim Constring = "merchant_id=" + System.Net.WebUtility.UrlEncode(ViewBag.MerchantID) + "&merchant_key=" + System.Net.WebUtility.UrlEncode(ViewBag.Merchant_key) _
+            ViewBag.PaymentID = db.Entries.Where(Function(a) a.Status = "UnPaid" And a.MainUserID = User.Identity.Name).Select(Function(b) b.PaymentReference).FirstOrDefault()
+
+            Dim TransactionString = "merchant_id=" + System.Net.WebUtility.UrlEncode(ViewBag.MerchantID) + "&merchant_key=" + System.Net.WebUtility.UrlEncode(ViewBag.Merchant_key) _
                  + "&return_url=" + System.Net.WebUtility.UrlEncode(ViewBag.ReturnURL) + "&cancel_url=" + System.Net.WebUtility.UrlEncode(ViewBag.CancelURL) _
-                 + "&notify_url=" + System.Net.WebUtility.UrlEncode(ViewBag.NotifyURL) + "&amount=" + System.Net.WebUtility.UrlEncode(ViewBag.Amount) _
-                 + "&item_name=" + System.Net.WebUtility.UrlEncode(ViewBag.item_name.ToString) + "&confirmation_address=" _
-                 + System.Net.WebUtility.UrlEncode(ViewBag.EmailAddress) + "&passphrase=" + System.Net.WebUtility.UrlEncode(OrgPassphrase)
+                 + "&notify_url=" + System.Net.WebUtility.UrlEncode(ViewBag.NotifyURL) + "&m_payment_id=" + System.Net.WebUtility.UrlEncode(ViewBag.PaymentID) _
+                 + "&amount=" + System.Net.WebUtility.UrlEncode(ViewBag.Amount) _
+                 + "&item_name=" + System.Net.WebUtility.UrlEncode(ViewBag.item_name.ToString) + "&custom_str1=" _
+                 + System.Net.WebUtility.UrlEncode(ViewBag.EmailAddress)
+
+            Dim Constring = TransactionString + "&passphrase=" + System.Net.WebUtility.UrlEncode(OrgPassphrase)
+
             Dim md5 As MD5 = MD5.Create()
             Dim Bytes As Byte() = Encoding.ASCII.GetBytes(Constring)
             Dim hash As Byte() = md5.ComputeHash(Bytes)
@@ -50,6 +121,15 @@ Namespace Controllers
             Next
 
             ViewBag.Signature = sBuilder.ToString
+
+            TransactionString = TransactionString + "&" + "signature=" + ViewBag.Signature
+
+            Return Redirect("https://sandbox.payfast.co.za/eng/process?" + TransactionString)
+        End Function
+
+        ' GET: Entries/Cart
+        Function Cart(ByVal id As Integer?, ByVal DivisionSelect As Integer?) As ActionResult
+            Dim CartContent = db.Entries.Where(Function(a) a.Status = "UnPaid" And a.MainUserID = User.Identity.Name)
 
             Return View(CartContent.ToList())
         End Function
@@ -89,7 +169,7 @@ Namespace Controllers
                     entry.PaymentReference = OrderNumber + 1
                 End If
             End If
-                If ModelState.IsValid Then
+            If ModelState.IsValid Then
                 db.Entries.Add(entry)
                 db.SaveChanges()
                 '@Html.ActionLink("Enter Now", "NewEntry", "Entries", New With {.id = Model.RaceID}, New With {.class = "btnEntryLink"})

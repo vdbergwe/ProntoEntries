@@ -252,6 +252,7 @@
     <Compile Include="Models\OrganiserClass.vb" />
     <Compile Include="Models\ParticipantsClass.vb" />
     <Compile Include="Models\PaymentModel.vb" />
+    <Compile Include="Models\ConfirmPaymentClass.vb" />
     <Compile Include="Models\RaceEventClass.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">

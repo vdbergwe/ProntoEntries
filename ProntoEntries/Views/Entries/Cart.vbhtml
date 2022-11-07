@@ -62,33 +62,36 @@ End Code
         @ViewBag.Total
     </div>
 
-    <div Class="button-group">
-        <button id="btnPay" class="btn btn-default" onclick="addBooking();">Pay for Entries</button>
-    </div>
+    @Html.ActionLink("Payment", "SubmitToPayfast", "Entries")
 
-    @*<div Class="RaceControlBanner EntryLink">        
-        @Html.ActionLink("Pay", "ToPayfast", "Entries", New With {.id = ViewBag.PaymentReference}, New With {.class = "btnEntryLink"})
-    </div>*@
+    @*<div Class="button-group">
+            <button id="btnPay" class="btn btn-default" onclick="addBooking();">Pay for Entries</button>
+        </div>*@
 
-    <div>
+    @*<div Class="RaceControlBanner EntryLink">
+            @Html.ActionLink("Pay", "ToPayfast", "Entries", New With {.id = ViewBag.PaymentReference}, New With {.class = "btnEntryLink"})
+        </div>*@
+
+    @*<div>
         <form id="payFastForm" action="https://sandbox.payfast.co.za/eng/process" method="post">
             <input type="hidden" name="merchant_id" value=@ViewBag.MerchantID>
             <input type="hidden" name="merchant_key" value=@ViewBag.Merchant_key>
             <input type="hidden" name="return_url" value=@ViewBag.ReturnURL>
             <input type="hidden" name="cancel_url" value=@ViewBag.CancelURL>
             <input type="hidden" name="notify_url" value=@ViewBag.NotifyURL>
+            <input type="hidden" name="m_payment_id" value=@ViewBag.PaymentID>
             <input type="hidden" name="amount" value=@ViewBag.Amount>
             <input type="hidden" name="item_name" value=@ViewBag.item_name>
             <input type="hidden" name="confirmation_address" value=@ViewBag.EmailAddress>
-            <input type="hidden" name="signature" value=@ViewBag.Signature >
-            @*<meta name="signature" value=@ViewBag.Signature id="signature" />*@
-        </form>
-    </div>
+            <input type="hidden" name="signature" value=@ViewBag.Signature>
+    <meta name="signature" value=@ViewBag.Signature id="signature" />
+    </form>
+    </div>*@
 </body>
 </html>
 
 <script>
-    function addBooking() {
-        document.getElementById("payFastForm").submit();
-    }
+    //function addBooking() {
+    //    document.getElementById("payFastForm").submit();
+    //}
 </script>
