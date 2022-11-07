@@ -24,18 +24,23 @@ Namespace Controllers
 
             Dim Transaction As Entry = db.Entries.Where(Function(a) a.Status = "UnPaid" And a.MainUserID = User.Identity.Name).FirstOrDefault()
             Dim OrgID = db.RaceEvents.Where(Function(a) a.RaceID = Transaction.RaceID).Select(Function(b) b.OrgID).FirstOrDefault()
-            ViewBag.EmailAddress = db.Participants.Where(Function(a) a.EmailAddress = User.Identity.Name).Select(Function(b) b.EmailAddress).FirstOrDefault().ToUpper
+            Dim OrgPassphrase = db.PaymentDetails.Where(Function(a) a.OrgID = OrgID).Select(Function(b) b.MerchantPassPhrase).FirstOrDefault()
+
+            ViewBag.EmailAddress = db.Participants.Where(Function(a) a.EmailAddress = User.Identity.Name).Select(Function(b) b.EmailAddress).FirstOrDefault()
             ViewBag.Emailconfirmation = "1"
-            ViewBag.MerchantID = db.PaymentDetails.Where(Function(a) a.OrgID = OrgID).Select(Function(b) b.MerchantID).FirstOrDefault().ToUpper()
-            ViewBag.Merchant_key = db.PaymentDetails.Where(Function(a) a.OrgID = OrgID).Select(Function(b) b.MerchantKey).FirstOrDefault().ToUpper()
-            ViewBag.ReturnURL = "https://www.google.co.za".ToUpper()
-            ViewBag.CancelURL = "https://www.facebook.com".ToUpper()
-            ViewBag.NotifyURL = "https://www.google.co.za".ToUpper()
-            ViewBag.item_name = db.RaceEvents.Where(Function(a) a.RaceID = Transaction.RaceID).Select(Function(b) b.RaceName).FirstOrDefault().ToUpper()
+            ViewBag.MerchantID = db.PaymentDetails.Where(Function(a) a.OrgID = OrgID).Select(Function(b) b.MerchantID).FirstOrDefault()
+            ViewBag.Merchant_key = db.PaymentDetails.Where(Function(a) a.OrgID = OrgID).Select(Function(b) b.MerchantKey).FirstOrDefault()
+            ViewBag.ReturnURL = "https://bf0e-105-245-102-65.eu.ngrok.io"
+            ViewBag.CancelURL = "https://bf0e-105-245-102-65.eu.ngrok.io"
+            ViewBag.NotifyURL = "https://bf0e-105-245-102-65.eu.ngrok.io"
+            ViewBag.item_name = db.RaceEvents.Where(Function(a) a.RaceID = Transaction.RaceID).Select(Function(b) b.RaceName).FirstOrDefault()
             ViewBag.item_name = Replace(ViewBag.item_name, " ", "+")
-            ViewBag.Amount = db.Entries.Where(Function(a) a.Status = "UnPaid" And a.MainUserID = User.Identity.Name).Sum(Function(b) b.Amount).ToString().ToUpper()
-            Dim Constring = "merchant_id=" + ViewBag.MerchantID + "&merchant_key=" + ViewBag.Merchant_key + "&return_url=" + ViewBag.ReturnURL + "&cancel_url=" + ViewBag.CancelURL + "&notify_url=" + ViewBag.NotifyURL + "&amount=" + ViewBag.Amount + "&item_name=" + ViewBag.item_name.ToString + "&confirmation_address=" + ViewBag.EmailAddress + "&passphrase=Citybugnelspruit1"
-            Constring = Replace(Constring.ToString(), " ", "+")
+            ViewBag.Amount = db.Entries.Where(Function(a) a.Status = "UnPaid" And a.MainUserID = User.Identity.Name).Sum(Function(b) b.Amount).ToString()
+            Dim Constring = "merchant_id=" + System.Net.WebUtility.UrlEncode(ViewBag.MerchantID) + "&merchant_key=" + System.Net.WebUtility.UrlEncode(ViewBag.Merchant_key) _
+                 + "&return_url=" + System.Net.WebUtility.UrlEncode(ViewBag.ReturnURL) + "&cancel_url=" + System.Net.WebUtility.UrlEncode(ViewBag.CancelURL) _
+                 + "&notify_url=" + System.Net.WebUtility.UrlEncode(ViewBag.NotifyURL) + "&amount=" + System.Net.WebUtility.UrlEncode(ViewBag.Amount) _
+                 + "&item_name=" + System.Net.WebUtility.UrlEncode(ViewBag.item_name.ToString) + "&confirmation_address=" _
+                 + System.Net.WebUtility.UrlEncode(ViewBag.EmailAddress) + "&passphrase=" + System.Net.WebUtility.UrlEncode(OrgPassphrase)
             Dim md5 As MD5 = MD5.Create()
             Dim Bytes As Byte() = Encoding.ASCII.GetBytes(Constring)
             Dim hash As Byte() = md5.ComputeHash(Bytes)
@@ -44,10 +49,7 @@ Namespace Controllers
                 sBuilder.Append(hash(i).ToString("x2"))
             Next
 
-
             ViewBag.Signature = sBuilder.ToString
-            'ViewBag.Signature = "klompniks"
-
 
             Return View(CartContent.ToList())
         End Function

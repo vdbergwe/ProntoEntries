@@ -72,15 +72,15 @@ End Code
 
     <div>
         <form id="payFastForm" action="https://sandbox.payfast.co.za/eng/process" method="post">
-            <input type="hidden" name="merchant_id" value=@ViewBag.MerchantID id="merchant_id">
-            <input type="hidden" name="merchant_key" value=@ViewBag.Merchant_key id="merchant_key">
+            <input type="hidden" name="merchant_id" value=@ViewBag.MerchantID>
+            <input type="hidden" name="merchant_key" value=@ViewBag.Merchant_key>
             <input type="hidden" name="return_url" value=@ViewBag.ReturnURL>
             <input type="hidden" name="cancel_url" value=@ViewBag.CancelURL>
             <input type="hidden" name="notify_url" value=@ViewBag.NotifyURL>
-            <input type="hidden" name="amount" value=@ViewBag.Amount id="amount">
-            <input type="hidden" name="item_name" value=@ViewBag.item_name id="item_name">
-            <input type="hidden" name="confirmation_address" value=@ViewBag.EmailAddress id="confirmation_address" />
-            @*<input type="hidden" name="signature" value=@ViewBag.Signature id="signature">*@
+            <input type="hidden" name="amount" value=@ViewBag.Amount>
+            <input type="hidden" name="item_name" value=@ViewBag.item_name>
+            <input type="hidden" name="confirmation_address" value=@ViewBag.EmailAddress>
+            <input type="hidden" name="signature" value=@ViewBag.Signature >
             @*<meta name="signature" value=@ViewBag.Signature id="signature" />*@
         </form>
     </div>

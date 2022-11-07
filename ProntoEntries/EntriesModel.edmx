@@ -552,6 +552,7 @@
           <Property Name="OrgID" Type="Int32" />
           <Property Name="MerchantID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="MerchantKey" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MerchantPassPhrase" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -761,6 +762,7 @@
           <EntitySetMapping Name="PaymentDetails">
             <EntityTypeMapping TypeName="EntriesDBModel.PaymentDetail">
               <MappingFragment StoreEntitySet="PaymentDetails">
+                <ScalarProperty Name="MerchantPassPhrase" ColumnName="MerchantPassPhrase" />
                 <ScalarProperty Name="MerchantKey" ColumnName="MerchantKey" />
                 <ScalarProperty Name="MerchantID" ColumnName="MerchantID" />
                 <ScalarProperty Name="OrgID" ColumnName="OrgID" />
