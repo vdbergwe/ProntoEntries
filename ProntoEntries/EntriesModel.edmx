@@ -15,6 +15,18 @@
           <Property Name="Model" Type="varbinary(max)" Nullable="false" />
           <Property Name="ProductVersion" Type="nvarchar" MaxLength="32" Nullable="false" />
         </EntityType>
+        <EntityType Name="AddonSales">
+          <Key>
+            <PropertyRef Name="ItemID" />
+          </Key>
+          <Property Name="ItemID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RaceID" Type="int" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Description" Type="nvarchar" MaxLength="50" />
+          <Property Name="Size" Type="nvarchar" MaxLength="50" />
+          <Property Name="Amount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="EntryID" Type="int" />
+        </EntityType>
         <EntityType Name="AspNetRoles">
           <Key>
             <PropertyRef Name="Id" />
@@ -71,8 +83,10 @@
             <PropertyRef Name="DivisionID" />
           </Key>
           <Property Name="DivisionID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Distance" Type="numeric" Precision="18" Scale="2" />
+          <Property Name="Distance" Type="decimal" Precision="18" Scale="2" />
           <Property Name="Category" Type="nvarchar" MaxLength="50" />
+          <Property Name="MinAge" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="MaxAge" Type="decimal" Precision="18" Scale="2" />
           <Property Name="Description" Type="nvarchar" MaxLength="50" />
           <Property Name="StartTime" Type="datetime" />
           <Property Name="Price" Type="money" />
@@ -89,12 +103,12 @@
           <Property Name="Amount" Type="float" />
           <Property Name="Status" Type="nvarchar" MaxLength="50" />
           <Property Name="PaymentReference" Type="int" />
+          <Property Name="PayFastReference" Type="nvarchar" MaxLength="50" />
+          <Property Name="PayFastStatus" Type="nvarchar" MaxLength="50" />
           <Property Name="DistanceChange" Type="bit" />
           <Property Name="ChangePaymentRef" Type="nvarchar" MaxLength="50" />
           <Property Name="TransferID" Type="int" />
           <Property Name="Result" Type="nvarchar" MaxLength="50" />
-          <Property Name="PayFastReference" Type="nvarchar" MaxLength="50" />
-          <Property Name="PayFastStatus" Type="nvarchar" MaxLength="50" />
           <Property Name="MainUserID" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Organiser">
@@ -119,7 +133,7 @@
           <Property Name="MiddleNames" Type="nvarchar" MaxLength="50" />
           <Property Name="LastName" Type="nvarchar" MaxLength="50" />
           <Property Name="IDNumber" Type="nvarchar" MaxLength="50" />
-          <Property Name="DOB" Type="date" />
+          <Property Name="DOB" Type="datetime" />
           <Property Name="RaceNumber" Type="nvarchar" MaxLength="50" />
           <Property Name="EmailAddress" Type="nvarchar" MaxLength="50" />
           <Property Name="MedicalName" Type="nvarchar" MaxLength="50" />
@@ -262,6 +276,7 @@
         </Association>
         <EntityContainer Name="EntriesDBModelStoreContainer">
           <EntitySet Name="__MigrationHistory" EntityType="Self.__MigrationHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AddonSales" EntityType="Self.AddonSales" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaims" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogins" Schema="dbo" store:Type="Tables" />
@@ -324,6 +339,7 @@
             <End Role="AspNetUser" EntitySet="AspNetUsers" />
           </AssociationSet>
           <EntitySet Name="PaymentDetails" EntityType="EntriesDBModel.PaymentDetail" />
+          <EntitySet Name="AddonSales" EntityType="EntriesDBModel.AddonSale" />
         </EntityContainer>
         <EntityType Name="C__MigrationHistory">
           <Key>
@@ -395,6 +411,8 @@
           <Property Name="StartTime" Type="DateTime" Precision="3" />
           <Property Name="Price" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="RaceID" Type="Int32" />
+          <Property Name="MinAge" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="MaxAge" Type="Decimal" Precision="18" Scale="2" />
         </EntityType>
         <EntityType Name="Entry">
           <Key>
@@ -456,7 +474,7 @@
           <Property Name="UserID" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
           <Property Name="EventMailer" Type="Boolean" />
           <Property Name="Offers" Type="Boolean" />
-          <Property Name="DOB" Type="DateTime" Precision="0" />
+          <Property Name="DOB" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="RaceEvent">
           <Key>
@@ -554,6 +572,18 @@
           <Property Name="MerchantKey" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="MerchantPassPhrase" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="AddonSale">
+          <Key>
+            <PropertyRef Name="ItemID" />
+          </Key>
+          <Property Name="ItemID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Size" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Amount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="EntryID" Type="Int32" />
+          <Property Name="RaceID" Type="Int32" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -618,6 +648,8 @@
           <EntitySetMapping Name="Divisions">
             <EntityTypeMapping TypeName="EntriesDBModel.Division">
               <MappingFragment StoreEntitySet="Divisions">
+                <ScalarProperty Name="MaxAge" ColumnName="MaxAge" />
+                <ScalarProperty Name="MinAge" ColumnName="MinAge" />
                 <ScalarProperty Name="RaceID" ColumnName="RaceID" />
                 <ScalarProperty Name="Price" ColumnName="Price" />
                 <ScalarProperty Name="StartTime" ColumnName="StartTime" />
@@ -767,6 +799,19 @@
                 <ScalarProperty Name="MerchantID" ColumnName="MerchantID" />
                 <ScalarProperty Name="OrgID" ColumnName="OrgID" />
                 <ScalarProperty Name="PaymentID" ColumnName="PaymentID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AddonSales">
+            <EntityTypeMapping TypeName="EntriesDBModel.AddonSale">
+              <MappingFragment StoreEntitySet="AddonSales">
+                <ScalarProperty Name="RaceID" ColumnName="RaceID" />
+                <ScalarProperty Name="EntryID" ColumnName="EntryID" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="Size" ColumnName="Size" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ItemID" ColumnName="ItemID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

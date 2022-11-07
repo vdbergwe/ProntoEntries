@@ -22,6 +22,7 @@
         <AssociationConnector Association="EntriesDBModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" />
         <AssociationConnector Association="EntriesDBModel.AspNetUserRoles" />
         <EntityTypeShape EntityType="EntriesDBModel.PaymentDetail" Width="1.5" PointX="6.5" PointY="10.75" />
+        <EntityTypeShape EntityType="EntriesDBModel.AddonSale" Width="1.5" PointX="10.875" PointY="3.625" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

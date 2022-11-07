@@ -36,5 +36,6 @@ Partial Public Class EntriesDBEntities
     Public Overridable Property SystemLogs() As DbSet(Of SystemLog)
     Public Overridable Property TypeLookups() As DbSet(Of TypeLookup)
     Public Overridable Property PaymentDetails() As DbSet(Of PaymentDetail)
+    Public Overridable Property AddonSales() As DbSet(Of AddonSale)
 
 End Class
