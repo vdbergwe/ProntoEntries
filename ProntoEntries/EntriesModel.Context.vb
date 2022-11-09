@@ -23,6 +23,8 @@ Partial Public Class EntriesDBEntities
     End Sub
 
     Public Overridable Property C__MigrationHistory() As DbSet(Of C__MigrationHistory)
+    Public Overridable Property AddonItems() As DbSet(Of AddonItem)
+    Public Overridable Property AddonOptions() As DbSet(Of AddonOption)
     Public Overridable Property AspNetRoles() As DbSet(Of AspNetRole)
     Public Overridable Property AspNetUserClaims() As DbSet(Of AspNetUserClaim)
     Public Overridable Property AspNetUserLogins() As DbSet(Of AspNetUserLogin)
@@ -31,11 +33,12 @@ Partial Public Class EntriesDBEntities
     Public Overridable Property Entries() As DbSet(Of Entry)
     Public Overridable Property Organisers() As DbSet(Of Organiser)
     Public Overridable Property Participants() As DbSet(Of Participant)
+    Public Overridable Property PaymentDetails() As DbSet(Of PaymentDetail)
+    Public Overridable Property pflogs() As DbSet(Of pflog)
     Public Overridable Property RaceEvents() As DbSet(Of RaceEvent)
+    Public Overridable Property Sales() As DbSet(Of Sale)
     Public Overridable Property Substitutions() As DbSet(Of Substitution)
     Public Overridable Property SystemLogs() As DbSet(Of SystemLog)
     Public Overridable Property TypeLookups() As DbSet(Of TypeLookup)
-    Public Overridable Property PaymentDetails() As DbSet(Of PaymentDetail)
-    Public Overridable Property AddonSales() As DbSet(Of AddonSale)
 
 End Class

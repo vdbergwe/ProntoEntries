@@ -22,6 +22,7 @@
                 <ul class="navitems">
                     <li>@Html.ActionLink("Organiser", "Index", "Organisers")</li>
                     <li>@Html.ActionLink("Events", "Index", "RaceEvents")</li>
+                    <li>@Html.ActionLink("Addons", "Index", "AddonItems")</li>
                     <li>@Html.ActionLink("Entries", "Index", "Entries")</li>
                     <li>@Html.ActionLink("Participants", "Index", "Participants")</li>
                     <li>@Html.ActionLink("Results", "RaceEvents", "RaceEvents")</li>
@@ -38,7 +39,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>Pronto Computer Solutions PTY (Ltd) &copy;@DateTime.Now.Year</p>
+            <p>&copy;@DateTime.Now.Year - Pronto Computer Solutions PTY (Ltd) </p>
         </footer>
     </div>
 

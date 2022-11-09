@@ -18,12 +18,12 @@ Partial Public Class Entry
     Public Property Amount As Nullable(Of Double)
     Public Property Status As String
     Public Property PaymentReference As Nullable(Of Integer)
+    Public Property PayFastReference As String
+    Public Property PayFastStatus As String
     Public Property DistanceChange As Nullable(Of Boolean)
     Public Property ChangePaymentRef As String
     Public Property TransferID As Nullable(Of Integer)
     Public Property Result As String
-    Public Property PayFastReference As String
-    Public Property PayFastStatus As String
     Public Property MainUserID As String
 
 End Class

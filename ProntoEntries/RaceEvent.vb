@@ -31,5 +31,7 @@ Partial Public Class RaceEvent
     Public Property DispAdmCharge As Boolean
     Public Property DispAddress As Boolean
     Public Property RaceHtmlPage As String
+    Public Property Indemnity As String
+    Public Property TandC As String
 
 End Class

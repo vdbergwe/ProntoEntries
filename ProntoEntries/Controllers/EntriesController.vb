@@ -60,8 +60,6 @@ Namespace Controllers
                 If (paymentdata.signature = sBuilder.ToString()) Then
                     Dim UpdatedEntry = db.Entries.Where(Function(a) a.PaymentReference = paymentdata.m_payment_id)
                     Dim entry As Entry
-                    Dim counter As Integer
-                    counter = UpdatedEntry.Count()
 
                     For i = 1 To UpdatedEntry.Count()
                         entry = UpdatedEntry.ToArray(i - 1)
@@ -74,10 +72,10 @@ Namespace Controllers
 
                     Return New HttpStatusCodeResult(HttpStatusCode.OK)
                 Else
-                    Return New HttpStatusCodeResult(HttpStatusCode.NotAcceptable)
+                    Return New HttpStatusCodeResult(HttpStatusCode.Unauthorized)
                 End If
             Else
-                Return New HttpStatusCodeResult(HttpStatusCode.NotFound)
+                Return New HttpStatusCodeResult(HttpStatusCode.Unauthorized)
             End If
 
 
@@ -130,6 +128,7 @@ Namespace Controllers
         ' GET: Entries/Cart
         Function Cart(ByVal id As Integer?, ByVal DivisionSelect As Integer?) As ActionResult
             Dim CartContent = db.Entries.Where(Function(a) a.Status = "UnPaid" And a.MainUserID = User.Identity.Name)
+            ViewBag.Total = db.Entries.Where(Function(a) a.Status = "UnPaid" And a.MainUserID = User.Identity.Name).Sum(Function(b) b.Amount)
 
             Return View(CartContent.ToList())
         End Function
@@ -176,6 +175,75 @@ Namespace Controllers
                 Return RedirectToAction("NewEntry", "Entries", New With {.id = RaceID, .DivisionSelect = DivisionID})
             End If
             Return View(entry)
+        End Function
+
+        Function VerifyEntry(ByVal sale As Sale, ByVal Id As Integer?, ByVal RaceID1 As Integer?, ByVal DivisionID1 As Integer?, ByVal OptionID1 As Integer?, ByVal ItemID As Integer?) As ActionResult
+
+            ViewBag.Indemnity = db.RaceEvents.Where(Function(a) a.RaceID = RaceID1).Select(Function(b) b.Indemnity).FirstOrDefault()
+            ViewBag.TandC = db.RaceEvents.Where(Function(a) a.RaceID = RaceID1).Select(Function(b) b.TandC).FirstOrDefault()
+            ViewBag.Racename = db.RaceEvents.Where(Function(a) a.RaceID = RaceID1).Select(Function(b) b.RaceName).FirstOrDefault()
+            ViewBag.ParticipantID = Id
+            ViewBag.RaceID = RaceID1
+            ViewBag.DivisionID = DivisionID1
+            ViewBag.OptionID = OptionID1
+            ViewBag.ItemID = ItemID
+
+            Dim holding = db.Sales.Where(Function(a) a.ParticipantID = Id And a.Pf_reference Is Nothing)
+            Dim AddItems = db.AddonItems.Where(Function(a) a.RaceID = RaceID1 And Not holding.Any(Function(b) b.ItemID = a.ItemID))
+
+            If OptionID1 IsNot Nothing Then
+                sale.ParticipantID = Id
+                sale.ItemID = ItemID
+                sale.OptionID = OptionID1
+                sale.UserID = User.Identity.Name
+                If ModelState.IsValid Then
+                    db.Sales.Add(sale)
+                    db.SaveChanges()
+                    Return RedirectToAction("VerifyEntry", "Entries", New With {.id = Id, .RaceID1 = ViewBag.RaceID, .DivisionID1 = ViewBag.DivisionID})
+                End If
+                ViewBag.OptionID = Nothing
+            End If
+
+            'var result = remoteProducts.Where(p=> !localProducts.Any(x=>x.matnum == p.ProductId)).ToList();
+
+
+            'Dim OrderNumber As Integer
+            'Entry.ParticipantID = id
+            'Entry.RaceID = RaceID
+            'Entry.DivisionID = DivisionID
+            'Entry.Amount = db.Divisions.Where(Function(a) a.DivisionID = DivisionID).Select(Function(a) a.Price).FirstOrDefault
+            'Entry.Status = "UnPaid"
+            'Entry.MainUserID = User.Identity.Name
+
+            'If (db.Entries.Where(Function(a) a.MainUserID = User.Identity.Name And a.Status = "UnPaid").Count() > 0) Then
+            '    Entry.PaymentReference = db.Entries.Where(Function(a) a.MainUserID = User.Identity.Name And a.Status = "UnPaid").Select(Function(a) a.PaymentReference).FirstOrDefault()
+            'Else
+            '    If IsNothing(db.Entries.Max(Function(a) a.PaymentReference)) Then
+            '        Entry.PaymentReference = 1
+            '    Else
+            '        OrderNumber = db.Entries.Max(Function(a) a.PaymentReference)
+            '        Entry.PaymentReference = OrderNumber + 1
+            '    End If
+            'End If
+            'If ModelState.IsValid Then
+            '    db.Entries.Add(Entry)
+            '    db.SaveChanges()
+            '    '@Html.ActionLink("Enter Now", "NewEntry", "Entries", New With {.id = Model.RaceID}, New With {.class = "btnEntryLink"})
+            '    Return RedirectToAction("NewEntry", "Entries", New With {.id = RaceID, .DivisionSelect = DivisionID})
+            'End If
+
+            Return View(AddItems.ToList())
+        End Function
+
+        Function get_AddonOptionlist(Id As Integer?, ByVal RaceID As Integer?, ByVal DivisionID1 As Integer?, ByVal OptionID As Integer?, ByVal ParticipantID As Integer?) As ActionResult
+            Dim Optionlist = db.AddonOptions.Where(Function(a) a.ItemID = Id)
+            ViewBag.ParticipantID = ParticipantID
+            ViewBag.RaceID = RaceID
+            ViewBag.DivisionID = DivisionID1
+            ViewBag.OptionID = OptionID
+            ViewBag.ItemID = Id
+
+            Return PartialView(Optionlist.ToList())
         End Function
 
         ' GET: Entries

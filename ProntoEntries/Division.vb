@@ -14,11 +14,11 @@ Partial Public Class Division
     Public Property DivisionID As Integer
     Public Property Distance As Nullable(Of Decimal)
     Public Property Category As String
+    Public Property MinAge As Nullable(Of Decimal)
+    Public Property MaxAge As Nullable(Of Decimal)
     Public Property Description As String
     Public Property StartTime As Nullable(Of Date)
     Public Property Price As Nullable(Of Decimal)
     Public Property RaceID As Nullable(Of Integer)
-    Public Property MinAge As Nullable(Of Decimal)
-    Public Property MaxAge As Nullable(Of Decimal)
 
 End Class

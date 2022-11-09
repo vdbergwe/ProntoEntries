@@ -49,11 +49,9 @@ End Code
                 </td>
                 <td>
                     @If (ViewBag.DivisionSelect > 0) Then
-                        @Html.ActionLink("Add to Cart", "Addtocart", "Entries", New With {.id = item.ParticipantID, .RaceID = ViewBag.RaceID, .DivisionID = ViewBag.DivisionSelect}, Nothing)
+                        @Html.ActionLink("Enter Event", "VerifyEntry", "Entries", New With {.id = item.ParticipantID, .RaceID1 = ViewBag.RaceID, .DivisionID1 = ViewBag.DivisionSelect}, Nothing)
+                        @*@Html.ActionLink("Add to Cart", "Addtocart", "Entries", New With {.id = item.ParticipantID, .RaceID = ViewBag.RaceID, .DivisionID = ViewBag.DivisionSelect}, Nothing)*@
                     End If
-                    @*@Html.ActionLink("Edit", "Edit", New With {.id = item.ParticipantID}) |
-        @Html.ActionLink("Details", "Details", New With {.id = item.ParticipantID}) |
-        @Html.ActionLink("Delete", "Delete", New With {.id = item.ParticipantID })*@
                 </td>
             </tr>
         Next

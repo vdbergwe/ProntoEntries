@@ -9,16 +9,16 @@ End Code
         <div>
             <ul>
                 <li>
+                    @Html.ActionLink("New Addon", "Create", "AddonItems")
+                </li>
+                <li>
                     @Html.ActionLink("New Division", "Create", "Divisions")
                 </li>
                 <li>
                     @Html.ActionLink("New Event", "Create")
                 </li>
             </ul>
-           
-           
         </div>
-
     </div>
 
 

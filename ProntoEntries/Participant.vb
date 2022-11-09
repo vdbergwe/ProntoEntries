@@ -16,6 +16,7 @@ Partial Public Class Participant
     Public Property MiddleNames As String
     Public Property LastName As String
     Public Property IDNumber As String
+    Public Property DOB As Nullable(Of Date)
     Public Property RaceNumber As String
     Public Property EmailAddress As String
     Public Property MedicalName As String
@@ -35,6 +36,5 @@ Partial Public Class Participant
     Public Property UserID As String
     Public Property EventMailer As Nullable(Of Boolean)
     Public Property Offers As Nullable(Of Boolean)
-    Public Property DOB As Nullable(Of Date)
 
 End Class

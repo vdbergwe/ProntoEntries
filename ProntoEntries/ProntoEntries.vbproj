@@ -194,7 +194,10 @@
     <Import Include="System.Web.UI.HtmlControls" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AddonSale.vb">
+    <Compile Include="AddonItem.vb">
+      <DependentUpon>EntriesModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AddonOption.vb">
       <DependentUpon>EntriesModel.tt</DependentUpon>
     </Compile>
     <Compile Include="App_Start\BundleConfig.vb" />
@@ -215,7 +218,8 @@
       <DependentUpon>EntriesModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Controllers\AccountController.vb" />
-    <Compile Include="Controllers\AddonSalesController.vb" />
+    <Compile Include="Controllers\AddonItemsController.vb" />
+    <Compile Include="Controllers\AddonOptionsController.vb" />
     <Compile Include="Controllers\DivisionsController.vb" />
     <Compile Include="Controllers\EntriesController.vb" />
     <Compile Include="Controllers\ManageController.vb" />
@@ -283,7 +287,13 @@
     <Compile Include="PaymentDetail.vb">
       <DependentUpon>EntriesModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="pflog.vb">
+      <DependentUpon>EntriesModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="RaceEvent.vb">
+      <DependentUpon>EntriesModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Sale.vb">
       <DependentUpon>EntriesModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Startup.vb" />
@@ -344,6 +354,7 @@
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
     </None>
+    <None Include="My Project\PublishProfiles\IISProfile.pubxml" />
     <None Include="My Project\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <CustomToolNamespace>My</CustomToolNamespace>
@@ -799,11 +810,20 @@
     <Content Include="Views\Participants\Index.vbhtml" />
     <Content Include="Views\Participants\ViewParticipants.vbhtml" />
     <Content Include="Views\Entries\Cart.vbhtml" />
-    <Content Include="Views\AddonSales\Create.vbhtml" />
-    <Content Include="Views\AddonSales\Delete.vbhtml" />
-    <Content Include="Views\AddonSales\Details.vbhtml" />
-    <Content Include="Views\AddonSales\Edit.vbhtml" />
-    <Content Include="Views\AddonSales\Index.vbhtml" />
+    <Content Include="Views\AddonItems\Create.vbhtml" />
+    <Content Include="Views\AddonItems\Delete.vbhtml" />
+    <Content Include="Views\AddonItems\Details.vbhtml" />
+    <Content Include="Views\AddonItems\Edit.vbhtml" />
+    <Content Include="Views\AddonItems\Index.vbhtml" />
+    <Content Include="Views\AddonItems\get_RaceName.vbhtml" />
+    <Content Include="Views\AddonOptions\Create.vbhtml" />
+    <Content Include="Views\AddonOptions\Delete.vbhtml" />
+    <Content Include="Views\AddonOptions\Details.vbhtml" />
+    <Content Include="Views\AddonOptions\Edit.vbhtml" />
+    <Content Include="Views\AddonOptions\Index.vbhtml" />
+    <Content Include="Views\AddonOptions\IndexPartial.vbhtml" />
+    <Content Include="Views\Entries\VerifyEntry.vbhtml" />
+    <Content Include="Views\Entries\get_AddonOptionlist.vbhtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />

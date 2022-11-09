@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <setParameter name="IIS Web Application Name" value="entries.prontocs.co.za" />
+  <setParameter name="DefaultConnection-Web.config Connection String" value="Server=.\SQLExpress;Database=EntriesDB;User Id=pcsnimda;Password=ericR380@;" />
+  <setParameter name="EntriesDBEntities-Web.config Connection String" value="metadata=res://*/EntriesModel.csdl|res://*/EntriesModel.ssdl|res://*/EntriesModel.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=.\SQLExpress;initial catalog=EntriesDB;user id=pcsnimda;password=ericR380@;MultipleActiveResultSets=True;App=EntityFramework&quot;" />
+</parameters>
