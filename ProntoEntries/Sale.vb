@@ -22,5 +22,6 @@ Partial Public Class Sale
     Public Property M_reference As Nullable(Of Integer)
     Public Property Pf_reference As Nullable(Of Integer)
     Public Property OptionID As Nullable(Of Integer)
+    Public Property Verified As Nullable(Of Boolean)
 
 End Class

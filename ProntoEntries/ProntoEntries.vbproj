@@ -226,6 +226,7 @@
     <Compile Include="Controllers\OrganisersController.vb" />
     <Compile Include="Controllers\ParticipantsController.vb" />
     <Compile Include="Controllers\RaceEventsController.vb" />
+    <Compile Include="Controllers\SalesController.vb" />
     <Compile Include="C__MigrationHistory.vb">
       <DependentUpon>EntriesModel.tt</DependentUpon>
     </Compile>
@@ -824,6 +825,11 @@
     <Content Include="Views\AddonOptions\IndexPartial.vbhtml" />
     <Content Include="Views\Entries\VerifyEntry.vbhtml" />
     <Content Include="Views\Entries\get_AddonOptionlist.vbhtml" />
+    <Content Include="Views\Sales\Create.vbhtml" />
+    <Content Include="Views\Sales\Delete.vbhtml" />
+    <Content Include="Views\Sales\Details.vbhtml" />
+    <Content Include="Views\Sales\Edit.vbhtml" />
+    <Content Include="Views\Sales\Index.vbhtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />

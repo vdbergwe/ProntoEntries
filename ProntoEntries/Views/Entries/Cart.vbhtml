@@ -1,4 +1,4 @@
-﻿@ModelType IEnumerable(Of ProntoEntries.Entry)
+﻿@ModelType IEnumerable(Of ProntoEntries.Sale)
 
 @Code
     ViewData("Title") = "Cart"
@@ -27,7 +27,7 @@ End Code
                 @Html.DisplayNameFor(Function(model) model.DivisionID)
             </th>
             <th>
-                @Html.DisplayNameFor(Function(model) model.Amount)
+                @Html.DisplayNameFor(Function(model) model.OptionID)
             </th>
             <th></th>
         </tr>
@@ -45,12 +45,12 @@ End Code
                 </td>
                 <td>
                     R
-                    @Html.DisplayFor(Function(modelItem) item.Amount)
+                    @Html.DisplayFor(Function(modelItem) item.OptionID)
                 </td>
                 <td>
                     @*@Html.ActionLink("Edit", "Edit", New With {.id = item.EntryID}) |
                         @Html.ActionLink("Details", "Details", New With {.id = item.EntryID}) |*@
-                    @Html.ActionLink("Remove", "Delete", New With {.id = item.EntryID})
+                    @Html.ActionLink("Remove", "Delete", "Sales", New With {.id = item.SaleID}, Nothing)
                 </td>
             </tr>
         Next

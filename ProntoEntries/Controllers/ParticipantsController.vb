@@ -22,7 +22,8 @@ Namespace Controllers
                 Return New HttpStatusCodeResult(HttpStatusCode.BadRequest)
             End If
 
-            Dim Participant = db.Participants.Where(Function(a) a.UserID = User.Identity.Name And db.Entries.Where(Function(b) b.RaceID = id And b.ParticipantID = a.ParticipantID).Count() = 0).ToList()
+            Dim Participant = db.Participants.Where(Function(a) a.UserID = User.Identity.Name And (db.Entries.Where(Function(b) b.RaceID = id And b.ParticipantID = a.ParticipantID).Count() = 0 _
+                                                         And db.Sales.Where(Function(b) b.RaceID = id And b.ParticipantID = a.ParticipantID).Count() = 0)).ToList()
             'Dim Participant = db.Participants.ToList()
             If IsNothing(Participant) Then
                 Return HttpNotFound()

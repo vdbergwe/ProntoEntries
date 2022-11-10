@@ -95,7 +95,7 @@
           <Property Name="MaxAge" Type="decimal" Precision="18" Scale="2" />
           <Property Name="Description" Type="nvarchar" MaxLength="50" />
           <Property Name="StartTime" Type="datetime" />
-          <Property Name="Price" Type="money" />
+          <Property Name="Price" Type="decimal" Precision="18" Scale="2" />
           <Property Name="RaceID" Type="int" />
         </EntityType>
         <EntityType Name="Entries">
@@ -226,6 +226,7 @@
           <Property Name="ParticipantID" Type="int" />
           <Property Name="M_reference" Type="int" />
           <Property Name="Pf_reference" Type="int" />
+          <Property Name="Verified" Type="bit" />
         </EntityType>
         <EntityType Name="Substitution">
           <Key>
@@ -473,7 +474,7 @@
           <Property Name="MaxAge" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="StartTime" Type="DateTime" Precision="3" />
-          <Property Name="Price" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Price" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="RaceID" Type="Int32" />
         </EntityType>
         <EntityType Name="Entry">
@@ -604,6 +605,7 @@
           <Property Name="M_reference" Type="Int32" />
           <Property Name="Pf_reference" Type="Int32" />
           <Property Name="OptionID" Type="Int32" />
+          <Property Name="Verified" Type="Boolean" />
         </EntityType>
         <EntityType Name="Substitution">
           <Key>
@@ -884,6 +886,7 @@
           <EntitySetMapping Name="Sales">
             <EntityTypeMapping TypeName="EntriesDBModel.Sale">
               <MappingFragment StoreEntitySet="Sales">
+                <ScalarProperty Name="Verified" ColumnName="Verified" />
                 <ScalarProperty Name="OptionID" ColumnName="OptionID" />
                 <ScalarProperty Name="Pf_reference" ColumnName="Pf_reference" />
                 <ScalarProperty Name="M_reference" ColumnName="M_reference" />
