@@ -1,0 +1,104 @@
+﻿@ModelType IEnumerable(Of ProntoEntries.Participant)
+
+@Code
+    ViewData("Title") = "Index"
+End Code
+
+<div class="orgcontainer create">
+    <div class="titlediv">
+        <h2>Search - Entries</h2>
+        @If ViewBag.SelectedRace IsNot Nothing Then
+            @<div>
+                <ul>
+                    <li>
+                        @Html.ActionLink("Export All Participants", "ExporttoExcel", New With {.id = ViewBag.SelectedRace})
+                    </li>
+                </ul>
+            </div>
+        End If
+    </div>
+
+    <hr />
+
+    <div class="DropdownSearches" , style="display:flex">
+        <div Class="DropdownSearches item", id="eventselect">
+            <strong>Event Name</strong>
+            @Html.DropDownList("RaceID", Nothing, htmlAttributes:=New With {.class = "form-controlDDL"}, optionLabel:="Select Event")
+
+        </div>
+        <div class="DropdownSearches item">
+            <input type="text" name="SearchValue" id="SearchValue" class="form-control" placeholder="@ViewBag.SearchText" />
+        </div>
+        <div class="DropdownSearches item">
+            <input type="submit" name="Submit" onclick="runsearch()" />
+        </div>
+    </div>
+    <hr />
+    @If (Model.Count() > 0) Then
+        @<div Class="ReportContent">
+            <Table Class="table">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(Function(model) model.FirstName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(Function(model) model.LastName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(Function(model) model.IDNumber)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(Function(model) model.RaceNumber)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(Function(model) model.EmailAddress)
+                    </th>
+                </tr>
+
+                @For Each item In Model
+                    @<tr>
+                        <td>
+                            @Html.DisplayFor(Function(modelItem) item.FirstName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(Function(modelItem) item.LastName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(Function(modelItem) item.IDNumber)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(Function(modelItem) item.RaceNumber)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(Function(modelItem) item.EmailAddress)
+                        </td>
+                        <td>
+                            @*@If (ViewBag.DivisionSelect > 0) Then
+                                    @Html.ActionLink("Enter Event", "VerifyEntry", "Entries", New With {.id = item.ParticipantID, .RaceID1 = ViewBag.RaceID, .DivisionID1 = ViewBag.DivisionSelect}, Nothing)
+                                    @Html.ActionLink("Add to Cart", "Addtocart", "Entries", New With {.id = item.ParticipantID, .RaceID = ViewBag.RaceID, .DivisionID = ViewBag.DivisionSelect}, Nothing)
+                                End If*@
+                        </td>
+                    </tr>
+                Next
+
+            </Table>
+
+        </div>
+    Else
+        @<p>NO DATA IN SEARCH</p>
+    End If
+
+
+
+</div>
+
+@Section Scripts
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        function runsearch() {
+            var RaceID = $("#eventselect option:selected").val();
+            var SearchText = $("#SearchValue").val();
+            window.location.replace("?RaceID=" + RaceID + "&SearchText=" + SearchText);
+        }
+    </script>
+End Section

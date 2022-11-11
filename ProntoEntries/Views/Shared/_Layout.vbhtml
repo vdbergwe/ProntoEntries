@@ -25,8 +25,8 @@
                     <li>@Html.ActionLink("Addons", "Index", "AddonItems")</li>
                     <li>@Html.ActionLink("Entries", "Index", "Entries")</li>
                     <li>@Html.ActionLink("Participants", "Index", "Participants")</li>
-                    <li>@Html.ActionLink("Results", "RaceEvents", "RaceEvents")</li>
-                    <li>@Html.ActionLink("Search", "Index", "RaceEvents")</li>
+                    <li>@Html.ActionLink("Results", "Index", "RaceEvents")</li>
+                    <li>@Html.ActionLink("Search", "Index", "Reports")</li>
                     <li>@Html.ActionLink("Cart", "Cart", "Entries")</li>
                 </ul>
             </div>

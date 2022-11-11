@@ -127,7 +127,7 @@
           <Property Name="OrgTel" Type="nvarchar" MaxLength="50" />
           <Property Name="OrgWebsite" Type="nvarchar" MaxLength="50" />
           <Property Name="OrgVatNumber" Type="nvarchar" MaxLength="50" />
-          <Property Name="AdminUserID" Type="int" />
+          <Property Name="AdminUserID" Type="nvarchar" MaxLength="128" />
           <Property Name="Image" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Participants">
@@ -485,7 +485,7 @@
           <Property Name="ParticipantID" Type="Int32" />
           <Property Name="RaceID" Type="Int32" />
           <Property Name="DivisionID" Type="Int32" />
-          <Property Name="Amount" Type="Decimal" />
+          <Property Name="Amount" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="PaymentReference" Type="Int32" />
           <Property Name="PayFastReference" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -506,7 +506,7 @@
           <Property Name="OrgTel" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="OrgWebsite" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="OrgVatNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="AdminUserID" Type="Int32" />
+          <Property Name="AdminUserID" Type="String" />
           <Property Name="Image" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Participant">

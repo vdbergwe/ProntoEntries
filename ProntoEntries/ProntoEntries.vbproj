@@ -574,6 +574,7 @@
     <Compile Include="Controllers\OrganisersController.vb" />
     <Compile Include="Controllers\ParticipantsController.vb" />
     <Compile Include="Controllers\RaceEventsController.vb" />
+    <Compile Include="Controllers\ReportsController.vb" />
     <Compile Include="Controllers\SalesController.vb" />
     <Compile Include="C__MigrationHistory.vb">
       <DependentUpon>EntriesModel.tt</DependentUpon>
@@ -1195,6 +1196,7 @@
     <Content Include="Views\Entries\Get_ParticipantID.vbhtml" />
     <Content Include="Views\AddonOptions\ViewAddOnsTicket.vbhtml" />
     <Content Include="Views\Entries\Get_Distance.vbhtml" />
+    <Content Include="Views\Reports\Index.vbhtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />

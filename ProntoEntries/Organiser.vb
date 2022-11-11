@@ -17,7 +17,7 @@ Partial Public Class Organiser
     Public Property OrgTel As String
     Public Property OrgWebsite As String
     Public Property OrgVatNumber As String
-    Public Property AdminUserID As Nullable(Of Integer)
+    Public Property AdminUserID As String
     Public Property Image As String
 
 End Class
