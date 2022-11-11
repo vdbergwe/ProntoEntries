@@ -10,6 +10,7 @@ Imports ProntoEntries
 Imports System.Security.Cryptography
 
 
+
 Namespace Controllers
     Public Class EntriesController
         Inherits System.Web.Mvc.Controller
@@ -311,10 +312,19 @@ Namespace Controllers
             Return PartialView()
         End Function
 
+        Function GenerateTicket(Id As Integer?) As ActionResult
+            Dim MyPDF As New Rotativa.ActionAsPdf("IssueTicket", New With {.id = Id})
+            MyPDF.FileName = "hallo.pdf"
+            MyPDF.PageSize = Rotativa.Options.Size.A4
+            MyPDF.PageMargins = New Rotativa.Options.Margins(20, 20, 20, 20)
+            Return MyPDF
+        End Function
+
         ' GET: Entries
-        Function IssueTicket() As ActionResult
+        Function IssueTicket(Id As Integer?) As ActionResult
             Dim EntriesContent = db.Entries.Where(Function(a) a.Status <> "UnPaid")
             Return PartialView(EntriesContent.ToList())
+
         End Function
 
         ' GET: Entries
