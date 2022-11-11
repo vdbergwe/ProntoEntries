@@ -40,14 +40,14 @@ End Code
                 </th>
                 <th style="text-align: center">
                     Additional Items
-                </th>                
+                </th>
             </tr>
             <tr>
                 <template>
                     <hr />
                 </template>
             </tr>
-            
+
 
             @For Each item In Model
                 @<tr style="border: 15px solid white">

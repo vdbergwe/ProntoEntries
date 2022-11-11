@@ -256,6 +256,7 @@
     </Compile>
     <Compile Include="Models\AccountViewModels.vb" />
     <Compile Include="Models\DivisionsClass.vb" />
+    <Compile Include="Models\EntriesClass.vb" />
     <Compile Include="Models\IdentityModels.vb" />
     <Compile Include="Models\ManageViewModels.vb" />
     <Compile Include="Models\OrganiserClass.vb" />
@@ -830,6 +831,12 @@
     <Content Include="Views\Sales\Details.vbhtml" />
     <Content Include="Views\Sales\Edit.vbhtml" />
     <Content Include="Views\Sales\Index.vbhtml" />
+    <Content Include="Views\Entries\Get_ParticipantName.vbhtml" />
+    <Content Include="Views\Entries\Get_RaceName.vbhtml" />
+    <Content Include="Views\Entries\Get_DivisionName.vbhtml" />
+    <Content Include="Views\AddonOptions\ViewAddOns.vbhtml" />
+    <Content Include="Views\AddonOptions\Get_ItemName.vbhtml" />
+    <Content Include="Views\Entries\IssueTicket.vbhtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />

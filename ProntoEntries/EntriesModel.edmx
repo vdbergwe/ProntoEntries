@@ -106,7 +106,7 @@
           <Property Name="ParticipantID" Type="int" />
           <Property Name="RaceID" Type="int" />
           <Property Name="DivisionID" Type="int" />
-          <Property Name="Amount" Type="float" />
+          <Property Name="Amount" Type="decimal" Precision="18" Scale="2" />
           <Property Name="Status" Type="nvarchar" MaxLength="50" />
           <Property Name="PaymentReference" Type="int" />
           <Property Name="PayFastReference" Type="nvarchar" MaxLength="50" />
@@ -485,7 +485,7 @@
           <Property Name="ParticipantID" Type="Int32" />
           <Property Name="RaceID" Type="Int32" />
           <Property Name="DivisionID" Type="Int32" />
-          <Property Name="Amount" Type="Double" />
+          <Property Name="Amount" Type="Decimal" />
           <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="PaymentReference" Type="Int32" />
           <Property Name="PayFastReference" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />

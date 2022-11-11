@@ -281,34 +281,6 @@ Namespace Controllers
                 ViewBag.OptionID = Nothing
             End If
 
-            'var result = remoteProducts.Where(p=> !localProducts.Any(x=>x.matnum == p.ProductId)).ToList();
-
-
-            'Dim OrderNumber As Integer
-            'Entry.ParticipantID = id
-            'Entry.RaceID = RaceID
-            'Entry.DivisionID = DivisionID
-            'Entry.Amount = db.Divisions.Where(Function(a) a.DivisionID = DivisionID).Select(Function(a) a.Price).FirstOrDefault
-            'Entry.Status = "UnPaid"
-            'Entry.MainUserID = User.Identity.Name
-
-            'If (db.Entries.Where(Function(a) a.MainUserID = User.Identity.Name And a.Status = "UnPaid").Count() > 0) Then
-            '    Entry.PaymentReference = db.Entries.Where(Function(a) a.MainUserID = User.Identity.Name And a.Status = "UnPaid").Select(Function(a) a.PaymentReference).FirstOrDefault()
-            'Else
-            '    If IsNothing(db.Entries.Max(Function(a) a.PaymentReference)) Then
-            '        Entry.PaymentReference = 1
-            '    Else
-            '        OrderNumber = db.Entries.Max(Function(a) a.PaymentReference)
-            '        Entry.PaymentReference = OrderNumber + 1
-            '    End If
-            'End If
-            'If ModelState.IsValid Then
-            '    db.Entries.Add(Entry)
-            '    db.SaveChanges()
-            '    '@Html.ActionLink("Enter Now", "NewEntry", "Entries", New With {.id = Model.RaceID}, New With {.class = "btnEntryLink"})
-            '    Return RedirectToAction("NewEntry", "Entries", New With {.id = RaceID, .DivisionSelect = DivisionID})
-            'End If
-
             Return View(AddItems.ToList())
         End Function
 
@@ -321,6 +293,28 @@ Namespace Controllers
             ViewBag.ItemID = Id
 
             Return PartialView(Optionlist.ToList())
+        End Function
+
+        Function Get_DivisionName(Id As Integer?) As ActionResult
+            ViewBag.DivisionName = db.Divisions.Where(Function(a) a.DivisionID = Id).Select(Function(b) b.Description).FirstOrDefault()
+            Return PartialView()
+        End Function
+
+        Function Get_ParticipantName(Id As Integer?) As ActionResult
+            ViewBag.ParticipantName = db.Participants.Where(Function(a) a.ParticipantID = Id).Select(Function(b) b.FirstName).FirstOrDefault() + " " +
+                db.Participants.Where(Function(a) a.ParticipantID = Id).Select(Function(b) b.LastName).FirstOrDefault()
+            Return PartialView()
+        End Function
+
+        Function Get_RaceName(Id As Integer?) As ActionResult
+            ViewBag.RaceName = db.RaceEvents.Where(Function(a) a.RaceID = Id).Select(Function(b) b.RaceName).FirstOrDefault()
+            Return PartialView()
+        End Function
+
+        ' GET: Entries
+        Function IssueTicket() As ActionResult
+            Dim EntriesContent = db.Entries.Where(Function(a) a.Status <> "UnPaid")
+            Return PartialView(EntriesContent.ToList())
         End Function
 
         ' GET: Entries
