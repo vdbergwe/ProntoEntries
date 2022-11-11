@@ -1190,6 +1190,11 @@
     <Content Include="Views\AddonOptions\ViewAddOns.vbhtml" />
     <Content Include="Views\AddonOptions\Get_ItemName.vbhtml" />
     <Content Include="Views\Entries\IssueTicket.vbhtml" />
+    <Content Include="Views\Entries\Get_ParticipantFirstName.vbhtml" />
+    <Content Include="Views\Entries\Get_ParticipantLastName.vbhtml" />
+    <Content Include="Views\Entries\Get_ParticipantID.vbhtml" />
+    <Content Include="Views\AddonOptions\ViewAddOnsTicket.vbhtml" />
+    <Content Include="Views\Entries\Get_Distance.vbhtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />

@@ -301,6 +301,11 @@ Namespace Controllers
             Return PartialView()
         End Function
 
+        Function Get_Distance(Id As Integer?) As ActionResult
+            ViewBag.Distance = db.Divisions.Where(Function(a) a.DivisionID = Id).Select(Function(b) b.Distance).FirstOrDefault()
+            Return PartialView()
+        End Function
+
         Function Get_ParticipantName(Id As Integer?) As ActionResult
             ViewBag.ParticipantName = db.Participants.Where(Function(a) a.ParticipantID = Id).Select(Function(b) b.FirstName).FirstOrDefault() + " " +
                 db.Participants.Where(Function(a) a.ParticipantID = Id).Select(Function(b) b.LastName).FirstOrDefault()
@@ -312,9 +317,24 @@ Namespace Controllers
             Return PartialView()
         End Function
 
+        Function Get_ParticipantFirstName(Id As Integer?) As ActionResult
+            ViewBag.ParticipantFirstName = db.Participants.Where(Function(a) a.ParticipantID = Id).Select(Function(b) b.FirstName).FirstOrDefault()
+            Return PartialView()
+        End Function
+
+        Function Get_ParticipantLastName(Id As Integer?) As ActionResult
+            ViewBag.ParticipantLastName = db.Participants.Where(Function(a) a.ParticipantID = Id).Select(Function(b) b.LastName).FirstOrDefault()
+            Return PartialView()
+        End Function
+
+        Function Get_ParticipantID(Id As Integer?) As ActionResult
+            ViewBag.ParticipantID = db.Participants.Where(Function(a) a.ParticipantID = Id).Select(Function(b) b.IDNumber).FirstOrDefault()
+            Return PartialView()
+        End Function
+
         Function GenerateTicket(Id As Integer?) As ActionResult
             Dim MyPDF As New Rotativa.ActionAsPdf("IssueTicket", New With {.id = Id})
-            MyPDF.FileName = "hallo.pdf"
+            MyPDF.FileName = "ProntoEntries_Ticket_" + Id.ToString() + ".pdf"
             MyPDF.PageSize = Rotativa.Options.Size.A4
             MyPDF.PageMargins = New Rotativa.Options.Margins(20, 20, 20, 20)
             Return MyPDF
@@ -322,7 +342,11 @@ Namespace Controllers
 
         ' GET: Entries
         Function IssueTicket(Id As Integer?) As ActionResult
-            Dim EntriesContent = db.Entries.Where(Function(a) a.Status <> "UnPaid")
+            Dim RaceID = db.Entries.Where(Function(b) b.EntryID = Id).Select(Function(c) c.RaceID).FirstOrDefault()
+            Dim raceEvent As RaceEvent = db.RaceEvents.Find(RaceID)
+            ViewBag.Background = raceEvent.Image
+
+            Dim EntriesContent = db.Entries.Where(Function(a) a.EntryID = Id)
             Return PartialView(EntriesContent.ToList())
 
         End Function

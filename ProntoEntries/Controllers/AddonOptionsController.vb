@@ -31,6 +31,12 @@ Namespace Controllers
             Return PartialView(Options)
         End Function
 
+        Function ViewAddOnsTicket(Id As Integer?, ParticipantID As Integer?) As ActionResult
+            Dim Purchased = db.Sales.Where(Function(b) b.M_reference = Id And b.ParticipantID = ParticipantID And b.RaceID Is Nothing)
+            Dim Options = db.AddonOptions.Where(Function(b) Purchased.Any(Function(a) a.OptionID = b.OptionID)).OrderBy(Function(c) c.ItemID)
+            Return PartialView(Options)
+        End Function
+
         Function Index() As ActionResult
             Return View(db.AddonOptions.ToList())
         End Function

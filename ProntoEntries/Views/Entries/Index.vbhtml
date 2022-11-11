@@ -72,7 +72,7 @@ End Code
 
                     </td>
                     <td>
-                            @Html.ActionLink("Print Ticket", "GenerateTicket", New With {.id = item.MainUserID}) @*|
+                            @Html.ActionLink("Print Ticket", "GenerateTicket", New With {.id = item.EntryID}) @*|
                             @Html.ActionLink("Details", "Details", New With {.id = item.EntryID}) |
                             @Html.ActionLink("Delete", "Delete", New With {.id = item.EntryID})*@
                         </td>
