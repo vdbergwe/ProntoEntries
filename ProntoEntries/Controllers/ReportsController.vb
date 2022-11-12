@@ -8,6 +8,7 @@ Namespace Controllers
         Private db As New EntriesDBEntities
 
         ' GET: Reports
+        <Authorize>
         Function Index(ByVal RaceId As Integer?, ByVal SearchText As String) As ActionResult
             ViewBag.SearchText = SearchText
             Dim OrgId = db.Organisers.Where(Function(a) a.AdminUserID = User.Identity.Name).Select(Function(b) b.OrgID).FirstOrDefault()
@@ -30,6 +31,7 @@ Namespace Controllers
             Return View(results.ToList())
         End Function
 
+        <Authorize>
         Function ExporttoExcel(Id As Integer?)
             Dim RaceParticipants = db.Entries.Where(Function(a) a.RaceID = Id)
             Dim results = db.Participants.Where(Function(a) RaceParticipants.Any(Function(b) b.ParticipantID <> a.ParticipantID))

@@ -20,14 +20,21 @@ End Code
         <h2>@ViewBag.RaceName</h2>
         <div>
             <ul>
-                <li>
-                    @Html.ActionLink("Edit", "Edit", New With {.id = Model.RaceID})
-                </li>
+                @If User.Identity.IsAuthenticated And User.IsInRole("Admin,Org") Then
+                    @<li>
+                        @Html.ActionLink("Edit", "Edit", New With {.id = Model.RaceID})
+                    </li>
+                End If
                 <li>
                     @Html.ActionLink("Back to List", "Index")
                 </li>
                 <li>
-                    @Html.ActionLink("Enter Now", "NewEntry", "Entries", New With {.id = Model.RaceID, .DivisionSelect = 0}, Nothing)
+                    @If ViewBag.Closed = True Then
+                        @Html.ActionLink("Online Entries Closed", "Index", "RaceEvents")
+
+                    Else
+                        @Html.ActionLink("Enter Now", "NewEntry", "Entries", New With {.id = Model.RaceID, .DivisionSelect = 0}, Nothing)
+                    End If
                 </li>
             </ul>
         </div>
@@ -155,12 +162,12 @@ End Code
                 </div>
 
                 @*<dt>
-            @Html.DisplayNameFor(Function(model) model.Image)
-        </dt>
+                        @Html.DisplayNameFor(Function(model) model.Image)
+                    </dt>
 
-        <dd>
-            @Html.DisplayFor(Function(model) model.Image)
-        </dd>*@
+                    <dd>
+                        @Html.DisplayFor(Function(model) model.Image)
+                    </dd>*@
 
                 <div Class="RaceControlBanner Small">
                     <p>
@@ -175,7 +182,11 @@ End Code
                 </div>
 
                 <div Class="RaceControlBanner EntryLink">
-                    @Html.ActionLink("Enter Now", "NewEntry", "Entries", New With {.id = Model.RaceID}, New With {.class = "btnEntryLink"})
+                    @If ViewBag.Closed = True Then
+                        @Html.ActionLink("Online Entries Closed", "Index", "RaceEvents", New With {.class = "btnEntryLink"})
+                    Else
+                        @Html.ActionLink("Enter Now", "NewEntry", "Entries", New With {.id = Model.RaceID}, New With {.class = "btnEntryLink"})
+                    End If
                 </div>
             </div>
 

@@ -15,6 +15,7 @@ Namespace Controllers
         Private db As New EntriesDBEntities
 
         ' GET: Divisions
+        <Authorize>
         Function Index() As ActionResult
             Return View(db.Divisions.ToList())
         End Function
@@ -32,6 +33,7 @@ Namespace Controllers
         End Function
 
         ' GET: Divisions/Details/5
+        <Authorize>
         Function Details(ByVal id As Integer?) As ActionResult
             If IsNothing(id) Then
                 Return New HttpStatusCodeResult(HttpStatusCode.BadRequest)
@@ -44,6 +46,7 @@ Namespace Controllers
         End Function
 
         ' GET: Divisions/Create
+        <Authorize>
         Function Create() As ActionResult
             ViewBag.RaceID = New SelectList(db.RaceEvents, "RaceID", "RaceName")
             Return View()
@@ -54,6 +57,7 @@ Namespace Controllers
         'more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         <HttpPost()>
         <ValidateAntiForgeryToken()>
+        <Authorize>
         Function Create(<Bind(Include:="DivisionID,Distance,Category,Description,StartTime,Price,RaceID")> ByVal division As Division) As ActionResult
             ViewBag.RaceID = New SelectList(db.RaceEvents, "RaceID", "RaceName")
             If ModelState.IsValid Then
@@ -65,6 +69,7 @@ Namespace Controllers
         End Function
 
         ' GET: Divisions/Edit/5
+        <Authorize>
         Function Edit(ByVal id As Integer?) As ActionResult
             If IsNothing(id) Then
                 Return New HttpStatusCodeResult(HttpStatusCode.BadRequest)
@@ -81,6 +86,7 @@ Namespace Controllers
         'more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         <HttpPost()>
         <ValidateAntiForgeryToken()>
+        <Authorize>
         Function Edit(<Bind(Include:="DivisionID,Distance,Category,Description,StartTime,Price,RaceID")> ByVal division As Division) As ActionResult
             If ModelState.IsValid Then
                 db.Entry(division).State = EntityState.Modified
@@ -91,6 +97,7 @@ Namespace Controllers
         End Function
 
         ' GET: Divisions/Delete/5
+        <Authorize>
         Function Delete(ByVal id As Integer?) As ActionResult
             If IsNothing(id) Then
                 Return New HttpStatusCodeResult(HttpStatusCode.BadRequest)
@@ -106,6 +113,7 @@ Namespace Controllers
         <HttpPost()>
         <ActionName("Delete")>
         <ValidateAntiForgeryToken()>
+        <Authorize>
         Function DeleteConfirmed(ByVal id As Integer) As ActionResult
             Dim division As Division = db.Divisions.Find(id)
             db.Divisions.Remove(division)

@@ -140,11 +140,11 @@ Public Class AccountController
 
                 ' For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
                 ' Send an email with this link
-                ' Dim code = Await UserManager.GenerateEmailConfirmationTokenAsync(user.Id)
-                ' Dim callbackUrl = Url.Action("ConfirmEmail", "Account", New With { .userId = user.Id, code }, protocol := Request.Url.Scheme)
-                ' Await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=""" & callbackUrl & """>here</a>")
+                Dim code = Await UserManager.GenerateEmailConfirmationTokenAsync(user.Id)
+                Dim callbackUrl = Url.Action("ConfirmEmail", "Account", New With {.userId = user.Id, code}, protocol:=Request.Url.Scheme)
+                Await UserManager.SendEmailAsync(user.Id, "Confirm your account", callbackUrl)
 
-                Return RedirectToAction("Index", "Home")
+                Return RedirectToAction("Index", "RaceEvents")
             End If
             AddErrors(result)
         End If
@@ -363,7 +363,7 @@ Public Class AccountController
     <ValidateAntiForgeryToken>
     Public Function LogOff() As ActionResult
         AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie)
-        Return RedirectToAction("Index", "Home")
+        Return RedirectToAction("Index", "RaceEvents")
     End Function
 
     '
@@ -408,7 +408,7 @@ Public Class AccountController
         If Url.IsLocalUrl(returnUrl) Then
             Return Redirect(returnUrl)
         End If
-        Return RedirectToAction("Index", "Home")
+        Return RedirectToAction("Index", "RaceEvents")
     End Function
 
     Friend Class ChallengeResult

@@ -8,15 +8,18 @@ End Code
         <h2>Upcoming Events</h2>
         <div>
             <ul>
-                <li>
-                    @Html.ActionLink("New Addon", "Create", "AddonItems")
-                </li>
-                <li>
-                    @Html.ActionLink("New Division", "Create", "Divisions")
-                </li>
-                <li>
-                    @Html.ActionLink("New Event", "Create")
-                </li>
+                @If User.Identity.IsAuthenticated And User.IsInRole("Admin") Then
+
+                    @<li>
+                        @Html.ActionLink("New Addon", "Create", "AddonItems")
+                    </li>
+                    @<li>
+                        @Html.ActionLink("New Division", "Create", "Divisions")
+                    </li>
+                    @<li>
+                        @Html.ActionLink("New Event", "Create")
+                    </li>
+                End If
             </ul>
         </div>
     </div>
@@ -60,7 +63,7 @@ End Code
                 <hr />
                 <div class="button-group">
                     <div class="linkbutton">
-                                @Html.ActionLink("View Event", "Details", New With {.id = item.RaceID})
+                        @Html.ActionLink("View Event", "Details", New With {.id = item.RaceID})
                     </div>
                 </div>
             </div>

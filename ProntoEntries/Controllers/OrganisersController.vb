@@ -16,11 +16,13 @@ Namespace Controllers
         Private db As New EntriesDBEntities
 
         ' GET: Organisers
+        <Authorize>
         Function Index() As ActionResult
             Return View(db.Organisers.ToList())
         End Function
 
         ' GET: Organisers/Details/5
+        <Authorize>
         Function Details(ByVal id As Integer?) As ActionResult
             If IsNothing(id) Then
                 Return New HttpStatusCodeResult(HttpStatusCode.BadRequest)
@@ -33,6 +35,7 @@ Namespace Controllers
         End Function
 
         ' GET: Organisers/Create
+        <Authorize>
         Function Create() As ActionResult
             Return View()
         End Function
@@ -42,6 +45,7 @@ Namespace Controllers
         'more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         <HttpPost()>
         <ValidateAntiForgeryToken()>
+        <Authorize>
         Function Create(<Bind(Include:="OrgID,OrgName,OrgEmail,OrgTel,OrgWebsite,OrgVatNumber,AdminUserID,Image")> ByVal organiser As Organiser, imgFile As HttpPostedFileBase) As ActionResult
             Dim ImgPath As String
             If ModelState.IsValid Then
@@ -59,6 +63,7 @@ Namespace Controllers
         End Function
 
         ' GET: Organisers/Edit/5
+        <Authorize>
         Function Edit(ByVal id As Integer?) As ActionResult
             If IsNothing(id) Then
                 Return New HttpStatusCodeResult(HttpStatusCode.BadRequest)
@@ -75,6 +80,7 @@ Namespace Controllers
         'more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         <HttpPost()>
         <ValidateAntiForgeryToken()>
+        <Authorize>
         Function Edit(<Bind(Include:="OrgID,OrgName,OrgEmail,OrgTel,OrgWebsite,OrgVatNumber,AdminUserID,Image")> ByVal organiser As Organiser) As ActionResult
             If ModelState.IsValid Then
                 db.Entry(organiser).State = EntityState.Modified
@@ -85,6 +91,7 @@ Namespace Controllers
         End Function
 
         ' GET: Organisers/Delete/5
+        <Authorize>
         Function Delete(ByVal id As Integer?) As ActionResult
             If IsNothing(id) Then
                 Return New HttpStatusCodeResult(HttpStatusCode.BadRequest)
@@ -100,6 +107,7 @@ Namespace Controllers
         <HttpPost()>
         <ActionName("Delete")>
         <ValidateAntiForgeryToken()>
+        <Authorize>
         Function DeleteConfirmed(ByVal id As Integer) As ActionResult
             Dim organiser As Organiser = db.Organisers.Find(id)
             db.Organisers.Remove(organiser)

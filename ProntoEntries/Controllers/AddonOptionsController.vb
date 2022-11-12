@@ -14,34 +14,40 @@ Namespace Controllers
 
         Private db As New EntriesDBEntities
 
+        <Authorize>
         Function Get_ItemName(Id As Integer?) As ActionResult
             ViewBag.ItemName = db.AddonItems.Where(Function(a) a.ItemID = Id).Select(Function(b) b.Name).FirstOrDefault()
             Return PartialView()
         End Function
 
         ' GET: AddonOptions
+        <Authorize>
         Function IndexPartial(Id As Integer?) As ActionResult
             Dim Options = db.AddonOptions.Where(Function(a) a.ItemID = Id).ToList()
             Return PartialView(Options)
         End Function
 
+        <Authorize>
         Function ViewAddOns(Id As Integer?, ParticipantID As Integer?) As ActionResult
             Dim Purchased = db.Sales.Where(Function(b) b.M_reference = Id And b.ParticipantID = ParticipantID And b.RaceID Is Nothing)
             Dim Options = db.AddonOptions.Where(Function(b) Purchased.Any(Function(a) a.OptionID = b.OptionID)).OrderBy(Function(c) c.ItemID)
             Return PartialView(Options)
         End Function
 
+        <Authorize>
         Function ViewAddOnsTicket(Id As Integer?, ParticipantID As Integer?) As ActionResult
             Dim Purchased = db.Sales.Where(Function(b) b.M_reference = Id And b.ParticipantID = ParticipantID And b.RaceID Is Nothing)
             Dim Options = db.AddonOptions.Where(Function(b) Purchased.Any(Function(a) a.OptionID = b.OptionID)).OrderBy(Function(c) c.ItemID)
             Return PartialView(Options)
         End Function
 
+        <Authorize>
         Function Index() As ActionResult
             Return View(db.AddonOptions.ToList())
         End Function
 
         ' GET: AddonOptions/Details/5
+        <Authorize>
         Function Details(ByVal id As Integer?) As ActionResult
             If IsNothing(id) Then
                 Return New HttpStatusCodeResult(HttpStatusCode.BadRequest)
@@ -54,6 +60,7 @@ Namespace Controllers
         End Function
 
         ' GET: AddonOptions/Create
+        <Authorize>
         Function Create(Id As Integer?) As ActionResult
             ViewBag.ItemID = Id
             Return View()
@@ -64,6 +71,7 @@ Namespace Controllers
         'more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         <HttpPost()>
         <ValidateAntiForgeryToken()>
+        <Authorize>
         Function Create(<Bind(Include:="OptionID,ItemID,Size,Amount")> ByVal addonOption As AddonOption, Id As Integer?) As ActionResult
             addonOption.ItemID = Id
             If ModelState.IsValid Then
@@ -75,6 +83,7 @@ Namespace Controllers
         End Function
 
         ' GET: AddonOptions/Edit/5
+        <Authorize>
         Function Edit(ByVal id As Integer?) As ActionResult
             If IsNothing(id) Then
                 Return New HttpStatusCodeResult(HttpStatusCode.BadRequest)
@@ -91,6 +100,7 @@ Namespace Controllers
         'more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         <HttpPost()>
         <ValidateAntiForgeryToken()>
+        <Authorize>
         Function Edit(<Bind(Include:="OptionID,ItemID,Size,Amount")> ByVal addonOption As AddonOption) As ActionResult
             If ModelState.IsValid Then
                 db.Entry(addonOption).State = EntityState.Modified
@@ -101,6 +111,7 @@ Namespace Controllers
         End Function
 
         ' GET: AddonOptions/Delete/5
+        <Authorize>
         Function Delete(ByVal id As Integer?) As ActionResult
             If IsNothing(id) Then
                 Return New HttpStatusCodeResult(HttpStatusCode.BadRequest)
@@ -116,6 +127,7 @@ Namespace Controllers
         <HttpPost()>
         <ActionName("Delete")>
         <ValidateAntiForgeryToken()>
+        <Authorize>
         Function DeleteConfirmed(ByVal id As Integer) As ActionResult
             Dim addonOption As AddonOption = db.AddonOptions.Find(id)
             db.AddonOptions.Remove(addonOption)

@@ -19,6 +19,7 @@ Namespace Controllers
         'more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         <HttpPost()>
         <ValidateAntiForgeryToken()>
+        <Authorize>
         Function UpdateSales(<Bind(Include:="SaleID,RaceID,DivisionID,ItemID,UserID,Indemnity,TandC,ParticipantID,M_reference,Pf_reference,OptionID,Verified")> ByVal sale As Sale)
             Dim result As Boolean
             If ModelState.IsValid Then
@@ -35,6 +36,7 @@ Namespace Controllers
         'more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         <HttpPost()>
         <ValidateAntiForgeryToken()>
+        <Authorize>
         Function UpdateEntries(<Bind(Include:="EntryID,ParticipantID,RaceID,DivisionID,Amount,Status,PaymentReference,DistanceChange,ChangePaymentRef,TransferID,Result")> ByVal entry As Entry)
             Dim Result As Boolean
             If ModelState.IsValid Then
@@ -46,11 +48,13 @@ Namespace Controllers
         End Function
 
         ' GET: Sales
+        <Authorize>
         Function Index() As ActionResult
             Return View(db.Sales.ToList())
         End Function
 
         ' GET: Sales/Details/5
+        <Authorize>
         Function Details(ByVal id As Integer?) As ActionResult
             If IsNothing(id) Then
                 Return New HttpStatusCodeResult(HttpStatusCode.BadRequest)
@@ -63,6 +67,7 @@ Namespace Controllers
         End Function
 
         ' GET: Sales/Create
+        <Authorize>
         Function Create() As ActionResult
             Return View()
         End Function
@@ -72,6 +77,7 @@ Namespace Controllers
         'more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         <HttpPost()>
         <ValidateAntiForgeryToken()>
+        <Authorize>
         Function Create(<Bind(Include:="SaleID,RaceID,DivisionID,ItemID,UserID,Indemnity,TandC,ParticipantID,M_reference,Pf_reference,OptionID,Verified")> ByVal sale As Sale) As ActionResult
             If ModelState.IsValid Then
                 db.Sales.Add(sale)
@@ -82,6 +88,7 @@ Namespace Controllers
         End Function
 
         ' GET: Sales/Edit/5
+        <Authorize>
         Function Edit(ByVal id As Integer?) As ActionResult
             If IsNothing(id) Then
                 Return New HttpStatusCodeResult(HttpStatusCode.BadRequest)
@@ -98,6 +105,7 @@ Namespace Controllers
         'more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         <HttpPost()>
         <ValidateAntiForgeryToken()>
+        <Authorize>
         Function Edit(<Bind(Include:="SaleID,RaceID,DivisionID,ItemID,UserID,Indemnity,TandC,ParticipantID,M_reference,Pf_reference,OptionID,Verified")> ByVal sale As Sale) As ActionResult
             If ModelState.IsValid Then
                 db.Entry(sale).State = EntityState.Modified
@@ -108,6 +116,7 @@ Namespace Controllers
         End Function
 
         ' GET: Sales/Delete/5
+        <Authorize>
         Function Delete(ByVal id As Integer?) As ActionResult
             If IsNothing(id) Then
                 Return New HttpStatusCodeResult(HttpStatusCode.BadRequest)
@@ -123,6 +132,7 @@ Namespace Controllers
         <HttpPost()>
         <ActionName("Delete")>
         <ValidateAntiForgeryToken()>
+        <Authorize>
         Function DeleteConfirmed(ByVal id As Integer) As ActionResult
             Dim sale As Sale = db.Sales.Find(id)
             db.Sales.Remove(sale)

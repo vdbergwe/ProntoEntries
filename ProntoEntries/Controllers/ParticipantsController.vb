@@ -15,6 +15,7 @@ Namespace Controllers
         Private db As New EntriesDBEntities
 
         ' GET: Entries/Details/5
+        <Authorize>
         Function ViewParticipants(ByVal id As Integer?, ByVal DivisionSelect As Integer?) As ActionResult
             ViewBag.RaceID = id
             ViewBag.DivisionSelect = DivisionSelect
@@ -32,12 +33,14 @@ Namespace Controllers
         End Function
 
         ' GET: Participants
+        <Authorize>
         Function Index() As ActionResult
             Dim Participant = db.Participants.Where(Function(a) a.UserID = User.Identity.Name)
             Return View(Participant.ToList())
         End Function
 
         ' GET: Participants/Details/5
+        <Authorize>
         Function Details(ByVal id As Integer?) As ActionResult
             If IsNothing(id) Then
                 Return New HttpStatusCodeResult(HttpStatusCode.BadRequest)
@@ -50,6 +53,7 @@ Namespace Controllers
         End Function
 
         ' GET: Participants/Create
+        <Authorize>
         Function Create() As ActionResult
             Return View()
         End Function
@@ -59,6 +63,7 @@ Namespace Controllers
         'more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         <HttpPost()>
         <ValidateAntiForgeryToken()>
+        <Authorize>
         Function Create(<Bind(Include:="ParticipantID,FirstName,MiddleNames,LastName,IDNumber,Day,Month,Year,RaceNumber,EmailAddress,MedicalName,MedicalNumber,EmergencyContact,EmergencyNumber,BoodType,Allergies,AdditionalInfo,DoctorName,DoctorContact,Clubname,Country,Address,City,Province,UserID,EventMailer,Offers")> ByVal participant As Participant) As ActionResult
             participant.UserID = User.Identity.Name
             If ModelState.IsValid Then
@@ -70,6 +75,7 @@ Namespace Controllers
         End Function
 
         ' GET: Participants/Edit/5
+        <Authorize>
         Function Edit(ByVal id As Integer?) As ActionResult
             If IsNothing(id) Then
                 Return New HttpStatusCodeResult(HttpStatusCode.BadRequest)
@@ -86,6 +92,7 @@ Namespace Controllers
         'more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         <HttpPost()>
         <ValidateAntiForgeryToken()>
+        <Authorize>
         Function Edit(<Bind(Include:="ParticipantID,FirstName,MiddleNames,LastName,IDNumber,Day,Month,Year,RaceNumber,EmailAddress,MedicalName,MedicalNumber,EmergencyContact,EmergencyNumber,BoodType,Allergies,AdditionalInfo,DoctorName,DoctorContact,Clubname,Country,Address,City,Province,UserID,EventMailer,Offers")> ByVal participant As Participant) As ActionResult
             If ModelState.IsValid Then
                 db.Entry(participant).State = EntityState.Modified
@@ -96,6 +103,7 @@ Namespace Controllers
         End Function
 
         ' GET: Participants/Delete/5
+        <Authorize>
         Function Delete(ByVal id As Integer?) As ActionResult
             If IsNothing(id) Then
                 Return New HttpStatusCodeResult(HttpStatusCode.BadRequest)
@@ -111,6 +119,7 @@ Namespace Controllers
         <HttpPost()>
         <ActionName("Delete")>
         <ValidateAntiForgeryToken()>
+        <Authorize>
         Function DeleteConfirmed(ByVal id As Integer) As ActionResult
             Dim participant As Participant = db.Participants.Find(id)
             db.Participants.Remove(participant)

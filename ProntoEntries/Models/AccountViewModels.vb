@@ -61,7 +61,7 @@ Public Class RegisterViewModel
     Public Property Email As String
 
     <Required>
-    <StringLength(100, ErrorMessage:="The {0} must be at least {2} characters long.", MinimumLength:=6)>
+    <StringLength(100, ErrorMessage:="The {0} must be at least {2} characters long.", MinimumLength:=2)>
     <DataType(DataType.Password)>
     <Display(Name:="Password")>
     Public Property Password As String
@@ -79,7 +79,7 @@ Public Class ResetPasswordViewModel
     Public Property Email() As String
 
     <Required>
-    <StringLength(100, ErrorMessage:="The {0} must be at least {2} characters long.", MinimumLength:=6)>
+    <StringLength(100, ErrorMessage:="The {0} must be at least {2} characters long.", MinimumLength:=2)>
     <DataType(DataType.Password)>
     <Display(Name:="Password")>
     Public Property Password() As String

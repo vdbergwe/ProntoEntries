@@ -210,6 +210,7 @@
           <Property Name="RaceHtmlPage" Type="nvarchar(max)" />
           <Property Name="Indemnity" Type="nvarchar" MaxLength="1000" />
           <Property Name="TandC" Type="nvarchar" MaxLength="1000" />
+          <Property Name="EntriesCloseDate" Type="date" />
         </EntityType>
         <EntityType Name="Sales">
           <Key>
@@ -506,7 +507,7 @@
           <Property Name="OrgTel" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="OrgWebsite" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="OrgVatNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="AdminUserID" Type="String" />
+          <Property Name="AdminUserID" Type="String" MaxLength="128" Unicode="true" FixedLength="false" />
           <Property Name="Image" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Participant">
@@ -589,6 +590,7 @@
           <Property Name="RaceHtmlPage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Indemnity" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="TandC" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="EntriesCloseDate" Type="DateTime" Precision="0" />
         </EntityType>
         <EntityType Name="Sale">
           <Key>
@@ -858,6 +860,7 @@
           <EntitySetMapping Name="RaceEvents">
             <EntityTypeMapping TypeName="EntriesDBModel.RaceEvent">
               <MappingFragment StoreEntitySet="RaceEvent">
+                <ScalarProperty Name="EntriesCloseDate" ColumnName="EntriesCloseDate" />
                 <ScalarProperty Name="TandC" ColumnName="TandC" />
                 <ScalarProperty Name="Indemnity" ColumnName="Indemnity" />
                 <ScalarProperty Name="RaceHtmlPage" ColumnName="RaceHtmlPage" />

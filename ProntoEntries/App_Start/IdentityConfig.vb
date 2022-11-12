@@ -5,14 +5,42 @@ Imports Microsoft.AspNet.Identity.EntityFramework
 Imports Microsoft.AspNet.Identity.Owin
 Imports Microsoft.Owin
 Imports Microsoft.Owin.Security
+Imports System.Net.Mail
+Imports System.Net.Mime
+Imports System.Configuration
 
 Public Class EmailService
     Implements IIdentityMessageService
 
     Public Function SendAsync(message As IdentityMessage) As Task Implements IIdentityMessageService.SendAsync
         ' Plug in your email service here to send an email.
+        'Return Task.FromResult(0)
+        'Return sendMail(message)
+        sendMail(message)
         Return Task.FromResult(0)
     End Function
+
+    Private Function sendMail(Message As IdentityMessage)
+        Dim text As String = String.Format("Please click on this link to {0}: {1}", Message.Subject, Message.Body)
+        Dim Html As String = "Please confirm your account by clicking <a href=""" & Message.Body & """>Confirmation Link</a><br/><br/>"
+
+        Html += HttpUtility.HtmlEncode("Or copy the following link to your browser:" + Message.Body)
+
+
+        Dim msg As MailMessage = New MailMessage()
+        msg.From = New MailAddress(ConfigurationManager.AppSettings("Email").ToString())
+        msg.To.Add(New MailAddress(Message.Destination))
+        msg.Subject = Message.Subject
+        msg.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(text, Nothing, MediaTypeNames.Text.Plain))
+        msg.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(Html, Nothing, MediaTypeNames.Text.Html))
+
+        Dim smtpClient As SmtpClient = New SmtpClient("prontocs.co.za", Convert.ToInt32(587))
+        Dim credentials As System.Net.NetworkCredential = New System.Net.NetworkCredential(ConfigurationManager.AppSettings("Email").ToString(), ConfigurationManager.AppSettings("Password").ToString())
+        smtpClient.Credentials = credentials
+        smtpClient.EnableSsl = True
+        smtpClient.Send(msg)
+    End Function
+
 End Class
 
 Public Class SmsService
@@ -43,11 +71,11 @@ Public Class ApplicationUserManager
 
         ' Configure validation logic for passwords
         manager.PasswordValidator = New PasswordValidator With {
-            .RequiredLength = 6,
-            .RequireNonLetterOrDigit = True,
+            .RequiredLength = 2,
+            .RequireNonLetterOrDigit = False,
             .RequireDigit = True,
             .RequireLowercase = True,
-            .RequireUppercase = True
+            .RequireUppercase = False
         }
 
         ' Configure user lockout defaults

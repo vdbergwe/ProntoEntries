@@ -20,14 +20,28 @@
         <div class="navright">
             <div class="menuarea">
                 <ul class="navitems">
-                    <li>@Html.ActionLink("Organiser", "Index", "Organisers")</li>
+                    @If User.Identity.IsAuthenticated And (User.IsInRole("Admin") Or User.IsInRole("SuperUser")) Then
+                        @<li>@Html.ActionLink("Organiser", "Index", "Organisers")</li>
+                    End If
                     <li>@Html.ActionLink("Events", "Index", "RaceEvents")</li>
-                    <li>@Html.ActionLink("Addons", "Index", "AddonItems")</li>
-                    <li>@Html.ActionLink("Entries", "Index", "Entries")</li>
-                    <li>@Html.ActionLink("Participants", "Index", "Participants")</li>
-                    <li>@Html.ActionLink("Results", "Index", "RaceEvents")</li>
-                    <li>@Html.ActionLink("Search", "Index", "Reports")</li>
-                    <li>@Html.ActionLink("Cart", "Cart", "Entries")</li>
+                    @If User.Identity.IsAuthenticated And (User.IsInRole("Admin") Or User.IsInRole("SuperUser")) Then
+                        @<li>@Html.ActionLink("Addons", "Index", "AddonItems")</li>
+                    End If
+                    @If User.Identity.IsAuthenticated And Not ((User.IsInRole("Admin") Or User.IsInRole("Org") Or User.IsInRole("SuperUser"))) Then
+                        @<li>@Html.ActionLink("Entries", "Index", "Entries")</li>
+                    End If
+                    @If User.Identity.IsAuthenticated And Not ((User.IsInRole("Admin") Or User.IsInRole("Org") Or User.IsInRole("SuperUser"))) Then
+                        @<li>@Html.ActionLink("Participants", "Index", "Participants")</li>
+                    End If
+                    @If User.Identity.IsAuthenticated And Not ((User.IsInRole("Admin") Or User.IsInRole("Org") Or User.IsInRole("SuperUser"))) Then
+                        @<li>@Html.ActionLink("Results", "Index", "RaceEvents")</li>
+                    End If
+                    @If User.Identity.IsAuthenticated And (User.IsInRole("Admin") Or User.IsInRole("Org") Or User.IsInRole("SuperUser")) Then
+                        @<li>@Html.ActionLink("Search", "Index", "Reports")</li>
+                    End If
+                    @If User.Identity.IsAuthenticated And Not ((User.IsInRole("Admin") Or User.IsInRole("Org") Or User.IsInRole("SuperUser"))) Then
+                        @<li>@Html.ActionLink("Cart", "Cart", "Entries")</li>
+                    End If
                 </ul>
             </div>
             <div class="loginarea">
@@ -42,35 +56,6 @@
             <p>&copy;@DateTime.Now.Year - Pronto Computer Solutions PTY (Ltd) </p>
         </footer>
     </div>
-
-    @*<div class="menubar">
-            <div class="logoimage">
-                <img class="logotopleft" src="~/Content/Pronto-Logo-Black.png" alt="Pronto Computer Solutions Logo" />
-            </div>
-            <div class="menu">
-                <ul class="menuitems">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    @If (User.Identity.IsAuthenticated) Then
-                        If (User.IsInRole("Admin")) Then
-                            @<li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                        End If
-                    End If
-
-                </ul>
-                @Html.Partial("_LoginPartial")
-            </div>
-        </div>
-        <div class="bottomcontainer">
-            <div class="container body-content">
-                @RenderBody()
-                <hr />
-                <footer>
-                    <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-                </footer>
-            </div>
-        </div>*@
-
 
     @Scripts.Render("~/bundles/jquery")
     @*@Scripts.Render("~/bundles/bootstrap")*@

@@ -35,8 +35,6 @@ Namespace Controllers
             Return PartialView()
         End Function
 
-
-
         ' GET: RaceEvents/Details/5
         Function Details(ByVal id As Integer?) As ActionResult
             If IsNothing(id) Then
@@ -49,6 +47,9 @@ Namespace Controllers
             ViewBag.OrgID = Organiser.OrgName
             ViewBag.OrgImage = Organiser.Image
             ViewBag.RaceDate = raceEvent.RaceDate.Value.ToString("dddd, dd MMMM yyyy")
+            If raceEvent.EntriesCloseDate < Now() Then
+                ViewBag.Closed = True
+            End If
             If IsNothing(raceEvent) Then
                 Return HttpNotFound()
             End If
@@ -56,6 +57,7 @@ Namespace Controllers
         End Function
 
         ' GET: RaceEvents/Create
+        <Authorize>
         Function Create() As ActionResult
             ViewBag.OrgID = New SelectList(db.Organisers, "OrgId", "OrgName")
             Return View()
@@ -66,6 +68,7 @@ Namespace Controllers
         'more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         <HttpPost()>
         <ValidateAntiForgeryToken()>
+        <Authorize>
         Function Create(<Bind(Include:="RaceID,RaceName,RaceDescription,RaceDate,RaceType,Coordinates,Address,City,Province,AdminCharge,OrgID,Image,Background,ImgDetail1,ImgDetail2,ImgDetail3,DispClasses,DispAdmCharge,DispAddress,RaceHtmlPage")> ByVal raceEvent As RaceEvent, imgFile2 As HttpPostedFileBase, imgBackground As HttpPostedFileBase) As ActionResult
             Dim ImgPath1 As String
             Dim ImgPath2 As String
@@ -91,6 +94,7 @@ Namespace Controllers
         End Function
 
         ' GET: RaceEvents/Edit/5
+        <Authorize>
         Function Edit(ByVal id As Integer?) As ActionResult
             If IsNothing(id) Then
                 Return New HttpStatusCodeResult(HttpStatusCode.BadRequest)
@@ -109,6 +113,7 @@ Namespace Controllers
         'To protect from overposting attacks, enable the specific properties you want to bind to, for 
         'more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         <HttpPost()>
+        <Authorize>
         <ValidateAntiForgeryToken()>
         Function Edit(<Bind(Include:="RaceID,RaceName,RaceDescription,RaceDate,RaceType,Coordinates,Address,City,Province,AdminCharge,OrgID,Image,Background,ImgDetail1,ImgDetail2,ImgDetail3,DispClasses,DispAdmCharge,DispAddress,RaceHtmlPage")> ByVal raceEvent As RaceEvent, imgFile2 As HttpPostedFileBase, imgBackground As HttpPostedFileBase, imgdetailfirst As HttpPostedFileBase, imgdetailsecond As HttpPostedFileBase, imgdetailthird As HttpPostedFileBase) As ActionResult
             Dim ImgPath As String
@@ -148,6 +153,7 @@ Namespace Controllers
         End Function
 
         ' GET: RaceEvents/Delete/5
+        <Authorize>
         Function Delete(ByVal id As Integer?) As ActionResult
             If IsNothing(id) Then
                 Return New HttpStatusCodeResult(HttpStatusCode.BadRequest)
@@ -163,6 +169,7 @@ Namespace Controllers
         <HttpPost()>
         <ActionName("Delete")>
         <ValidateAntiForgeryToken()>
+        <Authorize>
         Function DeleteConfirmed(ByVal id As Integer) As ActionResult
             Dim raceEvent As RaceEvent = db.RaceEvents.Find(id)
             db.RaceEvents.Remove(raceEvent)

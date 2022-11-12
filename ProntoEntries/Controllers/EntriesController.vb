@@ -11,7 +11,6 @@ Imports System.Security.Cryptography
 Imports System.IO
 
 
-
 Namespace Controllers
     Public Class EntriesController
         Inherits System.Web.Mvc.Controller
@@ -120,9 +119,9 @@ Namespace Controllers
             End If
             Return New HttpStatusCodeResult(HttpStatusCode.Unauthorized)
 
-
         End Function
 
+        <Authorize>
         Function SubmitToPayfast() As ActionResult
             Dim SingleTransaction As Sale = db.Sales.Where(Function(a) a.Pf_reference Is Nothing And a.UserID = User.Identity.Name And a.RaceID IsNot Nothing).FirstOrDefault()
             Dim Transaction = db.Sales.Where(Function(a) a.Pf_reference Is Nothing And a.UserID = User.Identity.Name)
@@ -175,6 +174,7 @@ Namespace Controllers
         End Function
 
         ' GET: Entries/Cart
+        <Authorize>
         Function Cart(ByVal id As Integer?, ByVal DivisionSelect As Integer?) As ActionResult
             Dim CartContent = db.Sales.Where(Function(a) a.Pf_reference Is Nothing And a.UserID = User.Identity.Name).OrderBy(Function(b) b.ParticipantID).ThenByDescending(Function(b) b.RaceID)
             ViewBag.Total = 0
@@ -191,6 +191,7 @@ Namespace Controllers
 
 
         ' GET: Entries/Create
+        <Authorize>
         Function NewEntry(ByVal id As Integer?, ByVal DivisionSelect As Integer?) As ActionResult
             Dim raceEvent As RaceEvent = db.RaceEvents.Find(id)
             Dim Organiser As Organiser = db.Organisers.Find(raceEvent.OrgID)
@@ -209,6 +210,7 @@ Namespace Controllers
             Return View()
         End Function
 
+        <Authorize>
         Function Addtocart(ByVal sale As Sale, ByVal id As Integer?, ByVal RaceID As Integer?, ByVal DivisionID As Integer?) As ActionResult
             Dim OrderNumber As Integer
             sale.ParticipantID = id
@@ -239,6 +241,7 @@ Namespace Controllers
             Return RedirectToAction("NewEntry", "Entries", New With {.id = RaceID, .DivisionSelect = DivisionID})
         End Function
 
+        <Authorize>
         Function VerifyEntry(ByVal sale As Sale, ByVal Id As Integer?, ByVal RaceID1 As Integer?, ByVal DivisionID1 As Integer?, ByVal OptionID1 As Integer?, ByVal ItemID As Integer?) As ActionResult
             Dim raceEvent As RaceEvent = db.RaceEvents.Find(RaceID1)
             Dim Organiser As Organiser = db.Organisers.Find(raceEvent.OrgID)
@@ -286,6 +289,7 @@ Namespace Controllers
             Return View(AddItems.ToList())
         End Function
 
+        <Authorize>
         Function get_AddonOptionlist(Id As Integer?, ByVal RaceID As Integer?, ByVal DivisionID1 As Integer?, ByVal OptionID As Integer?, ByVal ParticipantID As Integer?) As ActionResult
             Dim Optionlist = db.AddonOptions.Where(Function(a) a.ItemID = Id)
             ViewBag.ParticipantID = ParticipantID
@@ -297,42 +301,50 @@ Namespace Controllers
             Return PartialView(Optionlist.ToList())
         End Function
 
+        <Authorize>
         Function Get_DivisionName(Id As Integer?) As ActionResult
             ViewBag.DivisionName = db.Divisions.Where(Function(a) a.DivisionID = Id).Select(Function(b) b.Description).FirstOrDefault()
             Return PartialView()
         End Function
 
+        <Authorize>
         Function Get_Distance(Id As Integer?) As ActionResult
             ViewBag.Distance = db.Divisions.Where(Function(a) a.DivisionID = Id).Select(Function(b) b.Distance).FirstOrDefault()
             Return PartialView()
         End Function
 
+        <Authorize>
         Function Get_ParticipantName(Id As Integer?) As ActionResult
             ViewBag.ParticipantName = db.Participants.Where(Function(a) a.ParticipantID = Id).Select(Function(b) b.FirstName).FirstOrDefault() + " " +
                 db.Participants.Where(Function(a) a.ParticipantID = Id).Select(Function(b) b.LastName).FirstOrDefault()
             Return PartialView()
         End Function
 
+        <Authorize>
         Function Get_RaceName(Id As Integer?) As ActionResult
             ViewBag.RaceName = db.RaceEvents.Where(Function(a) a.RaceID = Id).Select(Function(b) b.RaceName).FirstOrDefault()
             Return PartialView()
         End Function
 
+        <Authorize>
         Function Get_ParticipantFirstName(Id As Integer?) As ActionResult
             ViewBag.ParticipantFirstName = db.Participants.Where(Function(a) a.ParticipantID = Id).Select(Function(b) b.FirstName).FirstOrDefault()
             Return PartialView()
         End Function
 
+        <Authorize>
         Function Get_ParticipantLastName(Id As Integer?) As ActionResult
             ViewBag.ParticipantLastName = db.Participants.Where(Function(a) a.ParticipantID = Id).Select(Function(b) b.LastName).FirstOrDefault()
             Return PartialView()
         End Function
 
+        <Authorize>
         Function Get_ParticipantID(Id As Integer?) As ActionResult
             ViewBag.ParticipantID = db.Participants.Where(Function(a) a.ParticipantID = Id).Select(Function(b) b.IDNumber).FirstOrDefault()
             Return PartialView()
         End Function
 
+        <Authorize>
         Function GenerateTicket(Id As Integer?) As ActionResult
             Dim MyPDF As New Rotativa.ActionAsPdf("IssueTicket", New With {.id = Id})
             MyPDF.FileName = "ProntoEntries_Ticket_" + Id.ToString() + ".pdf"
@@ -342,6 +354,7 @@ Namespace Controllers
         End Function
 
         ' GET: Entries
+        <Authorize>
         Function IssueTicket(Id As Integer?) As ActionResult
             Dim RaceID = db.Entries.Where(Function(b) b.EntryID = Id).Select(Function(c) c.RaceID).FirstOrDefault()
             Dim raceEvent As RaceEvent = db.RaceEvents.Find(RaceID)
@@ -353,12 +366,14 @@ Namespace Controllers
         End Function
 
         ' GET: Entries
+        <Authorize>
         Function Index() As ActionResult
-            Dim EntriesContent = db.Entries.Where(Function(a) a.Status <> "UnPaid")
+            Dim EntriesContent = db.Entries.Where(Function(a) a.Status <> "UnPaid" And User.Identity.Name = a.MainUserID)
             Return View(EntriesContent.ToList())
         End Function
 
         ' GET: Entries/Details/5
+        <Authorize>
         Function Details(ByVal id As Integer?) As ActionResult
             If IsNothing(id) Then
                 Return New HttpStatusCodeResult(HttpStatusCode.BadRequest)
@@ -371,6 +386,7 @@ Namespace Controllers
         End Function
 
         ' GET: Entries/Create
+        <Authorize>
         Function Create() As ActionResult
             Return View()
         End Function
@@ -380,6 +396,7 @@ Namespace Controllers
         'more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         <HttpPost()>
         <ValidateAntiForgeryToken()>
+        <Authorize>
         Function Create(<Bind(Include:="EntryID,ParticipantID,RaceID,DivisionID,Amount,Status,PaymentReference,DistanceChange,ChangePaymentRef,TransferID,Result")> ByVal entry As Entry) As ActionResult
             If ModelState.IsValid Then
                 db.Entries.Add(entry)
@@ -390,6 +407,7 @@ Namespace Controllers
         End Function
 
         ' GET: Entries/Edit/5
+        <Authorize>
         Function Edit(ByVal id As Integer?) As ActionResult
             If IsNothing(id) Then
                 Return New HttpStatusCodeResult(HttpStatusCode.BadRequest)
@@ -406,6 +424,7 @@ Namespace Controllers
         'more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         <HttpPost()>
         <ValidateAntiForgeryToken()>
+        <Authorize>
         Function Edit(<Bind(Include:="EntryID,ParticipantID,RaceID,DivisionID,Amount,Status,PaymentReference,DistanceChange,ChangePaymentRef,TransferID,Result")> ByVal entry As Entry) As ActionResult
             If ModelState.IsValid Then
                 db.Entry(entry).State = EntityState.Modified
@@ -416,6 +435,7 @@ Namespace Controllers
         End Function
 
         ' GET: Entries/Delete/5
+        <Authorize>
         Function Delete(ByVal id As Integer?) As ActionResult
             If IsNothing(id) Then
                 Return New HttpStatusCodeResult(HttpStatusCode.BadRequest)
@@ -431,6 +451,7 @@ Namespace Controllers
         <HttpPost()>
         <ActionName("Delete")>
         <ValidateAntiForgeryToken()>
+        <Authorize>
         Function DeleteConfirmed(ByVal id As Integer) As ActionResult
             Dim entry As Entry = db.Entries.Find(id)
             db.Entries.Remove(entry)

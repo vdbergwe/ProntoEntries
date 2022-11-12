@@ -20,12 +20,14 @@ Namespace Controllers
         End Function
 
         ' GET: AddonItems
+        <Authorize>
         Function Index() As ActionResult
             ViewBag.RaceID = New SelectList(db.RaceEvents, "RaceID", "RaceName")
             Return View(db.AddonItems.ToList())
         End Function
 
         ' GET: AddonItems/Details/5
+        <Authorize>
         Function Details(ByVal id As Integer?) As ActionResult
             If IsNothing(id) Then
                 Return New HttpStatusCodeResult(HttpStatusCode.BadRequest)
@@ -38,6 +40,7 @@ Namespace Controllers
         End Function
 
         ' GET: AddonItems/Create
+        <Authorize>
         Function Create() As ActionResult
             ViewBag.RaceID = New SelectList(db.RaceEvents, "RaceID", "RaceName")
             Return View()
@@ -48,6 +51,7 @@ Namespace Controllers
         'more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         <HttpPost()>
         <ValidateAntiForgeryToken()>
+        <Authorize>
         Function Create(<Bind(Include:="ItemID,RaceID,Name,Description")> ByVal addonItem As AddonItem) As ActionResult
             If ModelState.IsValid Then
                 db.AddonItems.Add(addonItem)
@@ -58,6 +62,7 @@ Namespace Controllers
         End Function
 
         ' GET: AddonItems/Edit/5
+        <Authorize>
         Function Edit(ByVal id As Integer?) As ActionResult
             If IsNothing(id) Then
                 Return New HttpStatusCodeResult(HttpStatusCode.BadRequest)
@@ -74,6 +79,7 @@ Namespace Controllers
         'more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         <HttpPost()>
         <ValidateAntiForgeryToken()>
+        <Authorize>
         Function Edit(<Bind(Include:="ItemID,RaceID,Name,Description")> ByVal addonItem As AddonItem) As ActionResult
             If ModelState.IsValid Then
                 db.Entry(addonItem).State = EntityState.Modified
@@ -84,6 +90,7 @@ Namespace Controllers
         End Function
 
         ' GET: AddonItems/Delete/5
+        <Authorize>
         Function Delete(ByVal id As Integer?) As ActionResult
             If IsNothing(id) Then
                 Return New HttpStatusCodeResult(HttpStatusCode.BadRequest)
@@ -99,6 +106,7 @@ Namespace Controllers
         <HttpPost()>
         <ActionName("Delete")>
         <ValidateAntiForgeryToken()>
+        <Authorize>
         Function DeleteConfirmed(ByVal id As Integer) As ActionResult
             Dim addonItem As AddonItem = db.AddonItems.Find(id)
             db.AddonItems.Remove(addonItem)
