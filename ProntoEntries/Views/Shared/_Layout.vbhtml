@@ -18,6 +18,12 @@
             @*<img src="~/Content/Pronto-Logo-Black.png" alt="Pronto Computer Solutions Logo" class="logoimage" />*@
         </div>
         <div class="navright">
+            <input type="checkbox" class="openSidebarMenu" id="openSidebarMenu" />
+            <label for="openSidebarMenu" class="sidebarIconToggle">
+                <div class="spinner diagonal part-1"></div>
+                <div class="spinner horizontal"></div>
+                <div class="spinner diagonal part-2"></div>
+            </label>
             <div class="menuarea">
                 <ul class="navitems">
                     @If User.Identity.IsAuthenticated And (User.IsInRole("Admin") Or User.IsInRole("SuperUser")) Then
@@ -48,10 +54,14 @@
                 @Html.Partial("_LoginPartial")
             </div>
         </div>
+
+        @* Mobile Menu *@
+
+
     </div>
     <div class="container body-content">
         @RenderBody()
-        <hr />
+        @*<hr />*@
         <footer>
             <p>&copy;@DateTime.Now.Year - Pronto Computer Solutions PTY (Ltd) </p>
         </footer>
