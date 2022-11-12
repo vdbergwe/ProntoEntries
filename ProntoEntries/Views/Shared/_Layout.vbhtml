@@ -44,7 +44,7 @@
                     End If
                 </ul>
             </div>
-            <div class="loginarea">
+            <div class="loginarea" style="padding-right: 20px;">
                 @Html.Partial("_LoginPartial")
             </div>
         </div>

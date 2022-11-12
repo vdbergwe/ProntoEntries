@@ -3,14 +3,11 @@ html, body {
     min-height: 100%;
 }
 
-
 body {
     font-family: raleway, sans-serif;
     background-color: #707070;
     height: 100vh;
 }
-
-
 
 .backing {
     background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url(ProntoBackground.jpg) no-repeat;
@@ -557,4 +554,62 @@ input[type="checkbox"] {
 .partelement {
     display:flex;
     justify-content: space-between;
+}
+
+@media (max-width: 1030px) {
+
+body {
+    max-width:100%;
+}
+
+    input[type="submit"] {
+        width: 80%;
+    }
+
+.col-md-8 .button-group {
+    margin: 10px 20px 0 50%;
+}
+
+.container {
+    max-width: 100%;
+}
+
+.mainbody {
+    max-width: 100%;
+}
+
+.titlediv { 
+    flex-direction: column;
+}
+
+.form-control {
+    width: 70%;
+}
+
+.orgcontainer {
+    width: 100%;
+    padding: 0 0 0 10px;
+}
+
+    .EventDetail {
+        flex-direction: column;
+        width:100%;
+    }
+
+    .EventDetail .form--el1 {
+        order: 2;
+        width: 100%;
+        flex: 1;
+    }
+
+        .EventDetail .form--el1 img {
+            max-width: 100%;
+        }
+
+
+        .EventDetail .form--el2 {
+            order: 1;
+            width: 100%;
+            flex: 1;
+        }
 }

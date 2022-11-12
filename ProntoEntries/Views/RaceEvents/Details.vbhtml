@@ -3,6 +3,9 @@
     ViewData("Title") = ViewBag.RaceName
 End Code
 
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
 <style>
     .backing {
         background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url(@ViewBag.Background) no-repeat;
