@@ -35,7 +35,7 @@ End Code
                         <div class="button-group">
                             <div class="col-md-10">
                                 <div class="checkbox">
-                                    @Html.CheckBoxFor(Function(m) m.RememberMe, New With {.class = ""})
+                                    @Html.CheckBoxFor(Function(m) m.RememberMe, New With {.class = "toggle-checkbox"})
                                     Remember Me
                                 </div>
                             </div>

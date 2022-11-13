@@ -635,6 +635,9 @@
     <Compile Include="Participant.vb">
       <DependentUpon>EntriesModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="ParticipantExport.vb">
+      <DependentUpon>EntriesModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="PaymentDetail.vb">
       <DependentUpon>EntriesModel.tt</DependentUpon>
     </Compile>

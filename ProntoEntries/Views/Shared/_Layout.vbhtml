@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>@ViewBag.Title - Pronto Entries</title>
     <link href="~/Content/MainLayout.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css?family=Raleway:700%2C600" rel="stylesheet" />
     <script src="https://kit.fontawesome.com/8466fbcbdc.js" crossorigin="anonymous"></script>

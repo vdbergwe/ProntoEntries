@@ -26,6 +26,7 @@
         <AssociationConnector Association="EntriesDBModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" />
         <AssociationConnector Association="EntriesDBModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" />
         <AssociationConnector Association="EntriesDBModel.AspNetUserRoles" />
+        <EntityTypeShape EntityType="EntriesDBModel.ParticipantExport" Width="1.5" PointX="13.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

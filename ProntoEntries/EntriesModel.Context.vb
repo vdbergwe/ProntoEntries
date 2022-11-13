@@ -40,5 +40,6 @@ Partial Public Class EntriesDBEntities
     Public Overridable Property Substitutions() As DbSet(Of Substitution)
     Public Overridable Property SystemLogs() As DbSet(Of SystemLog)
     Public Overridable Property TypeLookups() As DbSet(Of TypeLookup)
+    Public Overridable Property ParticipantExports() As DbSet(Of ParticipantExport)
 
 End Class

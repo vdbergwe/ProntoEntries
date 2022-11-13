@@ -10,14 +10,13 @@
 Imports System
 Imports System.Collections.Generic
 
-Partial Public Class Participant
+Partial Public Class ParticipantExport
     Public Property ParticipantID As Integer
     Public Property FirstName As String
     Public Property MiddleNames As String
     Public Property LastName As String
     Public Property IDNumber As String
     Public Property DOB As Nullable(Of Date)
-    Public Property RaceNumber As String
     Public Property EmailAddress As String
     Public Property MedicalName As String
     Public Property MedicalNumber As String
@@ -29,11 +28,11 @@ Partial Public Class Participant
     Public Property DoctorName As String
     Public Property DoctorContact As String
     Public Property Clubname As String
+    Public Property RaceNumber As String
     Public Property Country As String
     Public Property Address As String
     Public Property City As String
     Public Property Province As String
-    Public Property UserID As String
     Public Property EventMailer As Boolean
     Public Property Offers As Boolean
 

@@ -23,7 +23,7 @@ End Code
         <h2>@ViewBag.RaceName</h2>
         <div>
             <ul>
-                @If User.Identity.IsAuthenticated And User.IsInRole("Admin,Org") Then
+                @If User.Identity.IsAuthenticated And User.IsInRole("Admin") Then
                     @<li>
                         @Html.ActionLink("Edit", "Edit", New With {.id = Model.RaceID})
                     </li>

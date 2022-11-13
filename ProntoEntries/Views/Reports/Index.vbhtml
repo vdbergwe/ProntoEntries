@@ -20,19 +20,21 @@ End Code
 
     <hr />
 
-    <div class="DropdownSearches" , style="display:flex">
-        <div Class="DropdownSearches item", id="eventselect">
-            <strong>Event Name</strong>
-            @Html.DropDownList("RaceID", Nothing, htmlAttributes:=New With {.class = "form-controlDDL"}, optionLabel:="Select Event")
-
+    
+        
+    <form action="" method="get">
+        <div class="DropdownSearches">
+            <div Class="DropdownSearches item" , id="eventselect">
+                <p>Event Name</p>
+                @Html.DropDownList("RaceID", Nothing, htmlAttributes:=New With {.class = "form-controlDDL"}, optionLabel:="Select Event")
+            </div>
+            <div class="DropdownSearches item">
+                <p>Search Value</p>
+                <input type="text" name="SearchValue" id="SearchValue" class="form-control" placeholder="@ViewBag.SearchText" />
+            </div>
         </div>
-        <div class="DropdownSearches item">
-            <input type="text" name="SearchValue" id="SearchValue" class="form-control" placeholder="@ViewBag.SearchText" />
-        </div>
-        <div class="DropdownSearches item">
-            <input type="submit" name="Submit" onclick="runsearch()" />
-        </div>
-    </div>
+    </form>
+   
     <hr />
     @If (Model.Count() > 0) Then
         @<div Class="ReportContent">
@@ -92,7 +94,7 @@ End Code
 
 </div>
 
-@Section Scripts
+@*@Section Scripts
     @Scripts.Render("~/bundles/jqueryval")
     <script>
         function runsearch() {
@@ -101,4 +103,4 @@ End Code
             window.location.replace("?RaceID=" + RaceID + "&SearchText=" + SearchText);
         }
     </script>
-End Section
+End Section*@

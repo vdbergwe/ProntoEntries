@@ -157,8 +157,8 @@
           <Property Name="City" Type="nvarchar" MaxLength="50" />
           <Property Name="Province" Type="nvarchar" MaxLength="50" />
           <Property Name="UserID" Type="nvarchar" MaxLength="50" />
-          <Property Name="EventMailer" Type="bit" />
-          <Property Name="Offers" Type="bit" />
+          <Property Name="EventMailer" Type="bit" Nullable="false" />
+          <Property Name="Offers" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="PaymentDetails">
           <Key>
@@ -258,6 +258,39 @@
           <Property Name="Type" Type="nvarchar" MaxLength="50" />
           <Property Name="Value" Type="nvarchar" MaxLength="50" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'EntriesDB.dbo.ParticipantExport' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="ParticipantExport">
+          <Key>
+            <PropertyRef Name="ParticipantID" />
+            <PropertyRef Name="EventMailer" />
+            <PropertyRef Name="Offers" />
+          </Key>
+          <Property Name="ParticipantID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="50" />
+          <Property Name="MiddleNames" Type="nvarchar" MaxLength="50" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="50" />
+          <Property Name="IDNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="DOB" Type="datetime" />
+          <Property Name="EmailAddress" Type="nvarchar" MaxLength="50" />
+          <Property Name="MedicalName" Type="nvarchar" MaxLength="50" />
+          <Property Name="MedicalNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="EmergencyContact" Type="nvarchar" MaxLength="50" />
+          <Property Name="EmergencyNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="BoodType" Type="nvarchar" MaxLength="50" />
+          <Property Name="Allergies" Type="nvarchar" MaxLength="50" />
+          <Property Name="AdditionalInfo" Type="nvarchar" MaxLength="50" />
+          <Property Name="DoctorName" Type="nvarchar" MaxLength="50" />
+          <Property Name="DoctorContact" Type="nvarchar" MaxLength="50" />
+          <Property Name="Clubname" Type="nvarchar" MaxLength="50" />
+          <Property Name="RaceNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="Country" Type="nvarchar" MaxLength="50" />
+          <Property Name="Address" Type="nvarchar" MaxLength="50" />
+          <Property Name="City" Type="nvarchar" MaxLength="50" />
+          <Property Name="Province" Type="nvarchar" MaxLength="50" />
+          <Property Name="EventMailer" Type="bit" Nullable="false" />
+          <Property Name="Offers" Type="bit" Nullable="false" />
+        </EntityType>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -334,6 +367,34 @@
           <EntitySet Name="Substitution" EntityType="Self.Substitution" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SystemLog" EntityType="Self.SystemLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TypeLookup" EntityType="Self.TypeLookup" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ParticipantExport" EntityType="Self.ParticipantExport" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [ParticipantExport].[ParticipantID] AS [ParticipantID], 
+    [ParticipantExport].[FirstName] AS [FirstName], 
+    [ParticipantExport].[MiddleNames] AS [MiddleNames], 
+    [ParticipantExport].[LastName] AS [LastName], 
+    [ParticipantExport].[IDNumber] AS [IDNumber], 
+    [ParticipantExport].[DOB] AS [DOB], 
+    [ParticipantExport].[EmailAddress] AS [EmailAddress], 
+    [ParticipantExport].[MedicalName] AS [MedicalName], 
+    [ParticipantExport].[MedicalNumber] AS [MedicalNumber], 
+    [ParticipantExport].[EmergencyContact] AS [EmergencyContact], 
+    [ParticipantExport].[EmergencyNumber] AS [EmergencyNumber], 
+    [ParticipantExport].[BoodType] AS [BoodType], 
+    [ParticipantExport].[Allergies] AS [Allergies], 
+    [ParticipantExport].[AdditionalInfo] AS [AdditionalInfo], 
+    [ParticipantExport].[DoctorName] AS [DoctorName], 
+    [ParticipantExport].[DoctorContact] AS [DoctorContact], 
+    [ParticipantExport].[Clubname] AS [Clubname], 
+    [ParticipantExport].[RaceNumber] AS [RaceNumber], 
+    [ParticipantExport].[Country] AS [Country], 
+    [ParticipantExport].[Address] AS [Address], 
+    [ParticipantExport].[City] AS [City], 
+    [ParticipantExport].[Province] AS [Province], 
+    [ParticipantExport].[EventMailer] AS [EventMailer], 
+    [ParticipantExport].[Offers] AS [Offers]
+    FROM [dbo].[ParticipantExport] AS [ParticipantExport]</DefiningQuery>
+          </EntitySet>
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
@@ -386,6 +447,7 @@
             <End Role="AspNetRole" EntitySet="AspNetRoles" />
             <End Role="AspNetUser" EntitySet="AspNetUsers" />
           </AssociationSet>
+          <EntitySet Name="ParticipantExports" EntityType="EntriesDBModel.ParticipantExport" />
         </EntityContainer>
         <EntityType Name="C__MigrationHistory">
           <Key>
@@ -537,8 +599,8 @@
           <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Province" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="UserID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="EventMailer" Type="Boolean" />
-          <Property Name="Offers" Type="Boolean" />
+          <Property Name="EventMailer" Type="Boolean" Nullable="false" />
+          <Property Name="Offers" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="PaymentDetail">
           <Key>
@@ -670,6 +732,37 @@
           <End Type="EntriesDBModel.AspNetRole" Role="AspNetRole" Multiplicity="*" />
           <End Type="EntriesDBModel.AspNetUser" Role="AspNetUser" Multiplicity="*" />
         </Association>
+        <EntityType Name="ParticipantExport">
+          <Key>
+            <PropertyRef Name="ParticipantID" />
+            <PropertyRef Name="EventMailer" />
+            <PropertyRef Name="Offers" />
+          </Key>
+          <Property Name="ParticipantID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MiddleNames" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IDNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DOB" Type="DateTime" Precision="3" />
+          <Property Name="EmailAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MedicalName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MedicalNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EmergencyContact" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EmergencyNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="BoodType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Allergies" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AdditionalInfo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DoctorName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DoctorContact" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Clubname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RaceNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Country" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Province" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EventMailer" Type="Boolean" Nullable="false" />
+          <Property Name="Offers" Type="Boolean" Nullable="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -944,6 +1037,36 @@
               <ScalarProperty Name="Id" ColumnName="RoleId" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="ParticipantExports">
+            <EntityTypeMapping TypeName="EntriesDBModel.ParticipantExport">
+              <MappingFragment StoreEntitySet="ParticipantExport">
+                <ScalarProperty Name="Offers" ColumnName="Offers" />
+                <ScalarProperty Name="EventMailer" ColumnName="EventMailer" />
+                <ScalarProperty Name="Province" ColumnName="Province" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="RaceNumber" ColumnName="RaceNumber" />
+                <ScalarProperty Name="Clubname" ColumnName="Clubname" />
+                <ScalarProperty Name="DoctorContact" ColumnName="DoctorContact" />
+                <ScalarProperty Name="DoctorName" ColumnName="DoctorName" />
+                <ScalarProperty Name="AdditionalInfo" ColumnName="AdditionalInfo" />
+                <ScalarProperty Name="Allergies" ColumnName="Allergies" />
+                <ScalarProperty Name="BoodType" ColumnName="BoodType" />
+                <ScalarProperty Name="EmergencyNumber" ColumnName="EmergencyNumber" />
+                <ScalarProperty Name="EmergencyContact" ColumnName="EmergencyContact" />
+                <ScalarProperty Name="MedicalNumber" ColumnName="MedicalNumber" />
+                <ScalarProperty Name="MedicalName" ColumnName="MedicalName" />
+                <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
+                <ScalarProperty Name="DOB" ColumnName="DOB" />
+                <ScalarProperty Name="IDNumber" ColumnName="IDNumber" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="MiddleNames" ColumnName="MiddleNames" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="ParticipantID" ColumnName="ParticipantID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
