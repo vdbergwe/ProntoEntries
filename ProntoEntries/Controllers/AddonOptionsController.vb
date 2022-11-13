@@ -14,7 +14,6 @@ Namespace Controllers
 
         Private db As New EntriesDBEntities
 
-        <Authorize>
         Function Get_ItemName(Id As Integer?) As ActionResult
             ViewBag.ItemName = db.AddonItems.Where(Function(a) a.ItemID = Id).Select(Function(b) b.Name).FirstOrDefault()
             Return PartialView()
@@ -34,7 +33,6 @@ Namespace Controllers
             Return PartialView(Options)
         End Function
 
-        <Authorize>
         Function ViewAddOnsTicket(Id As Integer?, ParticipantID As Integer?) As ActionResult
             Dim Purchased = db.Sales.Where(Function(b) b.M_reference = Id And b.ParticipantID = ParticipantID And b.RaceID Is Nothing)
             Dim Options = db.AddonOptions.Where(Function(b) Purchased.Any(Function(a) a.OptionID = b.OptionID)).OrderBy(Function(c) c.ItemID)

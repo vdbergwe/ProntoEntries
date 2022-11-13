@@ -12,86 +12,100 @@ End Code
     <title>Index</title>
 </head>
 <body>
-    <p>
-        @*@Html.ActionLink("Add Entry", "NewEntry")*@
-    </p>
-    <table class="table">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(Function(model) model.ParticipantID)
-            </th>
-            <th>
-                @Html.DisplayNameFor(Function(model) model.RaceID)
-            </th>
-            <th>
-                @Html.DisplayNameFor(Function(model) model.DivisionID)
-            </th>
-            <th>
-                @Html.DisplayNameFor(Function(model) model.OptionID)
-            </th>
-            <th></th>
-        </tr>
+    <div class="orgcontainer create">
+        <div class="titlediv">
+            <h2>Cart</h2>
+        </div>
+        <hr />
 
-        @For Each item In Model
-            @<tr>
+
+
+        <Table Class="table">
+
+            @For Each Ditem In ViewBag.UniqueP
+                @<tr style="justify-content:center">
+                    <td style="color: dodgerblue">
+                        @Html.Action("Get_ParticipantName", New With {.Id = ViewBag.UniqueP(Ditem - 1)})
+                    </td>
+                </tr>
+                @<tr>
+                    <th>
+                        Event
+                    </th>
+                    <th>
+                        Distance
+                    </th>
+                    <th>
+                        Add-On
+                    </th>
+                    <th>
+                        Amount
+                    </th>
+                    <th></th>
+                </tr>
+                @For Each item In Model
+                    @If item.ParticipantID = ViewBag.UniqueP(Ditem - 1) Then
+                        @<tr>
+
+                            <td>
+                                @Html.Action("Get_RaceName", New With {.Id = item.RaceID})
+                            </td>
+                            <td>
+                                @Html.Action("Get_DivisionDistance", New With {.Id = item.DivisionID})                             
+                            </td>
+                            <td>
+                                @Html.Action("Get_ItemName", "AddonOptions", New With {.Id = item.ItemID})
+                            </td>
+                            <td>
+                                R
+                                @Html.Action("Get_CartAmount", New With {.Id = item.DivisionID, .OptionID = item.OptionID})
+                            </td>
+                            <td>
+                                @*@Html.ActionLink("Edit", "Edit", New With {.id = item.EntryID}) |
+                                    @Html.ActionLink("Details", "Details", New With {.id = item.EntryID}) |*@
+                                @Html.ActionLink("Remove", "Delete", "Sales", New With {.id = item.SaleID}, Nothing)
+                            </td>
+                        </tr>
+                    End If
+
+                Next
+            Next
+
+
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
                 <td>
-                    @Html.DisplayFor(Function(modelItem) item.ParticipantID)
+                    <hr />
                 </td>
                 <td>
-                    @Html.DisplayFor(Function(modelItem) item.RaceID)
-                </td>
-                <td>
-                    @Html.DisplayFor(Function(modelItem) item.DivisionID)
-                </td>
-                <td>
-                    R
-                    @Html.DisplayFor(Function(modelItem) item.OptionID)
-                </td>
-                <td>
-                    @*@Html.ActionLink("Edit", "Edit", New With {.id = item.EntryID}) |
-                        @Html.ActionLink("Details", "Details", New With {.id = item.EntryID}) |*@
-                    @Html.ActionLink("Remove", "Delete", "Sales", New With {.id = item.SaleID}, Nothing)
+                    <hr />
                 </td>
             </tr>
-        Next
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>Total :     </td>
+                <td>
+                    R
+                    @ViewBag.Total
+                </td>
+            </tr>
+
+        </Table>
+
+        <div class="button-cart">
+            <div class="linkbutton cart">
+                @Html.ActionLink("Payment", "SubmitToPayfast", "Entries")
+            </div>
+
+        </div>
 
 
-    </table>
-    <div>
-        Total: R
-        @ViewBag.Total
     </div>
 
-    @Html.ActionLink("Payment", "SubmitToPayfast", "Entries")
-
-    @*<div Class="button-group">
-            <button id="btnPay" class="btn btn-default" onclick="addBooking();">Pay for Entries</button>
-        </div>*@
-
-    @*<div Class="RaceControlBanner EntryLink">
-            @Html.ActionLink("Pay", "ToPayfast", "Entries", New With {.id = ViewBag.PaymentReference}, New With {.class = "btnEntryLink"})
-        </div>*@
-
-    @*<div>
-        <form id="payFastForm" action="https://sandbox.payfast.co.za/eng/process" method="post">
-            <input type="hidden" name="merchant_id" value=@ViewBag.MerchantID>
-            <input type="hidden" name="merchant_key" value=@ViewBag.Merchant_key>
-            <input type="hidden" name="return_url" value=@ViewBag.ReturnURL>
-            <input type="hidden" name="cancel_url" value=@ViewBag.CancelURL>
-            <input type="hidden" name="notify_url" value=@ViewBag.NotifyURL>
-            <input type="hidden" name="m_payment_id" value=@ViewBag.PaymentID>
-            <input type="hidden" name="amount" value=@ViewBag.Amount>
-            <input type="hidden" name="item_name" value=@ViewBag.item_name>
-            <input type="hidden" name="confirmation_address" value=@ViewBag.EmailAddress>
-            <input type="hidden" name="signature" value=@ViewBag.Signature>
-    <meta name="signature" value=@ViewBag.Signature id="signature" />
-    </form>
-    </div>*@
 </body>
 </html>
 
-<script>
-    //function addBooking() {
-    //    document.getElementById("payFastForm").submit();
-    //}
-</script>

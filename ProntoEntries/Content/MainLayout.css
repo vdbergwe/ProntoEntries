@@ -556,6 +556,22 @@ input[type="checkbox"] {
     justify-content: space-between;
 }
 
+/* Cart Payment Button*/
+.button-cart{
+    width: 100%;
+    height: 20px;
+    justify-content: right;
+    display: flex;
+    margin: 0;
+    padding: 0 0 30px 20px;
+}
+
+.cart {
+    width: 20%;
+    margin: 10px 2% 0 0;
+}
+
+
 /* SideBar Menu For Mobile*/
 input[type="checkbox"]:checked ~ #sidebarMenu {
     transform: translateX(0);
@@ -644,6 +660,12 @@ body {
     max-width:100%;
 }
 
+    .table {
+        color: lightgrey;
+        max-width: 100%;
+        font-size: 10px;
+    }
+
     input[type="submit"] {
         width: 80%;
     }
@@ -655,6 +677,10 @@ body {
 .container {
     max-width: 100%;
 }
+
+    .orgcontainer {
+        max-width: 100%;
+    }
 
 .mainbody {
     max-width: 100%;

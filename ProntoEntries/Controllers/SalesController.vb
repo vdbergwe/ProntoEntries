@@ -19,7 +19,6 @@ Namespace Controllers
         'more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         <HttpPost()>
         <ValidateAntiForgeryToken()>
-        <Authorize>
         Function UpdateSales(<Bind(Include:="SaleID,RaceID,DivisionID,ItemID,UserID,Indemnity,TandC,ParticipantID,M_reference,Pf_reference,OptionID,Verified")> ByVal sale As Sale)
             Dim result As Boolean
             If ModelState.IsValid Then
@@ -36,7 +35,6 @@ Namespace Controllers
         'more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         <HttpPost()>
         <ValidateAntiForgeryToken()>
-        <Authorize>
         Function UpdateEntries(<Bind(Include:="EntryID,ParticipantID,RaceID,DivisionID,Amount,Status,PaymentReference,DistanceChange,ChangePaymentRef,TransferID,Result")> ByVal entry As Entry)
             Dim Result As Boolean
             If ModelState.IsValid Then

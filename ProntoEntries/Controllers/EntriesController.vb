@@ -37,16 +37,19 @@ Namespace Controllers
                 Dim Transaction = db.Sales.Where(Function(a) a.Pf_reference Is Nothing And a.UserID = paymentdata.custom_str1)
                 Dim OrgID = db.RaceEvents.Where(Function(a) a.RaceID = SingleTransaction.RaceID).Select(Function(b) b.OrgID).FirstOrDefault()
                 Dim OrgPassphrase = db.PaymentDetails.Where(Function(a) a.OrgID = OrgID).Select(Function(b) b.MerchantPassPhrase).FirstOrDefault()
-                Dim Total = 0.00
+                ViewBag.Total = 0.00
                 For Each sale In Transaction
                     If sale.OptionID Is Nothing Then
-                        Total += db.Divisions.Where(Function(a) a.DivisionID = sale.DivisionID).Select(Function(b) b.Price).FirstOrDefault()
-                    Else
-                        Total += db.AddonOptions.Where(Function(a) a.OptionID = sale.OptionID).Select(Function(b) b.Amount).FirstOrDefault()
+                        ViewBag.Total += db.Divisions.Where(Function(a) a.DivisionID = sale.DivisionID).Select(Function(b) b.Price).FirstOrDefault()
+                    End If
+                    If sale.RaceID Is Nothing Then
+                        ViewBag.Total += db.AddonOptions.Where(Function(a) a.OptionID = sale.OptionID).Select(Function(b) b.Amount).FirstOrDefault()
                     End If
                 Next
 
-                If (paymentdata.amount_gross = Total) Then
+                ViewBag.Total = Math.Round(ViewBag.Total, 2)
+
+                If (paymentdata.amount_gross = ViewBag.Total) Then
                     Dim MD5String = "m_payment_id=" + System.Net.WebUtility.UrlEncode(paymentdata.m_payment_id) _
                                 + "&pf_payment_id=" + System.Net.WebUtility.UrlEncode(paymentdata.pf_payment_id) _
                                 + "&payment_status=" + System.Net.WebUtility.UrlEncode(paymentdata.payment_status) _
@@ -127,16 +130,19 @@ Namespace Controllers
             Dim Transaction = db.Sales.Where(Function(a) a.Pf_reference Is Nothing And a.UserID = User.Identity.Name)
             Dim OrgID = db.RaceEvents.Where(Function(a) a.RaceID = SingleTransaction.RaceID).Select(Function(b) b.OrgID).FirstOrDefault()
             Dim OrgPassphrase = db.PaymentDetails.Where(Function(a) a.OrgID = OrgID).Select(Function(b) b.MerchantPassPhrase).FirstOrDefault()
-            Dim hosturl = "https://3c61-197-245-9-201.in.ngrok.io"
+            Dim hosturl = "https://be12-197-245-37-6.in.ngrok.io"
 
-            ViewBag.Total = 0
+            ViewBag.Total = 0.00
             For Each sale In Transaction
                 If sale.OptionID Is Nothing Then
                     ViewBag.Total = ViewBag.Total + db.Divisions.Where(Function(a) a.DivisionID = sale.DivisionID).Select(Function(b) b.Price).FirstOrDefault()
-                Else
+                End If
+                If sale.RaceID Is Nothing Then
                     ViewBag.Total = ViewBag.Total + db.AddonOptions.Where(Function(a) a.OptionID = sale.OptionID).Select(Function(b) b.Amount).FirstOrDefault()
                 End If
             Next
+
+            ViewBag.Total = Math.Round(ViewBag.Total, 2)
 
             ViewBag.MReference = db.Sales.Where(Function(a) a.Pf_reference Is Nothing And a.UserID = User.Identity.Name).Select(Function(b) b.M_reference).FirstOrDefault()
             ViewBag.EmailAddress = db.Participants.Where(Function(a) a.EmailAddress = User.Identity.Name).Select(Function(b) b.EmailAddress).FirstOrDefault()
@@ -177,14 +183,19 @@ Namespace Controllers
         <Authorize>
         Function Cart(ByVal id As Integer?, ByVal DivisionSelect As Integer?) As ActionResult
             Dim CartContent = db.Sales.Where(Function(a) a.Pf_reference Is Nothing And a.UserID = User.Identity.Name).OrderBy(Function(b) b.ParticipantID).ThenByDescending(Function(b) b.RaceID)
+            ViewBag.UniqueP = CartContent.Select(Function(a) a.ParticipantID).Distinct().ToList()
             ViewBag.Total = 0
             For Each sale In CartContent
                 If sale.OptionID Is Nothing Then
                     ViewBag.Total = ViewBag.Total + db.Divisions.Where(Function(a) a.DivisionID = sale.DivisionID).Select(Function(b) b.Price).FirstOrDefault()
-                Else
+                End If
+
+                If sale.RaceID Is Nothing Then
                     ViewBag.Total = ViewBag.Total + db.AddonOptions.Where(Function(a) a.OptionID = sale.OptionID).Select(Function(b) b.Amount).FirstOrDefault()
                 End If
             Next
+
+            ViewBag.Total = Math.Round(ViewBag.Total, 2)
 
             Return View(CartContent.ToList())
         End Function
@@ -290,6 +301,16 @@ Namespace Controllers
         End Function
 
         <Authorize>
+        Function get_CartAmount(Id As Integer?, ByVal OptionID As Integer?) As ActionResult
+            If Id Is Nothing Then
+                ViewBag.CartAmount = db.AddonOptions.Where(Function(a) a.OptionID = OptionID).Select(Function(b) b.Amount).FirstOrDefault()
+            Else
+                ViewBag.CartAmount = db.Divisions.Where(Function(a) a.DivisionID = Id).Select(Function(b) b.Price).FirstOrDefault()
+            End If
+            Return PartialView()
+        End Function
+
+        <Authorize>
         Function get_AddonOptionlist(Id As Integer?, ByVal RaceID As Integer?, ByVal DivisionID1 As Integer?, ByVal OptionID As Integer?, ByVal ParticipantID As Integer?) As ActionResult
             Dim Optionlist = db.AddonOptions.Where(Function(a) a.ItemID = Id)
             ViewBag.ParticipantID = ParticipantID
@@ -301,50 +322,51 @@ Namespace Controllers
             Return PartialView(Optionlist.ToList())
         End Function
 
-        <Authorize>
+        Function Get_DivisionDistance(Id As Integer?) As ActionResult
+            If Id Is Nothing Then
+                ViewBag.DivisionDistance = db.Divisions.Where(Function(a) a.DivisionID = Id).Select(Function(b) b.Distance).FirstOrDefault().ToString()
+            Else
+                ViewBag.DivisionDistance = db.Divisions.Where(Function(a) a.DivisionID = Id).Select(Function(b) b.Distance).FirstOrDefault().ToString() + " Km"
+            End If
+            Return PartialView()
+        End Function
+
         Function Get_DivisionName(Id As Integer?) As ActionResult
             ViewBag.DivisionName = db.Divisions.Where(Function(a) a.DivisionID = Id).Select(Function(b) b.Description).FirstOrDefault()
             Return PartialView()
         End Function
 
-        <Authorize>
         Function Get_Distance(Id As Integer?) As ActionResult
             ViewBag.Distance = db.Divisions.Where(Function(a) a.DivisionID = Id).Select(Function(b) b.Distance).FirstOrDefault()
             Return PartialView()
         End Function
 
-        <Authorize>
         Function Get_ParticipantName(Id As Integer?) As ActionResult
             ViewBag.ParticipantName = db.Participants.Where(Function(a) a.ParticipantID = Id).Select(Function(b) b.FirstName).FirstOrDefault() + " " +
                 db.Participants.Where(Function(a) a.ParticipantID = Id).Select(Function(b) b.LastName).FirstOrDefault()
             Return PartialView()
         End Function
 
-        <Authorize>
         Function Get_RaceName(Id As Integer?) As ActionResult
             ViewBag.RaceName = db.RaceEvents.Where(Function(a) a.RaceID = Id).Select(Function(b) b.RaceName).FirstOrDefault()
             Return PartialView()
         End Function
 
-        <Authorize>
         Function Get_ParticipantFirstName(Id As Integer?) As ActionResult
             ViewBag.ParticipantFirstName = db.Participants.Where(Function(a) a.ParticipantID = Id).Select(Function(b) b.FirstName).FirstOrDefault()
             Return PartialView()
         End Function
 
-        <Authorize>
         Function Get_ParticipantLastName(Id As Integer?) As ActionResult
             ViewBag.ParticipantLastName = db.Participants.Where(Function(a) a.ParticipantID = Id).Select(Function(b) b.LastName).FirstOrDefault()
             Return PartialView()
         End Function
 
-        <Authorize>
         Function Get_ParticipantID(Id As Integer?) As ActionResult
             ViewBag.ParticipantID = db.Participants.Where(Function(a) a.ParticipantID = Id).Select(Function(b) b.IDNumber).FirstOrDefault()
             Return PartialView()
         End Function
 
-        <Authorize>
         Function GenerateTicket(Id As Integer?) As ActionResult
             Dim MyPDF As New Rotativa.ActionAsPdf("IssueTicket", New With {.id = Id})
             MyPDF.FileName = "ProntoEntries_Ticket_" + Id.ToString() + ".pdf"
@@ -354,7 +376,6 @@ Namespace Controllers
         End Function
 
         ' GET: Entries
-        <Authorize>
         Function IssueTicket(Id As Integer?) As ActionResult
             Dim RaceID = db.Entries.Where(Function(b) b.EntryID = Id).Select(Function(c) c.RaceID).FirstOrDefault()
             Dim raceEvent As RaceEvent = db.RaceEvents.Find(RaceID)

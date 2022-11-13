@@ -1197,6 +1197,8 @@
     <Content Include="Views\AddonOptions\ViewAddOnsTicket.vbhtml" />
     <Content Include="Views\Entries\Get_Distance.vbhtml" />
     <Content Include="Views\Reports\Index.vbhtml" />
+    <Content Include="Views\Entries\Get_CartAmount.vbhtml" />
+    <Content Include="Views\Entries\Get_DivisionDistance.vbhtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />
