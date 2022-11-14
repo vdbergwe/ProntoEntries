@@ -130,7 +130,7 @@ Namespace Controllers
             Dim Transaction = db.Sales.Where(Function(a) a.Pf_reference Is Nothing And a.UserID = User.Identity.Name)
             Dim OrgID = db.RaceEvents.Where(Function(a) a.RaceID = SingleTransaction.RaceID).Select(Function(b) b.OrgID).FirstOrDefault()
             Dim OrgPassphrase = db.PaymentDetails.Where(Function(a) a.OrgID = OrgID).Select(Function(b) b.MerchantPassPhrase).FirstOrDefault()
-            Dim hosturl = "https://be12-197-245-37-6.in.ngrok.io"
+            Dim hosturl = "https://0333-197-245-37-6.in.ngrok.io"
 
             ViewBag.Total = 0.00
             For Each sale In Transaction

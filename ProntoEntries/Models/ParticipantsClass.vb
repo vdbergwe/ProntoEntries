@@ -21,9 +21,8 @@ Partial Public Class Meta_Participant
     <DisplayName("Date of Birth")>
     <DataType(DataType.Date)>
     <DisplayFormat(DataFormatString:="{0:yyyy-MM-dd}", ApplyFormatInEditMode:=True)>
-    <Required>
     Public Property DOB As Nullable(Of Date)
-    <DisplayName("Race Number")>
+    <DisplayName("Club Race Number")>
     Public Property RaceNumber As String
     <DisplayName("Email")>
     <DataType(DataType.EmailAddress)>
@@ -41,7 +40,7 @@ Partial Public Class Meta_Participant
     <DisplayName("Emergency Contact Number")>
     <Required>
     Public Property EmergencyNumber As String
-    <DisplayName("Bood Type")>
+    <DisplayName("Blood Type")>
     Public Property BoodType As String
     <Required>
     Public Property Allergies As String

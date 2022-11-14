@@ -25,7 +25,7 @@ End Code
             @For Each Ditem In ViewBag.UniqueP
                 @<tr style="justify-content:center">
                     <td style="color: dodgerblue">
-                        @Html.Action("Get_ParticipantName", New With {.Id = ViewBag.UniqueP(Ditem - 1)})
+                        @Html.Action("Get_ParticipantName", New With {.Id = (Ditem)})
                     </td>
                 </tr>
                 @<tr>
@@ -44,7 +44,7 @@ End Code
                     <th></th>
                 </tr>
                 @For Each item In Model
-                    @If item.ParticipantID = ViewBag.UniqueP(Ditem - 1) Then
+                    @If item.ParticipantID = (Ditem) Then
                         @<tr>
 
                             <td>
