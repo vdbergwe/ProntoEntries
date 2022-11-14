@@ -97,9 +97,8 @@ footer {
     }
 
 
-
 .logobox {
-    width: 15%;
+    height: 100%;
     content: url(/Content/Pronto-Logo-Black.png);
 }
 
@@ -109,6 +108,7 @@ footer {
 
 .navright {
     display: flex;
+    flex-direction: row;
 }
 
 
@@ -636,7 +636,6 @@ input[type="checkbox"] {
   
 }
 
-
 /* Cart Payment Button*/
 .button-cart {
     width: 100%;
@@ -652,10 +651,12 @@ input[type="checkbox"] {
     margin: 10px 2% 0 0;
 }
 
+.spinner {
+    right: -50px;
+}
 
-/* SideBar Menu For Mobile*/
-.navright input[type="checkbox"]:checked ~ #sidebarMenu {
-    transform: translateX(0);
+.menuarea {
+   display: flex;
 }
 
 .navright input[type=checkbox] {
@@ -664,82 +665,20 @@ input[type="checkbox"] {
     display: none;
 }
 
-.sidebarIconToggle {
-    transition: all 0.3s;
-    box-sizing: border-box;
-    cursor: pointer;
-    position: absolute;
-    z-index: 99;
-    height: 100%;
-    width: 100%;
-    top: 22px;
-    left: 15px;
-    height: 22px;
-    width: 22px;
+.sidebarMenuInnerDesktop {
+    display: inline;
 }
 
-.spinner {
-    transition: all 0.3s;
-    box-sizing: border-box;
-    position: absolute;
-    height: 3px;
-    width: 100%;
-    background-color: #fff;
+.sidebarMenuInnerMobile {
+    display: none;
 }
-
-.horizontal {
-    transition: all 0.3s;
-    box-sizing: border-box;
-    position: relative;
-    float: left;
-    margin-top: 3px;
-}
-
-.diagonal.part-1 {
-    position: relative;
-    transition: all 0.3s;
-    box-sizing: border-box;
-    float: left;
-}
-
-.diagonal.part-2 {
-    transition: all 0.3s;
-    box-sizing: border-box;
-    position: relative;
-    float: left;
-    margin-top: 3px;
-}
-
-.navright input[type=checkbox]:checked ~ .sidebarIconToggle > .horizontal {
-    transition: all 0.3s;
-    box-sizing: border-box;
-    opacity: 0;
-}
-
-.navright input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-1 {
-    transition: all 0.3s;
-    box-sizing: border-box;
-    transform: rotate(135deg);
-    margin-top: 8px;
-}
-
-.navright input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
-    transition: all 0.3s;
-    box-sizing: border-box;
-    transform: rotate(-135deg);
-    margin-top: -9px;
-}
-
-
 
 /*css for mobile phones*/
 
-
-@media (max-width: 1030px) {
-
-body {
-    max-width:100%;
-}
+@media screen and (max-width: 1030px) {
+    body {
+        max-width: 100%;
+    }
 
     .table {
         color: lightgrey;
@@ -751,49 +690,49 @@ body {
         width: 80%;
     }
 
-.col-md-8 .button-group {
-    margin: 10px 20px 0 50%;
-}
+    .col-md-8 .button-group {
+        margin: 10px 20px 0 50%;
+    }
 
-.container {
-    max-width: 100%;
-}
+    .container {
+        max-width: 100%;
+    }
 
     .orgcontainer {
         max-width: 100%;
     }
 
-.mainbody {
-    max-width: 100%;
-}
+    .mainbody {
+        max-width: 100%;
+    }
 
-.titlediv { 
-    flex-direction: column;
-}
+    .titlediv {
+        flex-direction: column;
+    }
 
-.form-control {
-    width: 70%;
-}
+    .form-control {
+        width: 70%;
+    }
 
-.orgcontainer {
-    width: 100%;
-    padding: 0 0 0 10px;
-}
+    .orgcontainer {
+        width: 100%;
+        padding: 0 0 0 10px;
+    }
 
     .EventDetail {
         flex-direction: column;
-        width:100%;
-    }
-
-    .EventDetail .form--el1 {
-        order: 2;
         width: 100%;
-        flex: 1;
     }
 
-        .EventDetail .form--el1 img {
-            max-width: 100%;
+        .EventDetail .form--el1 {
+            order: 2;
+            width: 100%;
+            flex: 1;
         }
+
+            .EventDetail .form--el1 img {
+                max-width: 100%;
+            }
 
 
         .EventDetail .form--el2 {
@@ -801,4 +740,157 @@ body {
             width: 100%;
             flex: 1;
         }
+
+
+
+    /* SideBar Menu For Mobile*/
+
+    #sidebarMenu {
+        height: 100%;
+        position: fixed;
+        right: 0;
+        width: 250px;
+        margin-top: 13%;
+        /*    padding: 5px 10px 5px 10px;*/
+        transform: translateX(250px);
+        transition: transform 250ms ease-in-out;
+        background: rgba(255, 255, 255, 0.90);
+    }
+
+    .sidebarMenuInner {
+        padding: 0;
+        border-top: 1px solid rgba(255, 255, 255, 0.10);
+        display: flex;
+        flex-direction: column;
+    }
+
+        .sidebarMenuInner ul {
+            width: 100%;
+        }
+
+        .sidebarMenuInner li {
+            text-align: center;
+            list-style: none;
+            /*color: #fff;*/
+            text-transform: uppercase;
+            font-weight: bold;
+            padding: 20px;
+            cursor: pointer;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+        }
+
+            .sidebarMenuInner li span {
+                display: block;
+                /*font-size: 14px;
+                color: rgba(255, 255, 255, 0.50);*/
+            }
+
+            .sidebarMenuInner li a {
+                /*color: #000;*/
+                text-transform: uppercase;
+                font-weight: bold;
+                cursor: pointer;
+                text-decoration: none;
+            }
+
+            .sidebarMenuInner li::after {
+                content: "";
+            }
+
+    /*SIDEBAR HAMBURGER*/
+
+
+    .navright input[type="checkbox"]:checked ~ #sidebarMenu {
+        transform: translateX(0);
+    }
+
+    .navright input[type=checkbox] {
+        transition: all 0.3s;
+        box-sizing: border-box;
+        display: none;
+    }
+
+    .sidebarIconToggle {
+        transition: all 0.3s;
+        box-sizing: border-box;
+        cursor: pointer;
+        position: absolute;
+        z-index: 99;
+        height: 100%;
+        width: 100%;
+        top: 30px;
+        right: 35px;
+        height: 22px;
+        width: 22px;
+        display: inline;
+    }
+
+    .spinner {
+        transition: all 0.3s;
+        box-sizing: border-box;
+        position: absolute;
+        height: 3px;
+        width: 100%;
+        background-color: #fff;
+        right: 0px;
+    }
+
+    .horizontal {
+        transition: all 0.3s;
+        box-sizing: border-box;
+        position: relative;
+        float: left;
+        margin-top: 3px;
+    }
+
+    .diagonal.part-1 {
+        position: relative;
+        transition: all 0.3s;
+        box-sizing: border-box;
+        float: left;
+    }
+
+    .diagonal.part-2 {
+        transition: all 0.3s;
+        box-sizing: border-box;
+        position: relative;
+        float: left;
+        margin-top: 3px;
+    }
+
+    .navright input[type=checkbox]:checked ~ .sidebarIconToggle > .horizontal {
+        transition: all 0.3s;
+        box-sizing: border-box;
+        opacity: 0;
+    }
+
+    .navright input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-1 {
+        transition: all 0.3s;
+        box-sizing: border-box;
+        transform: rotate(135deg);
+        margin-top: 8px;
+    }
+
+    .navright input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
+        transition: all 0.3s;
+        box-sizing: border-box;
+        transform: rotate(-135deg);
+        margin-top: -9px;
+    }
+
+    .sidebarMenuInnerDesktop {
+        display: none;
+    }
+
+    .sidebarMenuInnerMobile {
+        display: inline;
+    }
+
+        .menuarea {
+            display: inline;
+        }
 }
+/*.logobox {
+    width: 30%;
+    content: url(/Content/Pronto-Logo-Black.png);
+}*/

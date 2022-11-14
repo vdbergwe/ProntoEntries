@@ -133,9 +133,13 @@ Namespace Controllers
         <Authorize>
         Function DeleteConfirmed(ByVal id As Integer) As ActionResult
             Dim sale As Sale = db.Sales.Find(id)
-            db.Sales.Remove(sale)
-            db.SaveChanges()
-            Return RedirectToAction("Index")
+            Dim removesales = db.Sales.Where(Function(a) a.M_reference = sale.M_reference And a.ParticipantID = sale.ParticipantID).ToList()
+            For Each sale In removesales
+                db.Sales.Remove(sale)
+                db.SaveChanges()
+            Next
+            Return RedirectToAction("Cart", "Entries")
+
         End Function
 
         Protected Overrides Sub Dispose(ByVal disposing As Boolean)

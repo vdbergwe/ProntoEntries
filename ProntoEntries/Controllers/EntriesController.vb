@@ -130,19 +130,19 @@ Namespace Controllers
             Dim Transaction = db.Sales.Where(Function(a) a.Pf_reference Is Nothing And a.UserID = User.Identity.Name)
             Dim OrgID = db.RaceEvents.Where(Function(a) a.RaceID = SingleTransaction.RaceID).Select(Function(b) b.OrgID).FirstOrDefault()
             Dim OrgPassphrase = db.PaymentDetails.Where(Function(a) a.OrgID = OrgID).Select(Function(b) b.MerchantPassPhrase).FirstOrDefault()
-            Dim hosturl = "https://0333-197-245-37-6.in.ngrok.io"
+            Dim hosturl = "https://bf00-102-36-249-34.in.ngrok.io"
 
-            ViewBag.Total = 0.00
+            Dim Total = 0.00
             For Each sale In Transaction
                 If sale.OptionID Is Nothing Then
-                    ViewBag.Total = ViewBag.Total + db.Divisions.Where(Function(a) a.DivisionID = sale.DivisionID).Select(Function(b) b.Price).FirstOrDefault()
+                    Total += db.Divisions.Where(Function(a) a.DivisionID = sale.DivisionID).Select(Function(b) b.Price).FirstOrDefault()
                 End If
                 If sale.RaceID Is Nothing Then
-                    ViewBag.Total = ViewBag.Total + db.AddonOptions.Where(Function(a) a.OptionID = sale.OptionID).Select(Function(b) b.Amount).FirstOrDefault()
+                    Total += db.AddonOptions.Where(Function(a) a.OptionID = sale.OptionID).Select(Function(b) b.Amount).FirstOrDefault()
                 End If
             Next
 
-            ViewBag.Total = Math.Round(ViewBag.Total, 2)
+            ViewBag.Total = Math.Round(Total, 2)
 
             ViewBag.MReference = db.Sales.Where(Function(a) a.Pf_reference Is Nothing And a.UserID = User.Identity.Name).Select(Function(b) b.M_reference).FirstOrDefault()
             ViewBag.EmailAddress = db.Participants.Where(Function(a) a.EmailAddress = User.Identity.Name).Select(Function(b) b.EmailAddress).FirstOrDefault()
@@ -158,7 +158,7 @@ Namespace Controllers
             Dim TransactionString = "merchant_id=" + System.Net.WebUtility.UrlEncode(ViewBag.MerchantID) + "&merchant_key=" + System.Net.WebUtility.UrlEncode(ViewBag.Merchant_key) _
                  + "&return_url=" + System.Net.WebUtility.UrlEncode(ViewBag.ReturnURL) + "&cancel_url=" + System.Net.WebUtility.UrlEncode(ViewBag.CancelURL) _
                  + "&notify_url=" + System.Net.WebUtility.UrlEncode(ViewBag.NotifyURL) + "&m_payment_id=" + System.Net.WebUtility.UrlEncode(ViewBag.MReference) _
-                 + "&amount=" + System.Net.WebUtility.UrlEncode(ViewBag.Amount) _
+                 + "&amount=" + System.Net.WebUtility.UrlEncode(Total) _
                  + "&item_name=" + System.Net.WebUtility.UrlEncode(ViewBag.item_name.ToString) + "&custom_str1=" _
                  + System.Net.WebUtility.UrlEncode(ViewBag.EmailAddress)
 

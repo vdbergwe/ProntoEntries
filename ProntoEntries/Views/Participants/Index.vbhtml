@@ -48,8 +48,8 @@ End Code
                     @Html.DisplayFor(Function(modelItem) item.EmailAddress)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "Edit", New With {.id = item.ParticipantID}) |
-                    @Html.ActionLink("Details", "Details", New With {.id = item.ParticipantID}) |
+                    @Html.ActionLink("Edit", "Edit", New With {.id = item.ParticipantID}) @*|
+                    @Html.ActionLink("Details", "Details", New With {.id = item.ParticipantID}) |*@
                     @*@Html.ActionLink("Delete", "Delete", New With {.id = item.ParticipantID })*@
                 </td>
             </tr>
