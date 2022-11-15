@@ -67,6 +67,30 @@ Namespace Controllers
             Return PartialView(EventOptions)
         End Function
 
+        Function Get_Financials(ByVal RaceId As Integer?) As ActionResult
+            Dim EventDivisions = db.Divisions.Where(Function(a) a.RaceID = RaceId)
+
+            Return PartialView(EventDivisions)
+        End Function
+
+        Function Get_FinancialsAddons(ByVal RaceId As Integer?) As ActionResult
+            Dim EventAddons = db.AddonItems.Where(Function(a) a.RaceID = RaceId)
+            Dim EventOptions = db.AddonOptions.Where(Function(a) EventAddons.Any(Function(b) b.ItemID <> a.ItemID)).OrderBy(Function(c) c.ItemID)
+
+            Return PartialView(EventOptions)
+        End Function
+
+        Function Get_PayFast(ByVal RaceId As Integer?) As ActionResult
+            Dim AllPFReferences = db.Sales.Where(Function(a) a.RaceID = RaceId).Distinct()
+            Dim PFTransactions = db.pflogs.Where(Function(a) AllPFReferences.Any(Function(b) b.Pf_reference <> a.Pf_reference))
+            ViewBag.Amount_Gross = PFTransactions.Select(Function(a) a.amount_gross).Sum()
+            ViewBag.Amount_Fee = PFTransactions.Select(Function(a) a.amount_fee).Sum()
+            ViewBag.Amount_Net = PFTransactions.Select(Function(a) a.amount_net).Sum()
+
+
+            Return PartialView()
+        End Function
+
 
 
 
@@ -77,6 +101,22 @@ Namespace Controllers
 
         Function Get_OptionCount(Id As Integer?) As ActionResult
             ViewBag.OptionCount = db.Sales.Where(Function(a) a.OptionID = Id).Count()
+            Return PartialView()
+        End Function
+
+        Function Get_DivisionTotalAmount(Id As Integer?) As ActionResult
+            Dim DivisionEntryCount = db.Entries.Where(Function(a) a.DivisionID = Id).Count()
+            Dim DivisionPrice = db.Divisions.Where(Function(a) a.DivisionID = Id).Select(Function(b) b.Price).FirstOrDefault()
+            ViewBag.DivisionTotalAmount = DivisionEntryCount * DivisionPrice
+
+            Return PartialView()
+        End Function
+
+        Function Get_AddonTotalAmount(Id As Integer?) As ActionResult
+            Dim OptionCount = db.Sales.Where(Function(a) a.OptionID = Id).Count()
+            Dim OptionPrice = db.AddonOptions.Where(Function(a) a.OptionID = Id).Select(Function(b) b.Amount).FirstOrDefault()
+            ViewBag.AddonTotalAmount = OptionCount * OptionPrice
+
             Return PartialView()
         End Function
 

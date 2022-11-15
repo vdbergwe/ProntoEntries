@@ -1,10 +1,8 @@
 ﻿@ModelType IEnumerable(Of ProntoEntries.Division)
 
-<div>
-    <p>
-        Total Per Division:
-    </p>
-</div>
+<p>
+    Amount Per Division:
+</p>
 
 <div Class="ReportContent">
     <Table Class="table">
@@ -13,7 +11,7 @@
                 Description
             </th>
             <th>
-                Total
+                Total Amount
             </th>
         </tr>
 
@@ -23,7 +21,8 @@
                     @Html.DisplayFor(Function(modelItem) item.Description)
                 </td>
                 <td>
-                    @Html.Action("Get_DivisionTotal", New With {.Id = item.DivisionID})
+                    R
+                    @Html.Action("Get_DivisionTotalAmount", New With {.Id = item.DivisionID})
                 </td>
             </tr>
         Next

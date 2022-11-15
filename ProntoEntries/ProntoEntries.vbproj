@@ -1207,6 +1207,11 @@
     <Content Include="Views\Reports\Get_DivisionTotal.vbhtml" />
     <Content Include="Views\Reports\Get_OptionTotals.vbhtml" />
     <Content Include="Views\Reports\Get_OptionCount.vbhtml" />
+    <Content Include="Views\Reports\Get_Financials.vbhtml" />
+    <Content Include="Views\Reports\Get_DivisionTotalAmount.vbhtml" />
+    <Content Include="Views\Reports\Get_FinancialsAddons.vbhtml" />
+    <Content Include="Views\Reports\Get_AddonTotalAmount.vbhtml" />
+    <Content Include="Views\Reports\Get_PayFast.vbhtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />
