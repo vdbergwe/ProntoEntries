@@ -1202,6 +1202,11 @@
     <Content Include="Views\Reports\Index.vbhtml" />
     <Content Include="Views\Entries\Get_CartAmount.vbhtml" />
     <Content Include="Views\Entries\Get_DivisionDistance.vbhtml" />
+    <Content Include="Views\Reports\Dashboard.vbhtml" />
+    <Content Include="Views\Reports\Get_EntriesPerDivision.vbhtml" />
+    <Content Include="Views\Reports\Get_DivisionTotal.vbhtml" />
+    <Content Include="Views\Reports\Get_OptionTotals.vbhtml" />
+    <Content Include="Views\Reports\Get_OptionCount.vbhtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />

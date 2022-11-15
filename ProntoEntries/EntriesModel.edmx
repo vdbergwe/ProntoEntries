@@ -32,6 +32,7 @@
           <Property Name="ItemID" Type="int" />
           <Property Name="Size" Type="nvarchar" MaxLength="50" />
           <Property Name="Amount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="StopDate" Type="date" />
         </EntityType>
         <EntityType Name="AspNetRoles">
           <Key>
@@ -476,6 +477,7 @@ warning 6002: The table/view 'EntriesDB.dbo.ParticipantExport' does not have a p
           <Property Name="ItemID" Type="Int32" />
           <Property Name="Size" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Amount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="StopDate" Type="DateTime" Precision="0" />
         </EntityType>
         <EntityType Name="AspNetRole">
           <Key>
@@ -792,6 +794,7 @@ warning 6002: The table/view 'EntriesDB.dbo.ParticipantExport' does not have a p
           <EntitySetMapping Name="AddonOptions">
             <EntityTypeMapping TypeName="EntriesDBModel.AddonOption">
               <MappingFragment StoreEntitySet="AddonOptions">
+                <ScalarProperty Name="StopDate" ColumnName="StopDate" />
                 <ScalarProperty Name="Amount" ColumnName="Amount" />
                 <ScalarProperty Name="Size" ColumnName="Size" />
                 <ScalarProperty Name="ItemID" ColumnName="ItemID" />

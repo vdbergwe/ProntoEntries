@@ -16,31 +16,33 @@ Public Class EmailService
         ' Plug in your email service here to send an email.
         'Return Task.FromResult(0)
         'Return sendMail(message)
-        sendMail(message)
+        SendMail(message)
         Return Task.FromResult(0)
     End Function
 
-    Private Function sendMail(Message As IdentityMessage)
+    Private Function SendMail(Message As IdentityMessage)
         Dim text As String = String.Format("Please click on this link to {0}: {1}", Message.Subject, Message.Body)
         Dim Html As String = "Please confirm your account by clicking <a href=""" & Message.Body & """>Confirmation Link</a><br/><br/>"
 
         Html += HttpUtility.HtmlEncode("Or copy the following link to your browser:" + Message.Body)
 
 
-        Dim msg As MailMessage = New MailMessage()
-        msg.From = New MailAddress(ConfigurationManager.AppSettings("Email").ToString())
+        Dim msg As New MailMessage With {
+            .From = New MailAddress(ConfigurationManager.AppSettings("Email").ToString())
+        }
         msg.To.Add(New MailAddress(Message.Destination))
         msg.Subject = Message.Subject
         msg.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(text, Nothing, MediaTypeNames.Text.Plain))
         msg.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(Html, Nothing, MediaTypeNames.Text.Html))
 
-        Dim smtpClient As SmtpClient = New SmtpClient("prontocs.co.za", Convert.ToInt32(587))
-        Dim credentials As System.Net.NetworkCredential = New System.Net.NetworkCredential(ConfigurationManager.AppSettings("Email").ToString(), ConfigurationManager.AppSettings("Password").ToString())
+        Dim smtpClient As New SmtpClient("prontocs.co.za", Convert.ToInt32(587))
+        Dim credentials As New System.Net.NetworkCredential(ConfigurationManager.AppSettings("Email").ToString(), ConfigurationManager.AppSettings("Password").ToString())
         smtpClient.Credentials = credentials
         smtpClient.EnableSsl = True
         smtpClient.Send(msg)
-    End Function
+        Return True
 
+    End Function
 End Class
 
 Public Class SmsService

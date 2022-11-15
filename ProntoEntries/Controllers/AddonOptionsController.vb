@@ -70,7 +70,7 @@ Namespace Controllers
         <HttpPost()>
         <ValidateAntiForgeryToken()>
         <Authorize>
-        Function Create(<Bind(Include:="OptionID,ItemID,Size,Amount")> ByVal addonOption As AddonOption, Id As Integer?) As ActionResult
+        Function Create(<Bind(Include:="OptionID,ItemID,Size,Amount,StopDate")> ByVal addonOption As AddonOption, Id As Integer?) As ActionResult
             addonOption.ItemID = Id
             If ModelState.IsValid Then
                 db.AddonOptions.Add(addonOption)
@@ -99,7 +99,7 @@ Namespace Controllers
         <HttpPost()>
         <ValidateAntiForgeryToken()>
         <Authorize>
-        Function Edit(<Bind(Include:="OptionID,ItemID,Size,Amount")> ByVal addonOption As AddonOption) As ActionResult
+        Function Edit(<Bind(Include:="OptionID,ItemID,Size,Amount,StopDate")> ByVal addonOption As AddonOption) As ActionResult
             If ModelState.IsValid Then
                 db.Entry(addonOption).State = EntityState.Modified
                 db.SaveChanges()

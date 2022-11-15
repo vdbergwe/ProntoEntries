@@ -15,5 +15,6 @@ Partial Public Class AddonOption
     Public Property ItemID As Nullable(Of Integer)
     Public Property Size As String
     Public Property Amount As Nullable(Of Decimal)
+    Public Property StopDate As Nullable(Of Date)
 
 End Class

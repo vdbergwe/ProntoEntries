@@ -46,6 +46,9 @@
                     @If User.Identity.IsAuthenticated And (User.IsInRole("Admin") Or User.IsInRole("Org") Or User.IsInRole("SuperUser")) Then
                         @<li>@Html.ActionLink("Search", "Index", "Reports")</li>
                     End If
+                    @If User.Identity.IsAuthenticated And (User.IsInRole("Admin") Or User.IsInRole("Org") Or User.IsInRole("SuperUser")) Then
+                        @<li>@Html.ActionLink("Dashboard", "Dashboard", "Reports")</li>
+                    End If
                     @If User.Identity.IsAuthenticated And Not ((User.IsInRole("Admin") Or User.IsInRole("Org") Or User.IsInRole("SuperUser"))) Then
                         @<li>@Html.ActionLink("Cart", "Cart", "Entries")</li>
                     End If
@@ -53,16 +56,16 @@
                     @If Request.IsAuthenticated Then
 
                         @*<li>
-                                @Html.ActionLink("Account", "Index", "Manage", routeValues:=Nothing, htmlAttributes:=New With {.title = "Manage"})
-                                "Hello " + User.Identity.GetUserName() + "!"
-                            </li>*@
-                                @<li>
-                                    @Using Html.BeginForm("LogOff", "Account", FormMethod.Post, New With {.id = "logoutForm", .class = "sidebarMenuInnerMobile"})
-                                        @Html.AntiForgeryToken()
+                @Html.ActionLink("Account", "Index", "Manage", routeValues:=Nothing, htmlAttributes:=New With {.title = "Manage"})
+                "Hello " + User.Identity.GetUserName() + "!"
+            </li>*@
+                        @<li>
+                            @Using Html.BeginForm("LogOff", "Account", FormMethod.Post, New With {.id = "logoutForm", .class = "sidebarMenuInnerMobile"})
+                                @Html.AntiForgeryToken()
 
-                                        @<a href="javascript:document.getElementById('logoutForm').submit()"> Log off</a>
-                                    End Using
-                                </li>
+                                @<a href="javascript:document.getElementById('logoutForm').submit()"> Log off</a>
+                            End Using
+                        </li>
 
                     Else
 
