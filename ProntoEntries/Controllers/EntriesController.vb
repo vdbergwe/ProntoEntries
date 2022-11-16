@@ -124,13 +124,12 @@ Namespace Controllers
 
         End Function
 
-        <Authorize>
         Function SubmitToPayfast() As ActionResult
             Dim SingleTransaction As Sale = db.Sales.Where(Function(a) a.Pf_reference Is Nothing And a.UserID = User.Identity.Name And a.RaceID IsNot Nothing).FirstOrDefault()
             Dim Transaction = db.Sales.Where(Function(a) a.Pf_reference Is Nothing And a.UserID = User.Identity.Name)
             Dim OrgID = db.RaceEvents.Where(Function(a) a.RaceID = SingleTransaction.RaceID).Select(Function(b) b.OrgID).FirstOrDefault()
             Dim OrgPassphrase = db.PaymentDetails.Where(Function(a) a.OrgID = OrgID).Select(Function(b) b.MerchantPassPhrase).FirstOrDefault()
-            Dim hosturl = "https://6c67-102-36-249-34.in.ngrok.io"
+            Dim hosturl = "https://entries.prontocs.co.za"
 
             Dim Total = 0.00
             For Each sale In Transaction

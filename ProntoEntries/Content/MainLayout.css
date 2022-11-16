@@ -181,6 +181,16 @@ input[type="submit"] {
         text-align: center;
     }
 
+
+
+.button-grouplogin {
+    width: 40%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 10px auto;
+}
+
 .titlediv {
     display: flex;
     align-items: center;
@@ -305,6 +315,25 @@ input[type="submit"] {
 
     .orgcontainer a {
         color: lightgrey;
+    }
+
+.linkbuttonlogin {
+    display: flex;
+    width: 40%;
+    height: 40px;
+    background: #23be22;
+    border-radius: 6px;
+    border-color: transparent;
+    color: #000;
+    font-family: raleway, sans-serif;
+    text-transform: uppercase;
+}
+
+    .linkbuttonlogin a {
+        align-self: center;
+        width: 100%;
+        text-align: center;
+        color: #000;
     }
 
 /*RACE EVENT LAYOUTS*/
