@@ -18,6 +18,14 @@ End Code
     }
 </style>
 
+<div Class="RaceControlBanner EntryLink" style="justify-content:center; position:fixed; width:40%; right: 25%">
+    @If ViewBag.Closed = True Then
+        @Html.ActionLink("Online Entries Closed", "Index", "RaceEvents", New With {.class = "btnEntryLink"})
+    Else
+        @Html.ActionLink("Enter Now", "NewEntry", "Entries", New With {.id = Model.RaceID}, New With {.class = "btnEntryLink"})
+    End If
+</div>
+
 <div class="orgcontainer create">
     <div class="titlediv">
         <h2>@ViewBag.RaceName</h2>
@@ -31,19 +39,18 @@ End Code
                 <li>
                     @Html.ActionLink("Back to List", "Index")
                 </li>
-                <li>
+                @*<li>
                     @If ViewBag.Closed = True Then
                         @Html.ActionLink("Online Entries Closed", "Index", "RaceEvents")
 
                     Else
                         @Html.ActionLink("Enter Now", "NewEntry", "Entries", New With {.id = Model.RaceID, .DivisionSelect = 0}, Nothing)
                     End If
-                </li>
+                </li>*@
             </ul>
         </div>
     </div>
-    <hr />
-
+    <hr />    
 
     <div class="EventDetail">
         @*<h4>RaceEvent</h4>*@

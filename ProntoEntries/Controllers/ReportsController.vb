@@ -17,15 +17,18 @@ Namespace Controllers
 
             Dim RaceParticipants = db.Entries.Where(Function(a) a.RaceID = RaceId)
             Dim results = db.Participants.Where(Function(a) RaceParticipants.Any(Function(b) b.ParticipantID = a.ParticipantID))
-            If SearchValue.Length() > 0 Then
-                Dim PayRef = RaceParticipants.Where(Function(a) a.PayFastReference.Contains(SearchValue))
-                If PayRef.Count > 0 Then
-                    results = db.Participants.Where(Function(a) PayRef.Any(Function(b) b.ParticipantID = a.ParticipantID))
-                Else
-                    results = results.Where(Function(a) a.FirstName.Contains(SearchValue) Or a.LastName.Contains(SearchValue) _
-                                                           Or a.IDNumber.Contains(SearchValue) Or a.EmailAddress.Contains(SearchValue))
+            If SearchValue IsNot Nothing Then
+                If SearchValue.Length() > 0 Then
+                    Dim PayRef = RaceParticipants.Where(Function(a) a.PayFastReference.Contains(SearchValue))
+                    If PayRef.Count > 0 Then
+                        results = db.Participants.Where(Function(a) PayRef.Any(Function(b) b.ParticipantID = a.ParticipantID))
+                    Else
+                        results = results.Where(Function(a) a.FirstName.Contains(SearchValue) Or a.LastName.Contains(SearchValue) _
+                                                               Or a.IDNumber.Contains(SearchValue) Or a.EmailAddress.Contains(SearchValue))
+                    End If
                 End If
             End If
+
 
             Return View(results.ToList())
         End Function

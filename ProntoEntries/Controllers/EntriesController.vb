@@ -144,7 +144,7 @@ Namespace Controllers
             ViewBag.Total = Math.Round(Total, 2)
 
             ViewBag.MReference = db.Sales.Where(Function(a) a.Pf_reference Is Nothing And a.UserID = User.Identity.Name).Select(Function(b) b.M_reference).FirstOrDefault()
-            ViewBag.EmailAddress = db.Participants.Where(Function(a) a.EmailAddress = User.Identity.Name).Select(Function(b) b.EmailAddress).FirstOrDefault()
+            ViewBag.EmailAddress = User.Identity.Name
             ViewBag.Emailconfirmation = "1"
             ViewBag.MerchantID = db.PaymentDetails.Where(Function(a) a.OrgID = OrgID).Select(Function(b) b.MerchantID).FirstOrDefault()
             ViewBag.Merchant_key = db.PaymentDetails.Where(Function(a) a.OrgID = OrgID).Select(Function(b) b.MerchantKey).FirstOrDefault()
