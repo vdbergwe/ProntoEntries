@@ -9,7 +9,6 @@ End Code
         <div>
             <ul>
                 @If User.Identity.IsAuthenticated And User.IsInRole("Admin") Then
-
                     @<li>
                         @Html.ActionLink("New Addon", "Create", "AddonItems")
                     </li>

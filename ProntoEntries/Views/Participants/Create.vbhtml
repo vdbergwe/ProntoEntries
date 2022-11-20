@@ -13,9 +13,9 @@ End Code
 
     @Using (Html.BeginForm())
         @Html.AntiForgeryToken()
+        @Html.ValidationSummary(True, "", New With {.class = "text-danger"})
 
         @<div class="participantcontainer">
-            @Html.ValidationSummary(True, "", New With {.class = "text-danger"})
 
             <div class="participantleft">
                 <p>Personal Information</p>

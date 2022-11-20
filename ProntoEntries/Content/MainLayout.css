@@ -9,6 +9,20 @@ body {
     height: 100vh;
 }
 
+span {
+    background-color: rgba(255, 255, 255, 0.60);
+    color: red;
+    text-transform: uppercase;
+}
+
+.color-white {
+    background-color: #fff;
+}
+
+.color-whitetrans {
+    background-color: rgba(255, 255, 255, 0.60);
+}
+
 .backing {
     background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url(ProntoBackground.jpg) no-repeat;
     background-size: cover;
@@ -28,6 +42,14 @@ body {
     padding: 5px 10px 5px 10px;
     align-items: center;
     justify-content: space-between;
+}
+
+.color-white {
+    background-color: #fff;
+}
+
+.color-whitetrans {
+    background-color: rgba(255, 255, 255, 0.60);
 }
 
 input {
@@ -325,7 +347,7 @@ input[type="submit"] {
     display: flex;
     width: 40%;
     height: 40px;
-    background: #23be22;
+    background: #42b72a;
     border-radius: 6px;
     border-color: transparent;
     color: #000;
@@ -606,6 +628,7 @@ input[type="checkbox"] {
     text-align: center;
     align-content: center;
     justify-content: center;
+    padding-bottom: 10px;
 }
 
     .partelement .labelfix {
@@ -887,7 +910,7 @@ input[type="checkbox"] {
         position: absolute;
         height: 3px;
         width: 100%;
-        background-color: #fff;
+        background-color: dodgerblue;
         right: 0px;
     }
 
@@ -897,6 +920,7 @@ input[type="checkbox"] {
         position: relative;
         float: left;
         margin-top: 3px;
+
     }
 
     .diagonal.part-1 {

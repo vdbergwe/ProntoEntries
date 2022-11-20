@@ -56,9 +56,9 @@
                     @If Request.IsAuthenticated Then
 
                         @*<li>
-                @Html.ActionLink("Account", "Index", "Manage", routeValues:=Nothing, htmlAttributes:=New With {.title = "Manage"})
-                "Hello " + User.Identity.GetUserName() + "!"
-            </li>*@
+                                @Html.ActionLink("Account", "Index", "Manage", routeValues:=Nothing, htmlAttributes:=New With {.title = "Manage"})
+                                "Hello " + User.Identity.GetUserName() + "!"
+                            </li>*@
                         @<li>
                             @Using Html.BeginForm("LogOff", "Account", FormMethod.Post, New With {.id = "logoutForm", .class = "sidebarMenuInnerMobile"})
                                 @Html.AntiForgeryToken()
@@ -78,15 +78,15 @@
             </div>
             @If Request.IsAuthenticated Then
 
-                    @<ul style="padding-right: 20px;">
+                @<ul style="padding-right: 20px;">
 
-                        @Using Html.BeginForm("LogOff", "Account", FormMethod.Post, New With {.id = "logoutForm", .class = "sidebarMenuInnerDesktop"})
-                            @Html.AntiForgeryToken()
-                            @<li>
-                                <a href="javascript:document.getElementById('logoutForm').submit()"> Log off</a>
-                            </li>
-                        End Using
-                    </ul>
+                    @Using Html.BeginForm("LogOff", "Account", FormMethod.Post, New With {.id = "logoutForm", .class = "sidebarMenuInnerDesktop"})
+                        @Html.AntiForgeryToken()
+                        @<li>
+                            <a href="javascript:document.getElementById('logoutForm').submit()"> Log off</a>
+                        </li>
+                    End Using
+                </ul>
 
             End If
             @*<div class="navitems" style="padding-right: 20px;">
@@ -109,6 +109,24 @@
 
     @Scripts.Render("~/bundles/jquery")
     @*@Scripts.Render("~/bundles/bootstrap")*@
+    <script>
+        $("#containertop").addClass('color-whitetrans')
+
+
+        // trigger this function every time the user scrolls
+        window.onscroll = function (event) {
+            var scroll = window.pageYOffset;
+            if (scroll < 100) {
+                $(".containertop").addClass('color-whitetrans');
+                $(".containertop").removeClass('color-white');
+            } else if (scroll >= 100) {
+                $(".containertop").addClass('color-white');
+                $(".containertop").removeClass('color-whitetrans');
+
+            }
+        }
+    </script>
+
     @RenderSection("scripts", required:=False)
 </body>
 </html>
