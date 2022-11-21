@@ -16,7 +16,7 @@ Namespace Controllers
 
         ' GET: Entries/Details/5
         <Authorize>
-        Function ViewParticipants(ByVal id As Integer?, ByVal DivisionSelect As Integer?) As ActionResult
+        Function ViewParticipants(ByVal id As Integer?, ByVal DivisionSelect As Decimal?) As ActionResult
             ViewBag.RaceID = id
             ViewBag.DivisionSelect = DivisionSelect
             If IsNothing(id) Then

@@ -254,7 +254,7 @@ Namespace Controllers
         End Function
 
         <Authorize>
-        Function VerifyEntry(ByVal sale As Sale, ByVal Id As Integer?, ByVal RaceID1 As Integer?, ByVal DivisionID1 As Integer?, ByVal OptionID1 As Integer?, ByVal ItemID As Integer?) As ActionResult
+        Function VerifyEntry(ByVal sale As Sale, ByVal Id As Integer?, ByVal RaceID1 As Integer?, ByVal DivisionID1 As Decimal?, ByVal OptionID1 As Integer?, ByVal ItemID As Integer?) As ActionResult
             Dim raceEvent As RaceEvent = db.RaceEvents.Find(RaceID1)
             Dim Organiser As Organiser = db.Organisers.Find(raceEvent.OrgID)
             Dim OrderNumber As Integer
