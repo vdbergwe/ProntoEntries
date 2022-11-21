@@ -14,6 +14,20 @@ Namespace Controllers
 
         Private db As New EntriesDBEntities
 
+        Function Get_Amount(Id As Decimal, RaceID As Integer?) As ActionResult
+            ViewBag.Amount = db.Divisions.Where(Function(a) a.Distance = Id And a.RaceID = RaceID).Select(Function(b) b.Price).FirstOrDefault()
+
+            Return PartialView()
+        End Function
+
+        Function Get_StartTime(Id As Decimal, RaceID As Integer?) As ActionResult
+            Dim Start As DateTime
+            Start = db.Divisions.Where(Function(a) a.Distance = Id And a.RaceID = RaceID).Select(Function(b) b.StartTime).FirstOrDefault()
+
+            ViewBag.StartTime = Start
+            Return PartialView()
+        End Function
+
         ' GET: Divisions
         <Authorize>
         Function Index() As ActionResult
@@ -25,7 +39,11 @@ Namespace Controllers
             If IsNothing(id) Then
                 Return New HttpStatusCodeResult(HttpStatusCode.BadRequest)
             End If
+            ViewBag.Distance = db.Divisions.Where(Function(b) b.RaceID = id).Select(Function(a) a.Distance).Distinct().ToList()
+            ViewBag.RaceID = id
+
             Dim division = db.Divisions.Where(Function(a) a.RaceID = id)
+
             If IsNothing(division) Then
                 Return HttpNotFound()
             End If

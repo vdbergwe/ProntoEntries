@@ -1,0 +1,1 @@
+﻿@ViewBag.StartTime.ToShortTimeString()

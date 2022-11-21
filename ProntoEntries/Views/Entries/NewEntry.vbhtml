@@ -30,9 +30,9 @@ End Code
         @<div class="NewEntryPage">
             <div class="RaceSelection">
                 <div Class="form-group">
-                    @Html.LabelFor(Function(model) model.DivisionID, htmlAttributes:=New With {.class = "control-label col-md-2"})
+                    @*DISTANCE*@
                     <div Class="col-md-10", id="divisionselect">
-                        @Html.DropDownList("DivisionID", Nothing, htmlAttributes:=New With {.class = "form-controlDDL"}, optionLabel:="Select Category")
+                        @Html.DropDownList("Distance", Nothing, htmlAttributes:=New With {.class = "form-controlDDL"}, optionLabel:="Select Distance")
                         @*@Html.EditorFor(Function(model) model.DivisionID, New With {.htmlAttributes = New With {.class = "form-control"}})*@
                         @Html.ValidationMessageFor(Function(model) model.DivisionID, "", New With {.class = "text-danger"})
                     </div>

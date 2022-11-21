@@ -1212,6 +1212,8 @@
     <Content Include="Views\Reports\Get_FinancialsAddons.vbhtml" />
     <Content Include="Views\Reports\Get_AddonTotalAmount.vbhtml" />
     <Content Include="Views\Reports\Get_PayFast.vbhtml" />
+    <Content Include="Views\Divisions\Get_StartTime.vbhtml" />
+    <Content Include="Views\Divisions\Get_Amount.vbhtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />

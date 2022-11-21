@@ -10,9 +10,9 @@ End Code
 </p>*@
 <table class="table">
     <tr>
-        <th>
+        @*<th>
             @Html.DisplayNameFor(Function(model) model.Category)
-        </th>
+        </th>*@
         <th>
             @Html.DisplayNameFor(Function(model) model.Distance)
         </th>
@@ -31,24 +31,28 @@ End Code
         <th></th>
     </tr>
 
-    @For Each item In Model
+    @For Each item In ViewBag.Distance
         @<tr>
-            <td>
+            @*<td>
                 @Html.DisplayFor(Function(modelItem) item.Category)
-            </td>
+            </td>*@
             <td>
-                @Html.DisplayFor(Function(modelItem) item.Distance)
+                @Html.DisplayFor(Function(modelItem) item)
             </td>
             @*<td>
                     @Html.DisplayFor(Function(modelItem) item.Description)
                 </td>*@
-            <td>
-                @Html.DisplayFor(Function(modelItem) item.StartTime)
-            </td>
-            <td>
-                R
-                @Html.DisplayFor(Function(modelItem) item.Price)
-            </td>
+         <td>
+             @Html.Action("Get_StartTime", New With {.Id = item, .RaceID = ViewBag.RaceID})
+
+             @*@Html.DisplayFor(Function(modelItem) item.StartTime)*@
+         </td>
+         <td>
+             R
+             @Html.Action("Get_Amount", New With {.Id = item, .RaceID = ViewBag.RaceID})
+
+             @*@Html.DisplayFor(Function(modelItem) item.Price)*@
+         </td>
             @*<td>
                     @Html.DisplayFor(Function(modelItem) item.RaceID)
                 </td>

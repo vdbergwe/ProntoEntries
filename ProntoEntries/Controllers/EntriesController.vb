@@ -202,12 +202,14 @@ Namespace Controllers
 
         ' GET: Entries/Create
         <Authorize>
-        Function NewEntry(ByVal id As Integer?, ByVal DivisionSelect As Integer?) As ActionResult
+        Function NewEntry(ByVal id As Integer?, ByVal DivisionSelect As Decimal?) As ActionResult
             Dim raceEvent As RaceEvent = db.RaceEvents.Find(id)
             Dim Organiser As Organiser = db.Organisers.Find(raceEvent.OrgID)
             ViewBag.Background = raceEvent.Background
             ViewBag.OrgImage = Organiser.Image
             ViewBag.DivisionSelect = DivisionSelect
+            ViewBag.Distance = New SelectList(db.Divisions.Where(Function(a) a.RaceID = id), "Distance", "Distance", DivisionSelect).Distinct()
+
             ViewBag.DivisionID = New SelectList(db.Divisions.Where(Function(a) a.RaceID = id), "DivisionID", "Category", DivisionSelect)
             ViewBag.Background = raceEvent.Background
             ViewBag.OrgImage = Organiser.Image

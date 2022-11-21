@@ -17,8 +17,8 @@ Namespace Controllers
 
         ' GET: RaceEvents
         Function Index() As ActionResult
-
-            Return View(db.RaceEvents.ToList())
+            Dim RaceEvents = db.RaceEvents.Where(Function(a) a.RaceDate > Now())
+            Return View(RaceEvents.ToList())
         End Function
 
         Function get_devdistance(Id As Integer?) As ActionResult

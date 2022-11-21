@@ -12,6 +12,7 @@ Partial Public Class Meta_Division
     Public Property Description As String
     <DisplayName("Start Time")>
     <DataType(DataType.Time)>
+    <DisplayFormat(DataFormatString:="{0:hh-mm}", ApplyFormatInEditMode:=True)>
     Public Property StartTime As Nullable(Of Date)
     <DataType(DataType.Currency)>
     <DisplayFormat(DataFormatString:="{0:n2}", ApplyFormatInEditMode:=True)>
