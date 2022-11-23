@@ -223,34 +223,43 @@ Namespace Controllers
         End Function
 
         <Authorize>
-        Function Addtocart(ByVal sale As Sale, ByVal id As Integer?, ByVal RaceID As Integer?, ByVal DivisionID As Integer?) As ActionResult
+        Function Addtocart(ByVal sale As Sale, ByVal id As Integer?, ByVal RaceID As Integer?, ByVal Distance As Decimal?) As ActionResult
             Dim OrderNumber As Integer
-            sale.ParticipantID = id
-            sale.RaceID = RaceID
-            sale.DivisionID = DivisionID
-            Dim Amount = db.Divisions.Where(Function(a) a.DivisionID = DivisionID).Select(Function(a) a.Price).FirstOrDefault
-            Dim Status = "UnPaid"
-            sale.UserID = User.Identity.Name
-            sale.TandC = True
-            sale.Indemnity = True
+            Dim RaceDate As Date = db.RaceEvents.Where(Function(c) c.RaceID = RaceID).Select(Function(d) d.RaceDate).FirstOrDefault()
+            Dim ParticipantDOB As Date = db.Participants.Where(Function(a) a.ParticipantID = id).Select(Function(b) b.DOB).FirstOrDefault()
+            Dim Age As TimeSpan = RaceDate - ParticipantDOB
+            Dim AgeInt As Decimal = Age.TotalDays / 365
 
-            If (db.Sales.Where(Function(a) a.UserID = User.Identity.Name And a.Pf_reference Is Nothing).Count() > 0) Then
-                sale.M_reference = db.Sales.Where(Function(a) a.UserID = User.Identity.Name And a.Pf_reference Is Nothing).Select(Function(a) a.M_reference).FirstOrDefault()
-            Else
-                If IsNothing(db.Sales.Max(Function(a) a.M_reference)) Then
-                    sale.M_reference = 1
+            Dim DivisionID = db.Divisions.Where(Function(a) a.RaceID = RaceID And a.MinAge < AgeInt And a.MaxAge > AgeInt And a.Distance = Distance).Select(Function(b) b.DivisionID).FirstOrDefault()
+            If DivisionID > 0 Then
+                sale.ParticipantID = id
+                sale.RaceID = RaceID
+                sale.DivisionID = DivisionID
+                Dim Amount = db.Divisions.Where(Function(a) a.DivisionID = DivisionID).Select(Function(a) a.Price).FirstOrDefault
+                Dim Status = "UnPaid"
+                sale.UserID = User.Identity.Name
+                sale.TandC = True
+                sale.Indemnity = True
+
+                If (db.Sales.Where(Function(a) a.UserID = User.Identity.Name And a.Pf_reference Is Nothing).Count() > 0) Then
+                    sale.M_reference = db.Sales.Where(Function(a) a.UserID = User.Identity.Name And a.Pf_reference Is Nothing).Select(Function(a) a.M_reference).FirstOrDefault()
                 Else
-                    OrderNumber = db.Sales.Max(Function(a) a.M_reference)
-                    sale.M_reference = OrderNumber + 1
+                    If IsNothing(db.Sales.Max(Function(a) a.M_reference)) Then
+                        sale.M_reference = 1
+                    Else
+                        OrderNumber = db.Sales.Max(Function(a) a.M_reference)
+                        sale.M_reference = OrderNumber + 1
+                    End If
+                End If
+                If ModelState.IsValid Then
+                    db.Sales.Add(sale)
+                    db.SaveChanges()
+                    '@Html.ActionLink("Enter Now", "NewEntry", "Entries", New With {.id = Model.RaceID}, New With {.class = "btnEntryLink"})
+                    Return RedirectToAction("NewEntry", "Entries", New With {.id = RaceID, .DivisionSelect = DivisionID})
                 End If
             End If
-            If ModelState.IsValid Then
-                db.Sales.Add(sale)
-                db.SaveChanges()
-                '@Html.ActionLink("Enter Now", "NewEntry", "Entries", New With {.id = Model.RaceID}, New With {.class = "btnEntryLink"})
-                Return RedirectToAction("NewEntry", "Entries", New With {.id = RaceID, .DivisionSelect = DivisionID})
-            End If
-            Return RedirectToAction("NewEntry", "Entries", New With {.id = RaceID, .DivisionSelect = DivisionID})
+
+            Return RedirectToAction("NewEntry", "Entries", New With {.id = RaceID, .DivisionSelect = DivisionID, .alert = "No Suitable Age Category for selected Participant"})
         End Function
 
         <Authorize>
@@ -258,6 +267,17 @@ Namespace Controllers
             Dim raceEvent As RaceEvent = db.RaceEvents.Find(RaceID1)
             Dim Organiser As Organiser = db.Organisers.Find(raceEvent.OrgID)
             Dim OrderNumber As Integer
+
+            Dim RaceDate As Date = db.RaceEvents.Where(Function(c) c.RaceID = RaceID1).Select(Function(d) d.RaceDate).FirstOrDefault()
+            Dim ParticipantDOB As Date = db.Participants.Where(Function(a) a.ParticipantID = Id).Select(Function(b) b.DOB).FirstOrDefault()
+            Dim Age As TimeSpan = RaceDate - ParticipantDOB
+            Dim AgeInt As Decimal = Age.TotalDays / 365
+
+            Dim DivisionID = db.Divisions.Where(Function(a) a.RaceID = RaceID1 And a.MinAge < AgeInt And a.MaxAge > AgeInt And a.Distance = DivisionID1).Select(Function(b) b.DivisionID).FirstOrDefault()
+
+
+            ViewBag.DivisionCheck = DivisionID
+
 
             ViewBag.Background = raceEvent.Background
             ViewBag.OrgImage = Organiser.Image
@@ -312,8 +332,8 @@ Namespace Controllers
         End Function
 
         <Authorize>
-        Function get_AddonOptionlist(Id As Integer?, ByVal RaceID As Integer?, ByVal DivisionID1 As Integer?, ByVal OptionID As Integer?, ByVal ParticipantID As Integer?) As ActionResult
-            Dim Optionlist = db.AddonOptions.Where(Function(a) a.ItemID = Id)
+        Function get_AddonOptionlist(Id As Integer?, ByVal RaceID As Integer?, ByVal DivisionID1 As Decimal?, ByVal OptionID As Integer?, ByVal ParticipantID As Integer?) As ActionResult
+            Dim Optionlist = db.AddonOptions.Where(Function(a) a.ItemID = Id And a.StopDate > Now())
             ViewBag.ParticipantID = ParticipantID
             ViewBag.RaceID = RaceID
             ViewBag.DivisionID = DivisionID1

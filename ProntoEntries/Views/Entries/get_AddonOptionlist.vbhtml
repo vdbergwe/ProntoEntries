@@ -1,21 +1,25 @@
 ﻿@ModelType IEnumerable(Of ProntoEntries.AddonOption)
 
+@If Model.Count() = 0 Then
+    @<div>
+        <p>
+            Not Available
+        </p>
+    </div>
+End If
+
 
 @For Each item In Model
     @<div>
-    <ul>
-        <li>
-            @Html.DisplayFor(Function(modelItem) item.Size)
-        </li>
-        R
-        <li>
-            @Html.DisplayFor(Function(modelItem) item.Amount)
-        </li>
-        <li>
-            @Html.ActionLink("Select", "VerifyEntry", "Entries", New With {.id = ViewBag.ParticipantID, .RaceID1 = ViewBag.RaceID, .DivisionID1 = ViewBag.DivisionID, .OptionID1 = item.OptionID, .ItemID = item.ItemID}, Nothing)
-        </li>
-    </ul>
-</div>
+        @Html.DisplayFor(Function(modelItem) item.Size)
+        - R
+        @Html.DisplayFor(Function(modelItem) item.Amount)
+        <ul>
+            <li>
+                @Html.ActionLink("Select", "VerifyEntry", "Entries", New With {.id = ViewBag.ParticipantID, .RaceID1 = ViewBag.RaceID, .DivisionID1 = ViewBag.DivisionID, .OptionID1 = item.OptionID, .ItemID = item.ItemID}, Nothing)
+            </li>
+        </ul>
+    </div>
 
 
 

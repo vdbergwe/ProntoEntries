@@ -1214,6 +1214,7 @@
     <Content Include="Views\Reports\Get_PayFast.vbhtml" />
     <Content Include="Views\Divisions\Get_StartTime.vbhtml" />
     <Content Include="Views\Divisions\Get_Amount.vbhtml" />
+    <Content Include="Views\Participants\Get_Age.vbhtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />

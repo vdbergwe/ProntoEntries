@@ -14,6 +14,18 @@ Namespace Controllers
 
         Private db As New EntriesDBEntities
 
+
+        Function Get_Age(Id As Integer?, RaceID As Integer?) As ActionResult
+            Dim RaceDate As Date = db.RaceEvents.Where(Function(c) c.RaceID = RaceID).Select(Function(d) d.RaceDate).FirstOrDefault()
+            Dim ParticipantDOB As Date = db.Participants.Where(Function(a) a.ParticipantID = Id).Select(Function(b) b.DOB).FirstOrDefault()
+            Dim Age As TimeSpan = RaceDate - ParticipantDOB
+            Dim AgeInt As Decimal = Age.TotalDays / 365
+
+            ViewBag.GetAge = Math.Round(AgeInt, 0)
+            Dim DivisionID = db.Divisions.Where(Function(a) a.RaceID = RaceID And a.MinAge < AgeInt And a.MaxAge > AgeInt).Select(Function(b) b.DivisionID).FirstOrDefault()
+            Return PartialView()
+        End Function
+
         ' GET: Entries/Details/5
         <Authorize>
         Function ViewParticipants(ByVal id As Integer?, ByVal DivisionSelect As Decimal?) As ActionResult
@@ -25,6 +37,8 @@ Namespace Controllers
 
             Dim Participant = db.Participants.Where(Function(a) a.UserID = User.Identity.Name And (db.Entries.Where(Function(b) b.RaceID = id And b.ParticipantID = a.ParticipantID).Count() = 0 _
                                                          And db.Sales.Where(Function(b) b.RaceID = id And b.ParticipantID = a.ParticipantID).Count() = 0)).ToList()
+
+
             'Dim Participant = db.Participants.ToList()
             If IsNothing(Participant) Then
                 Return HttpNotFound()

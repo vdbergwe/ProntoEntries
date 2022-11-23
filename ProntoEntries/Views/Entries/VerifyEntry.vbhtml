@@ -23,59 +23,63 @@ End Code
         @Html.ActionLink("Change Event", "Index", "RaceEvents")
     </div>
     <hr />
+    @If ViewBag.DivisionCheck = 0 Then
+        @<p>No Suitable Age Class Available for the distance selected</p>
+    Else
+        @If Model.Count > 0 Then
+            @<Table Class="table">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(Function(model) model.Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(Function(model) model.Description)
+                    </th>
+                    <th>
+                        Options
+                    </th>
 
-    @If Model.Count > 0 Then
-        @<Table Class="table">
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(Function(model) model.Name)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(Function(model) model.Description)
-                </th>
-                <th>
-                    Options
-                </th>
-
-            </tr>
-
-            @For Each item In Model
-                @<tr>
-                    <td>
-                        @Html.DisplayFor(Function(modelItem) item.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(Function(modelItem) item.Description)
-                    </td>
-                    <td>
-                        @Html.Action("get_AddonOptionList", New With {.Id = item.ItemID, .RaceID1 = ViewBag.RaceID, .DivisionID1 = ViewBag.DivisionID, .OptionID1 = ViewBag.OptionID, .ParticipantID = ViewBag.ParticipantID})
-                    </td>
                 </tr>
-            Next
 
-        </Table>
-        @<hr />
-    End If
+                @For Each item In Model
+                    @<tr>
+                        <td>
+                            @Html.DisplayFor(Function(modelItem) item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(Function(modelItem) item.Description)
+                        </td>
+                        <td>
+                            @Html.Action("get_AddonOptionList", New With {.Id = item.ItemID, .RaceID1 = ViewBag.RaceID, .DivisionID1 = ViewBag.DivisionID, .OptionID1 = ViewBag.OptionID, .ParticipantID = ViewBag.ParticipantID})
+                        </td>
+                    </tr>
+                Next
 
-    <div>
-        <h3 style="text-align: center; color: #FFF; text-transform: uppercase">Terms And Conditions</h3>
-        <hr />
-        <p>
-            @Viewbag.TandC
-        </p>
-        <h3 style="text-align: center; color: #FFF; text-transform: uppercase">Indemnity</h3>
-        <hr />
-        <p>
-            @Viewbag.Indemnity
-        </p>
-        <div class="button-group">
-            <div class="linkbutton">
-                @*<button onclick="confirmaction()">Accept</button>*@
-                @Html.ActionLink("Accept", "Addtocart", "Entries", New With {.Id = ViewBag.ParticipantID, .RaceID = ViewBag.RaceID, .DivisionID = ViewBag.DivisionID}, New With {.onclick = " return confirm('Please confirm all required Addons were selected.  By clicking on OK, you acknowledge acceptance of the indemnity waiver and Terms and Conditions clauses.');"})
+            </Table>
+            @<hr />
+        End If
 
+        @<div>
+            <h3 style="text-align: center; color: #FFF; text-transform: uppercase"> Terms And Conditions</h3>
+            <hr />
+            <p>
+                @ViewBag.TandC
+            </p>
+            <h3 style="text-align: center; color: #FFF; text-transform: uppercase"> Indemnity</h3>
+            <hr />
+            <p>
+                @ViewBag.Indemnity
+            </p>
+            <div Class="button-group">
+                <div Class="linkbutton">
+                    @*<button onclick="confirmaction()">Accept</button>*@
+                    @Html.ActionLink("Accept", "Addtocart", "Entries", New With {.Id = ViewBag.ParticipantID, .RaceID = ViewBag.RaceID, .Distance = ViewBag.DivisionID}, New With {.onclick = " return confirm('Please confirm all required Addons were selected.  By clicking on OK, you acknowledge acceptance of the indemnity waiver and Terms and Conditions clauses.');"})
+
+                </div>
             </div>
         </div>
-    </div>
+    End If
+
 
 
 </div>
