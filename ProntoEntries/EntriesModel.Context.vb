@@ -41,5 +41,7 @@ Partial Public Class EntriesDBEntities
     Public Overridable Property SystemLogs() As DbSet(Of SystemLog)
     Public Overridable Property TypeLookups() As DbSet(Of TypeLookup)
     Public Overridable Property ParticipantExports() As DbSet(Of ParticipantExport)
+    Public Overridable Property AddonViews() As DbSet(Of AddonView)
+    Public Overridable Property PartDivs() As DbSet(Of PartDiv)
 
 End Class

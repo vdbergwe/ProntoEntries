@@ -659,6 +659,19 @@ input[type="checkbox"] {
         margin: 0px auto;
     }
 
+    .partelement .form-controlDDL {
+        width: 47%;
+        height: 38px;
+        background: #e0dede;
+        justify-content: center;
+        display: flex;
+        margin: 10px auto;
+        padding: 10px;
+        border: none;
+        outline: none;
+        border-radius: 5px;
+    }
+
 .participantleft p {
     text-align: center;
     font-size: 20px;

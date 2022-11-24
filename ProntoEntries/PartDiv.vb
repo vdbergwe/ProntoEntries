@@ -10,13 +10,14 @@
 Imports System
 Imports System.Collections.Generic
 
-Partial Public Class Participant
+Partial Public Class PartDiv
     Public Property ParticipantID As Integer
     Public Property FirstName As String
     Public Property MiddleNames As String
     Public Property LastName As String
     Public Property IDNumber As String
     Public Property DOB As Nullable(Of Date)
+    Public Property Gender As String
     Public Property RaceNumber As String
     Public Property EmailAddress As String
     Public Property MedicalName As String
@@ -33,9 +34,13 @@ Partial Public Class Participant
     Public Property Address As String
     Public Property City As String
     Public Property Province As String
-    Public Property UserID As String
-    Public Property EventMailer As Boolean
-    Public Property Offers As Boolean
-    Public Property Gender As String
+    Public Property Distance As Nullable(Of Decimal)
+    Public Property Category As String
+    Public Property Description As String
+    Public Property StartTime As Nullable(Of Date)
+    Public Property Price As Nullable(Of Decimal)
+    Public Property M_reference As Nullable(Of Integer)
+    Public Property Pf_reference As Nullable(Of Integer)
+    Public Property RaceID As Nullable(Of Integer)
 
 End Class

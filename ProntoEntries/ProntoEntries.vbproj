@@ -548,6 +548,9 @@
     <Compile Include="AddonOption.vb">
       <DependentUpon>EntriesModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="AddonView.vb">
+      <DependentUpon>EntriesModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="App_Start\BundleConfig.vb" />
     <Compile Include="App_Start\FilterConfig.vb" />
     <Compile Include="App_Start\IdentityConfig.vb" />
@@ -630,6 +633,9 @@
     </Compile>
     <Compile Include="Controllers\HomeController.vb" />
     <Compile Include="Organiser.vb">
+      <DependentUpon>EntriesModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PartDiv.vb">
       <DependentUpon>EntriesModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Participant.vb">

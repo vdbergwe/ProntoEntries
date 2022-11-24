@@ -41,7 +41,7 @@ Namespace Controllers
             ViewBag.SelectedRace = RaceId
 
             Dim RaceParticipants = db.Entries.Where(Function(a) a.RaceID = RaceId)
-            Dim results = db.Participants.Where(Function(a) RaceParticipants.Any(Function(b) b.ParticipantID <> a.ParticipantID))
+            Dim results = db.Participants.Where(Function(a) RaceParticipants.Any(Function(b) b.ParticipantID = a.ParticipantID))
             If SearchValue IsNot Nothing Then
                 Dim PayRef = RaceParticipants.Where(Function(a) a.PayFastReference.Contains(SearchValue))
                 If PayRef.Count > 0 Then
@@ -135,6 +135,34 @@ Namespace Controllers
             Response.ClearContent()
             Response.Buffer = True
             Response.AddHeader("content-disposition", "attachment; filename=ProntoEntries_AllParticipants.xls")
+            Response.ContentType = "application/xlsx"
+
+            Response.Charset = ""
+            Dim sw = New StringWriter()
+            Dim htw = New HtmlTextWriter(sw)
+
+            Grid.RenderControl(htw)
+
+            Response.Output.Write(sw.ToString())
+            Response.Flush()
+            Response.End()
+
+            Return ("")
+        End Function
+
+        <Authorize>
+        Function ExporttoExcelRaceDetail(Id As Integer?)
+            Dim RaceParticipants = db.Entries.Where(Function(a) a.RaceID = Id)
+            Dim results = db.PartDivs.Where(Function(a) RaceParticipants.Any(Function(b) b.ParticipantID = a.ParticipantID))
+            Dim MyData = results.ToList()
+            Dim Grid = New GridView With {
+                .DataSource = MyData
+            }
+            Grid.DataBind()
+
+            Response.ClearContent()
+            Response.Buffer = True
+            Response.AddHeader("content-disposition", "attachment; filename=ProntoEntries_FullRaceDetail.xls")
             Response.ContentType = "application/xlsx"
 
             Response.Charset = ""

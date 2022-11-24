@@ -21,7 +21,10 @@ Partial Public Class Meta_Participant
     <DisplayName("Date of Birth")>
     <DataType(DataType.Date)>
     <DisplayFormat(DataFormatString:="{0:yyyy-MM-dd}", ApplyFormatInEditMode:=True)>
+    <Required>
     Public Property DOB As Nullable(Of Date)
+    <Required>
+    Public Property Gender As String
     <DisplayName("Club Race Number")>
     Public Property RaceNumber As String
     <DisplayName("Email")>

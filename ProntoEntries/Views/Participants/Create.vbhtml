@@ -53,6 +53,13 @@ End Code
                 </div>
 
                 <div class="partelement">
+                    @Html.LabelFor(Function(model) model.Gender, htmlAttributes:=New With {.class = "control-label col-md-2 labelfix"})
+                    @Html.DropDownList("Gender", Nothing, htmlAttributes:=New With {.class = "form-controlDDL"}, optionLabel:="")
+                    @*@Html.EditorFor(Function(model) model.Gender, New With {.htmlAttributes = New With {.class = "partelement item"}})*@
+                    @Html.ValidationMessageFor(Function(model) model.Gender, "", New With {.class = "text-danger"})
+                </div>
+
+                <div class="partelement">
                     @Html.LabelFor(Function(model) model.DOB, htmlAttributes:=New With {.class = "control-label col-md-2 labelfix"})
                     @Html.EditorFor(Function(model) model.DOB, New With {.htmlAttributes = New With {.class = "partelement item"}})
                     @Html.ValidationMessageFor(Function(model) model.DOB, "", New With {.class = "text-danger"})

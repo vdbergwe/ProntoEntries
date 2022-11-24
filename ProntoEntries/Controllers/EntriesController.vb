@@ -275,9 +275,7 @@ Namespace Controllers
 
             Dim DivisionID = db.Divisions.Where(Function(a) a.RaceID = RaceID1 And a.MinAge < AgeInt And a.MaxAge > AgeInt And a.Distance = DivisionID1).Select(Function(b) b.DivisionID).FirstOrDefault()
 
-
             ViewBag.DivisionCheck = DivisionID
-
 
             ViewBag.Background = raceEvent.Background
             ViewBag.OrgImage = Organiser.Image

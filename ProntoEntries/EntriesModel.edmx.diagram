@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="ea58b86ea5f1427d95d6ae51fe0dca51" Name="Diagram1" ZoomLevel="47" >
+      <Diagram DiagramId="ea58b86ea5f1427d95d6ae51fe0dca51" Name="Diagram1" ZoomLevel="54" >
         <EntityTypeShape EntityType="EntriesDBModel.C__MigrationHistory" Width="1.5" PointX="0.75" PointY="6.75" />
         <EntityTypeShape EntityType="EntriesDBModel.AddonItem" Width="1.5" PointX="2.75" PointY="6.75" />
         <EntityTypeShape EntityType="EntriesDBModel.AddonOption" Width="1.5" PointX="4.75" PointY="6.75" />
@@ -27,6 +27,8 @@
         <AssociationConnector Association="EntriesDBModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" />
         <AssociationConnector Association="EntriesDBModel.AspNetUserRoles" />
         <EntityTypeShape EntityType="EntriesDBModel.ParticipantExport" Width="1.5" PointX="13.375" PointY="0.75" />
+        <EntityTypeShape EntityType="EntriesDBModel.AddonView" Width="1.5" PointX="3.375" PointY="13.75" />
+        <EntityTypeShape EntityType="EntriesDBModel.PartDiv" Width="1.5" PointX="13.25" PointY="6.875" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
