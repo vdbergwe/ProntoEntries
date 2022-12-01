@@ -33,26 +33,30 @@ End Code
                             </div>
                         </div>
                         <div class="button-group">
-                            <div class="col-md-10">
-                                <div class="checkbox">
-                                    @Html.CheckBoxFor(Function(m) m.RememberMe, New With {.class = "toggle-checkbox"})
-                                    Remember Me
+
+                            <p style="text-align:center">
+                                @Html.ActionLink("Forgot your password?", "ForgotPassword")
+                            </p>
+                            </div>
+                            <div class="button-group">
+                                <div class="col-md-10">
+                                    <div class="checkbox">
+                                        @Html.CheckBoxFor(Function(m) m.RememberMe, New With {.class = "toggle-checkbox"})
+                                        Remember Me
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="button-grouplogin">
-                            <div class="linkbuttonlogin">
-                                @Html.ActionLink("Register", "Register", New With {.class = "LoginButton"})
+                            <div class="button-grouplogin">
+                                <div class="linkbuttonlogin">
+                                    @Html.ActionLink("Register", "Register", New With {.class = "LoginButton"})
                                 </div>
 
                                 <input type="submit" value="Log in" class="btn btn-default" />
                             </div>
 
-                            @* Enable this once you have account confirmation enabled for password reset functionality
-                    <p>
-                        @Html.ActionLink("Forgot your password?", "ForgotPassword")
-                    </p>*@
+                            @*Enable this once you have account confirmation enabled for password reset functionality*@
+
                     </text>
                 End Using
             </section>
