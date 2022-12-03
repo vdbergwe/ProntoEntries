@@ -1,5 +1,6 @@
 ﻿Imports System.Web.Mvc
 Imports System.IO
+Imports ClosedXML.Excel
 
 Namespace Controllers
     Public Class ReportsController
@@ -156,97 +157,103 @@ Namespace Controllers
             Dim results = db.PartDivs.Where(Function(a) RaceParticipants.Any(Function(b) b.ParticipantID = a.ParticipantID))
             Dim MyData = results.ToList()
 
-            'Using ExcelEngine As ExcelEngine = New ExcelEngine()
-            '    Dim application As IApplication = ExcelEngine.Excel
 
-            '    application.DefaultVersion = ExcelVersion.Xlsx
+            Dim workbook As New XLWorkbook()
+            Dim stream As New MemoryStream()
 
-            '    Dim Workbook As IWorkbook = application.Workbooks.Create(1)
-            '    Dim worksheet As IWorksheet = Workbook.Worksheets(0)
-
-            '    worksheet.Range(1, 1).Value = "First Name"
-            '    worksheet.Range(1, 2).Value = "Middle Name"
-            '    worksheet.Range(1, 3).Value = "Last Name"
-            '    worksheet.Range(1, 4).Value = "ID Number"
-            '    worksheet.Range(1, 5).Value = "Date of Birth"
-            '    worksheet.Range(1, 6).Value = "Gender"
-            '    worksheet.Range(1, 7).Value = "License Number"
-            '    worksheet.Range(1, 8).Value = "Email Address"
-            '    worksheet.Range(1, 9).Value = "Medical Name"
-            '    worksheet.Range(1, 10).Value = "Medical Number"
-            '    worksheet.Range(1, 11).Value = "Emergency Contact"
-            '    worksheet.Range(1, 12).Value = "Emergency Number"
-            '    worksheet.Range(1, 13).Value = "Blood Type"
-            '    worksheet.Range(1, 14).Value = "Allergies"
-            '    worksheet.Range(1, 15).Value = "Additional Info"
-            '    worksheet.Range(1, 16).Value = "Doctor Name"
-            '    worksheet.Range(1, 17).Value = "Doctor Contact"
-            '    worksheet.Range(1, 18).Value = "Club Name"
-            '    worksheet.Range(1, 19).Value = "Country"
-            '    worksheet.Range(1, 20).Value = "Address"
-            '    worksheet.Range(1, 21).Value = "City"
-            '    worksheet.Range(1, 22).Value = "Province"
-            '    worksheet.Range(1, 23).Value = "Distance"
-            '    worksheet.Range(1, 24).Value = "Category"
-            '    worksheet.Range(1, 25).Value = "Description"
-            '    worksheet.Range(1, 26).Value = "Start Time"
-            '    worksheet.Range(1, 27).Value = "Price"
-            '    worksheet.Range(1, 28).Value = "M_reference"
-            '    worksheet.Range(1, 29).Value = "Pf_Reference"
-            '    worksheet.Range(1, 30).Value = "RaceID"
+            Using workbook
+                Dim worksheet = workbook.AddWorksheet("Report")
 
 
-            '    For Each record In MyData
+                worksheet.Cell(1, 1).Value = "First Name"
+                worksheet.Cell(1, 2).Value = "Middle Name"
+                worksheet.Cell(1, 3).Value = "Last Name"
+                worksheet.Cell(1, 4).Value = "ID Number"
+                worksheet.Cell(1, 5).Value = "Date of Birth"
+                worksheet.Cell(1, 6).Value = "Gender"
+                worksheet.Cell(1, 7).Value = "License Number"
+                worksheet.Cell(1, 8).Value = "Email Address"
+                worksheet.Cell(1, 9).Value = "Medical Name"
+                worksheet.Cell(1, 10).Value = "Medical Number"
+                worksheet.Cell(1, 11).Value = "Emergency Contact"
+                worksheet.Cell(1, 12).Value = "Emergency Number"
+                worksheet.Cell(1, 13).Value = "Blood Type"
+                worksheet.Cell(1, 14).Value = "Allergies"
+                worksheet.Cell(1, 15).Value = "Additional Info"
+                worksheet.Cell(1, 16).Value = "Doctor Name"
+                worksheet.Cell(1, 17).Value = "Doctor Contact"
+                worksheet.Cell(1, 18).Value = "Club Name"
+                worksheet.Cell(1, 19).Value = "Country"
+                worksheet.Cell(1, 20).Value = "Address"
+                worksheet.Cell(1, 21).Value = "City"
+                worksheet.Cell(1, 22).Value = "Province"
+                worksheet.Cell(1, 23).Value = "Distance"
+                worksheet.Cell(1, 24).Value = "Category"
+                worksheet.Cell(1, 25).Value = "Description"
+                worksheet.Cell(1, 26).Value = "Start Time"
+                worksheet.Cell(1, 27).Value = "Price"
+                worksheet.Cell(1, 28).Value = "M_reference"
+                worksheet.Cell(1, 29).Value = "Pf_Reference"
+                worksheet.Cell(1, 30).Value = "RaceID"
 
-            '        worksheet.Range(2, 2).Value = "Test"
+                Dim row = 2
+                Dim Newtime As DateTime
+
+                For Each record In MyData
+                    worksheet.Cell(row, 1).Value = record.FirstName
+                    worksheet.Cell(row, 2).Value = record.MiddleNames
+                    worksheet.Cell(row, 3).Value = record.LastName
+                    worksheet.Cell(row, 4).SetValue(record.IDNumber)
+                    worksheet.Cell(row, 5).Value = record.DOB
+                    worksheet.Cell(row, 6).Value = record.Gender
+                    worksheet.Cell(row, 7).Value = record.RaceNumber
+                    worksheet.Cell(row, 8).Value = record.EmailAddress
+                    worksheet.Cell(row, 9).Value = record.MedicalName
+                    worksheet.Cell(row, 10).SetValue(record.MedicalNumber)
+                    worksheet.Cell(row, 11).Value = record.EmergencyContact
+                    worksheet.Cell(row, 12).SetValue(record.EmergencyNumber)
+                    worksheet.Cell(row, 13).Value = record.BoodType
+                    worksheet.Cell(row, 14).Value = record.Allergies
+                    worksheet.Cell(row, 15).Value = record.AdditionalInfo
+                    worksheet.Cell(row, 16).Value = record.DoctorName
+                    worksheet.Cell(row, 17).SetValue(record.DoctorContact)
+                    worksheet.Cell(row, 18).Value = record.Clubname
+                    worksheet.Cell(row, 19).Value = record.Country
+                    worksheet.Cell(row, 20).Value = record.Address
+                    worksheet.Cell(row, 21).Value = record.City
+                    worksheet.Cell(row, 22).Value = record.Province
+                    worksheet.Cell(row, 23).Value = record.Distance
+                    worksheet.Cell(row, 24).Value = record.Distance
+                    worksheet.Cell(row, 25).Value = record.Description
+
+                    Newtime = record.StartTime
+                    worksheet.Cell(row, 26).Value = Newtime.ToString("hh:mm")
+
+                    worksheet.Cell(row, 27).Value = record.Price
+                    worksheet.Cell(row, 28).Value = record.M_reference
+                    worksheet.Cell(row, 29).Value = record.Pf_reference
+                    worksheet.Cell(row, 30).Value = record.RaceID
+
+                    row += 1
+
+                Next
+
+                worksheet.Columns().AdjustToContents()
+
+                Using stream
+                    workbook.SaveAs(stream)
+                    Dim content = stream.ToArray()
+                    Return File(content, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "ProntoEntries_RaceDetails.xlsx")
+                End Using
 
 
-            '        'For i = 1 To MyData.GetType().GetProperties().Length
-            '        '    For j = 1 To MyData.Count()
-            '        '        worksheet.Range(i, j).Value = "Test"
-            '        '    Next
-            '        'Next
-            '    Next
-
-            '    Workbook.SaveAs("Output.xlsx", HttpContext.ApplicationInstance.Response, ExcelDownloadType.Open)
-
-            'End Using
+            End Using
 
 
             Return ("")
         End Function
 
-        '<Authorize>
-        'Function ExporttoExcelRaceDetail(Id As Integer?)
-        '    Dim RaceParticipants = db.Entries.Where(Function(a) a.RaceID = Id)
-        '    Dim results = db.PartDivs.Where(Function(a) RaceParticipants.Any(Function(b) b.ParticipantID = a.ParticipantID))
-        '    Dim MyData = results.ToList()
 
-
-        '    Dim Grid = New GridView With {
-        '        .DataSource = MyData
-        '    }
-        '    Grid.DataBind()
-
-
-
-        '    Response.ClearContent()
-        '    Response.Buffer = True
-        '    Response.AddHeader("content-disposition", "attachment; filename=ProntoEntries_FullRaceDetail.xls")
-        '    Response.ContentType = "application/x-ms-excel"
-
-        '    Response.Charset = ""
-        '    Dim sw = New StringWriter()
-        '    Dim htw = New HtmlTextWriter(sw)
-
-        '    Grid.RenderControl(htw)
-
-        '    Response.Output.Write(sw)
-        '    Response.Flush()
-        '    Response.End()
-
-        '    Return ("")
-        'End Function
 
     End Class
 End Namespace
