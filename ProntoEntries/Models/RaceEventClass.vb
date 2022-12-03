@@ -23,7 +23,7 @@ Partial Public Class Meta_RaceEvent
     Public Property Province As String
     <DisplayName("Admin Charge")>
     Public Property AdminCharge As Nullable(Of Double)
-    <DisplayName("Host Orginization")>
+    <DisplayName("Host Organization")>
     Public Property OrgID As Nullable(Of Integer)
     <DisplayName("Race Logo")>
     Public Property Image As String
@@ -44,4 +44,12 @@ Partial Public Class Meta_RaceEvent
     <AllowHtml>
     <DataType(DataType.Html)>
     Public Property RaceHtmlPage As String
+    Public Property Indemnity As String
+    <DisplayName("Terms and Conditions")>
+    Public Property TandC As String
+    <DisplayName("Entry Closes")>
+    <DataType(DataType.Date)>
+    <DisplayFormat(DataFormatString:="{0:yyyy-MM-dd}", ApplyFormatInEditMode:=True)>
+    Public Property EntriesCloseDate As Nullable(Of Date)
+
 End Class

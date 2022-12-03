@@ -218,6 +218,31 @@ End Code
                 @Html.ValidationMessageFor(Function(model) model.DispAddress, "", New With {.class = "text-danger"})
             </div>
         </div>
+
+        <div class="form-group">
+            @Html.LabelFor(Function(model) model.Indemnity, htmlAttributes:=New With {.class = "control-label col-md-2"})
+            <div class="col-md-10">
+                @Html.EditorFor(Function(model) model.Indemnity, New With {.htmlAttributes = New With {.class = "form-control"}})
+                @Html.ValidationMessageFor(Function(model) model.Indemnity, "", New With {.class = "text-danger"})
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(Function(model) model.TandC, htmlAttributes:=New With {.class = "control-label col-md-2"})
+            <div class="col-md-10">
+                @Html.EditorFor(Function(model) model.TandC, New With {.htmlAttributes = New With {.class = "form-control"}})
+                @Html.ValidationMessageFor(Function(model) model.TandC, "", New With {.class = "text-danger"})
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(Function(model) model.EntriesCloseDate, htmlAttributes:=New With {.class = "control-label col-md-2"})
+            <div class="col-md-10">
+                @Html.EditorFor(Function(model) model.EntriesCloseDate, New With {.htmlAttributes = New With {.class = "form-control"}})
+
+                @Html.ValidationMessageFor(Function(model) model.EntriesCloseDate, "", New With {.class = "text-danger"})
+            </div>
+        </div>
     </div>
 
     <div class="form--el1">

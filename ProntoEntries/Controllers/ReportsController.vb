@@ -155,28 +155,98 @@ Namespace Controllers
             Dim RaceParticipants = db.Entries.Where(Function(a) a.RaceID = Id)
             Dim results = db.PartDivs.Where(Function(a) RaceParticipants.Any(Function(b) b.ParticipantID = a.ParticipantID))
             Dim MyData = results.ToList()
-            Dim Grid = New GridView With {
-                .DataSource = MyData
-            }
-            Grid.DataBind()
 
-            Response.ClearContent()
-            Response.Buffer = True
-            Response.AddHeader("content-disposition", "attachment; filename=ProntoEntries_FullRaceDetail.xls")
-            Response.ContentType = "application/xlsx"
+            'Using ExcelEngine As ExcelEngine = New ExcelEngine()
+            '    Dim application As IApplication = ExcelEngine.Excel
 
-            Response.Charset = ""
-            Dim sw = New StringWriter()
-            Dim htw = New HtmlTextWriter(sw)
+            '    application.DefaultVersion = ExcelVersion.Xlsx
 
-            Grid.RenderControl(htw)
+            '    Dim Workbook As IWorkbook = application.Workbooks.Create(1)
+            '    Dim worksheet As IWorksheet = Workbook.Worksheets(0)
 
-            Response.Output.Write(sw.ToString())
-            Response.Flush()
-            Response.End()
+            '    worksheet.Range(1, 1).Value = "First Name"
+            '    worksheet.Range(1, 2).Value = "Middle Name"
+            '    worksheet.Range(1, 3).Value = "Last Name"
+            '    worksheet.Range(1, 4).Value = "ID Number"
+            '    worksheet.Range(1, 5).Value = "Date of Birth"
+            '    worksheet.Range(1, 6).Value = "Gender"
+            '    worksheet.Range(1, 7).Value = "License Number"
+            '    worksheet.Range(1, 8).Value = "Email Address"
+            '    worksheet.Range(1, 9).Value = "Medical Name"
+            '    worksheet.Range(1, 10).Value = "Medical Number"
+            '    worksheet.Range(1, 11).Value = "Emergency Contact"
+            '    worksheet.Range(1, 12).Value = "Emergency Number"
+            '    worksheet.Range(1, 13).Value = "Blood Type"
+            '    worksheet.Range(1, 14).Value = "Allergies"
+            '    worksheet.Range(1, 15).Value = "Additional Info"
+            '    worksheet.Range(1, 16).Value = "Doctor Name"
+            '    worksheet.Range(1, 17).Value = "Doctor Contact"
+            '    worksheet.Range(1, 18).Value = "Club Name"
+            '    worksheet.Range(1, 19).Value = "Country"
+            '    worksheet.Range(1, 20).Value = "Address"
+            '    worksheet.Range(1, 21).Value = "City"
+            '    worksheet.Range(1, 22).Value = "Province"
+            '    worksheet.Range(1, 23).Value = "Distance"
+            '    worksheet.Range(1, 24).Value = "Category"
+            '    worksheet.Range(1, 25).Value = "Description"
+            '    worksheet.Range(1, 26).Value = "Start Time"
+            '    worksheet.Range(1, 27).Value = "Price"
+            '    worksheet.Range(1, 28).Value = "M_reference"
+            '    worksheet.Range(1, 29).Value = "Pf_Reference"
+            '    worksheet.Range(1, 30).Value = "RaceID"
+
+
+            '    For Each record In MyData
+
+            '        worksheet.Range(2, 2).Value = "Test"
+
+
+            '        'For i = 1 To MyData.GetType().GetProperties().Length
+            '        '    For j = 1 To MyData.Count()
+            '        '        worksheet.Range(i, j).Value = "Test"
+            '        '    Next
+            '        'Next
+            '    Next
+
+            '    Workbook.SaveAs("Output.xlsx", HttpContext.ApplicationInstance.Response, ExcelDownloadType.Open)
+
+            'End Using
+
 
             Return ("")
         End Function
+
+        '<Authorize>
+        'Function ExporttoExcelRaceDetail(Id As Integer?)
+        '    Dim RaceParticipants = db.Entries.Where(Function(a) a.RaceID = Id)
+        '    Dim results = db.PartDivs.Where(Function(a) RaceParticipants.Any(Function(b) b.ParticipantID = a.ParticipantID))
+        '    Dim MyData = results.ToList()
+
+
+        '    Dim Grid = New GridView With {
+        '        .DataSource = MyData
+        '    }
+        '    Grid.DataBind()
+
+
+
+        '    Response.ClearContent()
+        '    Response.Buffer = True
+        '    Response.AddHeader("content-disposition", "attachment; filename=ProntoEntries_FullRaceDetail.xls")
+        '    Response.ContentType = "application/x-ms-excel"
+
+        '    Response.Charset = ""
+        '    Dim sw = New StringWriter()
+        '    Dim htw = New HtmlTextWriter(sw)
+
+        '    Grid.RenderControl(htw)
+
+        '    Response.Output.Write(sw)
+        '    Response.Flush()
+        '    Response.End()
+
+        '    Return ("")
+        'End Function
 
     End Class
 End Namespace

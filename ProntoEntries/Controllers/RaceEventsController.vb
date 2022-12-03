@@ -69,7 +69,7 @@ Namespace Controllers
         <HttpPost()>
         <ValidateAntiForgeryToken()>
         <Authorize>
-        Function Create(<Bind(Include:="RaceID,RaceName,RaceDescription,RaceDate,RaceType,Coordinates,Address,City,Province,AdminCharge,OrgID,Image,Background,ImgDetail1,ImgDetail2,ImgDetail3,DispClasses,DispAdmCharge,DispAddress,RaceHtmlPage")> ByVal raceEvent As RaceEvent, imgFile2 As HttpPostedFileBase, imgBackground As HttpPostedFileBase) As ActionResult
+        Function Create(<Bind(Include:="RaceID,RaceName,RaceDescription,RaceDate,RaceType,Coordinates,Address,City,Province,AdminCharge,OrgID,Image,Background,ImgDetail1,ImgDetail2,ImgDetail3,DispClasses,DispAdmCharge,DispAddress,RaceHtmlPage,Indemnity,TandC,EntriesCloseDate")> ByVal raceEvent As RaceEvent, imgFile2 As HttpPostedFileBase, imgBackground As HttpPostedFileBase) As ActionResult
             Dim ImgPath1 As String
             Dim ImgPath2 As String
             If ModelState.IsValid Then
@@ -115,7 +115,7 @@ Namespace Controllers
         <HttpPost()>
         <Authorize>
         <ValidateAntiForgeryToken()>
-        Function Edit(<Bind(Include:="RaceID,RaceName,RaceDescription,RaceDate,RaceType,Coordinates,Address,City,Province,AdminCharge,OrgID,Image,Background,ImgDetail1,ImgDetail2,ImgDetail3,DispClasses,DispAdmCharge,DispAddress,RaceHtmlPage")> ByVal raceEvent As RaceEvent, imgFile2 As HttpPostedFileBase, imgBackground As HttpPostedFileBase, imgdetailfirst As HttpPostedFileBase, imgdetailsecond As HttpPostedFileBase, imgdetailthird As HttpPostedFileBase) As ActionResult
+        Function Edit(<Bind(Include:="RaceID,RaceName,RaceDescription,RaceDate,RaceType,Coordinates,Address,City,Province,AdminCharge,OrgID,Image,Background,ImgDetail1,ImgDetail2,ImgDetail3,DispClasses,DispAdmCharge,DispAddress,RaceHtmlPage,Indemnity,TandC,EntriesCloseDate")> ByVal raceEvent As RaceEvent, imgFile2 As HttpPostedFileBase, imgBackground As HttpPostedFileBase, imgdetailfirst As HttpPostedFileBase, imgdetailsecond As HttpPostedFileBase, imgdetailthird As HttpPostedFileBase) As ActionResult
             Dim ImgPath As String
 
             If ModelState.IsValid Then

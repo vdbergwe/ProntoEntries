@@ -25,7 +25,8 @@ Partial Public Class Meta_Participant
     Public Property DOB As Nullable(Of Date)
     <Required>
     Public Property Gender As String
-    <DisplayName("Club Race Number")>
+    <DisplayName("Licence Number")>
+    <Required>
     Public Property RaceNumber As String
     <DisplayName("Email")>
     <DataType(DataType.EmailAddress)>
@@ -54,6 +55,7 @@ Partial Public Class Meta_Participant
     <DisplayName("Doctor Number")>
     Public Property DoctorContact As String
     <DisplayName("Club Name")>
+    <Required>
     Public Property Clubname As String
     <Required>
     Public Property Country As String
