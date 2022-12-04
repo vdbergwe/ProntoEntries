@@ -41,37 +41,37 @@ End Code
 
         @<div Class="dashboardcontainer">
 
-    @* TOTAL ENTRIES PER DIVISION*@
+            @* TOTAL ENTRIES PER DIVISION*@
 
-    <div Class="reportitem">
-        @Html.Action("Get_EntriesPerDivision", New With {.RaceId = ViewBag.SelectedRace})
-    </div>
+            <div Class="reportitem">
+                @Html.Action("Get_EntriesPerDivision", New With {.RaceId = ViewBag.SelectedRace})
+            </div>
 
-    @* TOTAL ADD-ONS PER OPTION*@
+            @* TOTAL ADD-ONS PER OPTION*@
 
-    <div Class="reportitem">
-        @Html.Action("Get_OptionTotals", New With {.RaceId = ViewBag.SelectedRace})
-    </div>
+            <div Class="reportitem">
+                @Html.Action("Get_OptionTotals", New With {.RaceId = ViewBag.SelectedRace})
+            </div>
 
-    @* FUNDS RECEIVED PER DIVISION*@
+            @* FUNDS RECEIVED PER DIVISION*@
 
-    <div Class="reportitem">
-        @Html.Action("Get_Financials", New With {.RaceId = ViewBag.SelectedRace})
-    </div>
+            <div Class="reportitem">
+                @Html.Action("Get_Financials", New With {.RaceId = ViewBag.SelectedRace})
+            </div>
 
-    @* FUNDS RECEIVED PER DIVISION*@
+            @* FUNDS RECEIVED PER DIVISION*@
 
-    <div Class="reportitem">
-        @Html.Action("Get_FinancialsAddons", New With {.RaceId = ViewBag.SelectedRace})
-    </div>
+            <div Class="reportitem">
+                @Html.Action("Get_FinancialsAddons", New With {.RaceId = ViewBag.SelectedRace})
+            </div>
 
-    @* FUNDS RECEIVED PAYFAST*@
+            @* FUNDS RECEIVED PAYFAST*@
 
-    <div Class="reportitem">
-        @Html.Action("Get_PayFast", New With {.RaceId = ViewBag.SelectedRace})
-    </div>
+            <div Class="reportitem">
+                @Html.Action("Get_PayFast", New With {.RaceId = ViewBag.SelectedRace})
+            </div>
 
-</div>
+        </div>
     Else
         @<div style="text-align:center">
             <p>Please Select Event</p>

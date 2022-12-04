@@ -38,9 +38,9 @@ End Code
                     <th>
                         @Html.DisplayNameFor(Function(model) model.Status)
                     </th>
-                    <th style="text-align: center">
+                    @*<th style="text-align: center">
                         Additional Items
-                    </th>
+                    </th>*@
                 </tr>
                 <tr>
                     <template>
@@ -67,10 +67,10 @@ End Code
                         <td>
                             @Html.DisplayFor(Function(modelItem) item.Status)
                         </td>
-                        <td>
+                        @*<td>
                             @Html.Action("ViewAddOns", "AddonOptions", New With {.Id = item.PaymentReference, .ParticipantID = item.ParticipantID})
 
-                        </td>
+                        </td>*@
                         <td>
                             @Html.ActionLink("Print Ticket", "GenerateTicket", New With {.id = item.EntryID}) @*|
                                 @Html.ActionLink("Details", "Details", New With {.id = item.EntryID}) |

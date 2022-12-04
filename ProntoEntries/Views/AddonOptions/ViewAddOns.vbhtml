@@ -3,36 +3,36 @@
 ViewData("Title") = "Index"
 End Code
 
-<table class="table">
+<table class="tablereport">
     <tr>
-        <th>
+        @*<th>
 
-        </th>
+        </th>*@
         <th>
             Description
         </th>
         <th>
-            @Html.DisplayNameFor(Function(model) model.Size)
+            Option
         </th>
-        <th>
+        @*<th>
             @Html.DisplayNameFor(Function(model) model.Amount)
-        </th>
-        <th></th>
+        </th>*@
+        @*<th></th>*@
     </tr>
 
 @For Each item In Model
     @<tr>
-        <td></td>
+        @*<td></td>*@
         <td>
             @Html.Action("Get_ItemName", New With {.Id = item.ItemID})
         </td>
         <td>
             @Html.DisplayFor(Function(modelItem) item.Size)
         </td>
-        <td>
+        @*<td>
             R
             @Html.DisplayFor(Function(modelItem) item.Amount)
-        </td>
+        </td>*@
         @*<td>
             @Html.ActionLink("Edit", "Edit", New With {.id = item.OptionID }) |
             @Html.ActionLink("Details", "Details", New With {.id = item.OptionID }) |

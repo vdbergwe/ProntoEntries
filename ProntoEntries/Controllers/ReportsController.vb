@@ -57,6 +57,30 @@ Namespace Controllers
             Return View(results.ToList())
         End Function
 
+        Function EntryDetail(ByVal Id As Integer?, ByVal RaceID As Integer?, ByVal SearchValue As String) As ActionResult
+            Dim Participant = db.Participants.Where(Function(a) a.ParticipantID = Id).FirstOrDefault()
+            ViewBag.RaceID = RaceID
+            ViewBag.SearchValue = SearchValue
+
+            Dim Entry = db.Entries.Where(Function(a) a.ParticipantID = Id And RaceID = RaceID).FirstOrDefault()
+
+            ViewBag.Distance = db.Divisions.Where(Function(a) a.DivisionID = Entry.DivisionID).Select(Function(b) b.Distance).FirstOrDefault()
+            ViewBag.Category = db.Divisions.Where(Function(a) a.DivisionID = Entry.DivisionID).Select(Function(b) b.Category).FirstOrDefault()
+            ViewBag.Collection = db.Divisions.Where(Function(a) a.DivisionID = Entry.DivisionID).Select(Function(b) b.Description).FirstOrDefault()
+
+            'Addon
+            ViewBag.ParticipantID = Entry.ParticipantID
+
+
+            ViewBag.Pfref = Entry.PayFastReference
+            ViewBag.Mref = db.pflogs.Where(Function(a) a.Pf_reference = Entry.PayFastReference).Select(Function(b) b.M_reference).FirstOrDefault()
+            ViewBag.Amount = db.pflogs.Where(Function(a) a.Pf_reference = Entry.PayFastReference).Select(Function(b) b.amount_gross).FirstOrDefault()
+
+
+
+            Return View(Participant)
+        End Function
+
         Function Get_EntriesPerDivision(ByVal RaceId As Integer?) As ActionResult
             Dim EventDivisions = db.Divisions.Where(Function(a) a.RaceID = RaceId)
 
@@ -223,7 +247,7 @@ Namespace Controllers
                     worksheet.Cell(row, 21).Value = record.City
                     worksheet.Cell(row, 22).Value = record.Province
                     worksheet.Cell(row, 23).Value = record.Distance
-                    worksheet.Cell(row, 24).Value = record.Distance
+                    worksheet.Cell(row, 24).Value = record.Category
                     worksheet.Cell(row, 25).Value = record.Description
 
                     Newtime = record.StartTime

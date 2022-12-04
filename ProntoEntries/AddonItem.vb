@@ -15,5 +15,7 @@ Partial Public Class AddonItem
     Public Property RaceID As Nullable(Of Integer)
     Public Property Name As String
     Public Property Description As String
+    Public Property Required As Boolean
+    Public Property AllowedInShop As Boolean
 
 End Class

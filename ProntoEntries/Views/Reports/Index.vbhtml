@@ -9,22 +9,22 @@ End Code
         <h2>Search - Entries</h2>
         @If ViewBag.SelectedRace IsNot Nothing Then
             @<div>
-                 <ul>
-                     <li>
-                         @Html.ActionLink("Export Race Detail", "ExporttoExcelRaceDetail", New With {.id = ViewBag.SelectedRace})
-                     </li>
-                     <li>
-                         @Html.ActionLink("Export All Participants", "ExporttoExcel", New With {.id = ViewBag.SelectedRace})
-                     </li>
-                 </ul>
+                <ul>
+                    <li>
+                        @Html.ActionLink("Export Race Detail", "ExporttoExcelRaceDetail", New With {.id = ViewBag.SelectedRace})
+                    </li>
+                    <li>
+                        @Html.ActionLink("Export All Participants", "ExporttoExcel", New With {.id = ViewBag.SelectedRace})
+                    </li>
+                </ul>
             </div>
         End If
     </div>
 
     <hr />
 
-    
-        
+
+
     <form action="" method="get">
         <div class="DropdownSearches">
             <div Class="DropdownSearches item" , id="eventselect">
@@ -37,7 +37,7 @@ End Code
             </div>
         </div>
     </form>
-   
+
     <hr />
     @If (Model.Count() > 0) Then
         @<div Class="ReportContent">
@@ -78,6 +78,8 @@ End Code
                             @Html.DisplayFor(Function(modelItem) item.EmailAddress)
                         </td>
                         <td>
+                            @Html.ActionLink("Details", "EntryDetail", "Reports", New With {.id = item.ParticipantID, .RaceID = ViewBag.SelectedRace, .SearchValue = ViewBag.SearchText}, Nothing)
+
                             @*@If (ViewBag.DivisionSelect > 0) Then
                                     @Html.ActionLink("Enter Event", "VerifyEntry", "Entries", New With {.id = item.ParticipantID, .RaceID1 = ViewBag.RaceID, .DivisionID1 = ViewBag.DivisionSelect}, Nothing)
                                     @Html.ActionLink("Add to Cart", "Addtocart", "Entries", New With {.id = item.ParticipantID, .RaceID = ViewBag.RaceID, .DivisionID = ViewBag.DivisionSelect}, Nothing)
@@ -98,12 +100,12 @@ End Code
 </div>
 
 @*@Section Scripts
-    @Scripts.Render("~/bundles/jqueryval")
-    <script>
-        function runsearch() {
-            var RaceID = $("#eventselect option:selected").val();
-            var SearchText = $("#SearchValue").val();
-            window.location.replace("?RaceID=" + RaceID + "&SearchText=" + SearchText);
-        }
-    </script>
-End Section*@
+        @Scripts.Render("~/bundles/jqueryval")
+        <script>
+            function runsearch() {
+                var RaceID = $("#eventselect option:selected").val();
+                var SearchText = $("#SearchValue").val();
+                window.location.replace("?RaceID=" + RaceID + "&SearchText=" + SearchText);
+            }
+        </script>
+    End Section*@

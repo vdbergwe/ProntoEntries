@@ -9,6 +9,7 @@ Partial Public Class Meta_Division
     Public Property DivisionID As Integer
     Public Property Distance As Nullable(Of Decimal)
     Public Property Category As String
+    <DisplayName("Collection Point")>
     Public Property Description As String
     <DisplayName("Start Time")>
     <DataType(DataType.Time)>

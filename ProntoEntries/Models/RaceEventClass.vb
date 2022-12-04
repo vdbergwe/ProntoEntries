@@ -51,5 +51,11 @@ Partial Public Class Meta_RaceEvent
     <DataType(DataType.Date)>
     <DisplayFormat(DataFormatString:="{0:yyyy-MM-dd}", ApplyFormatInEditMode:=True)>
     Public Property EntriesCloseDate As Nullable(Of Date)
+    <DisplayName("Bill Payfast To Client")>
+    Public Property PF_ToClient As Boolean
+    <DisplayName("Bill Admin Cost To Client")>
+    Public Property Admin_ToClient As Boolean
+    <DisplayName("Agreed PCS Admin Rate")>
+    Public Property Admin_Rate As Decimal
 
 End Class

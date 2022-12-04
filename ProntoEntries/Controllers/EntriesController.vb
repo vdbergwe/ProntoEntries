@@ -37,17 +37,36 @@ Namespace Controllers
                 Dim Transaction = db.Sales.Where(Function(a) a.Pf_reference Is Nothing And a.UserID = paymentdata.custom_str1)
                 Dim OrgID = db.RaceEvents.Where(Function(a) a.RaceID = SingleTransaction.RaceID).Select(Function(b) b.OrgID).FirstOrDefault()
                 Dim OrgPassphrase = db.PaymentDetails.Where(Function(a) a.OrgID = OrgID).Select(Function(b) b.MerchantPassPhrase).FirstOrDefault()
+
+                Dim RaceID = Transaction.Where(Function(a) a.RaceID IsNot Nothing).Select(Function(b) b.RaceID).FirstOrDefault()
+                Dim Admin_rate = db.RaceEvents.Where(Function(a) a.RaceID = RaceID).Select(Function(b) b.Admin_Rate).FirstOrDefault() / 100
+                Dim EntriesTotal = 0.00
+
                 ViewBag.Total = 0.00
                 For Each sale In Transaction
                     If sale.OptionID Is Nothing Then
                         ViewBag.Total += db.Divisions.Where(Function(a) a.DivisionID = sale.DivisionID).Select(Function(b) b.Price).FirstOrDefault()
+                        EntriesTotal += db.Divisions.Where(Function(a) a.DivisionID = sale.DivisionID).Select(Function(b) b.Price).FirstOrDefault()
                     End If
                     If sale.RaceID Is Nothing Then
                         ViewBag.Total += db.AddonOptions.Where(Function(a) a.OptionID = sale.OptionID).Select(Function(b) b.Amount).FirstOrDefault()
                     End If
                 Next
 
-                ViewBag.Total = Math.Round(ViewBag.Total, 2)
+                Dim PCSAdminCharge = 0.00
+                Dim PFAdminCharge = 0.00
+
+                If db.RaceEvents.Where(Function(a) a.RaceID = RaceID).Select(Function(b) b.Admin_ToClient).FirstOrDefault() = True Then
+                    PCSAdminCharge = (EntriesTotal * Admin_rate)
+                End If
+
+                If db.RaceEvents.Where(Function(a) a.RaceID = RaceID).Select(Function(b) b.PF_ToClient).FirstOrDefault() = True Then
+                    PFAdminCharge = ((ViewBag.Total + PCSAdminCharge + 2) / 0.965) - ViewBag.Total - PCSAdminCharge
+                End If
+
+                Dim AdminCharge = PCSAdminCharge + PFAdminCharge
+
+                ViewBag.Total = Math.Round(ViewBag.Total + AdminCharge, 2)
 
                 If (paymentdata.amount_gross = ViewBag.Total) Then
                     Dim MD5String = "m_payment_id=" + System.Net.WebUtility.UrlEncode(paymentdata.m_payment_id) _
@@ -130,18 +149,37 @@ Namespace Controllers
             Dim OrgID = db.RaceEvents.Where(Function(a) a.RaceID = SingleTransaction.RaceID).Select(Function(b) b.OrgID).FirstOrDefault()
             Dim OrgPassphrase = db.PaymentDetails.Where(Function(a) a.OrgID = OrgID).Select(Function(b) b.MerchantPassPhrase).FirstOrDefault()
             Dim hosturl = "https://entries.prontocs.co.za"
+            'Dim hosturl = "https://7c13-197-245-42-36.in.ngrok.io"
+
+            Dim RaceID = Transaction.Where(Function(a) a.RaceID IsNot Nothing).Select(Function(b) b.RaceID).FirstOrDefault()
+            Dim Admin_rate = db.RaceEvents.Where(Function(a) a.RaceID = RaceID).Select(Function(b) b.Admin_Rate).FirstOrDefault() / 100
+            Dim EntriesTotal = 0.00
 
             Dim Total = 0.00
             For Each sale In Transaction
                 If sale.OptionID Is Nothing Then
                     Total += db.Divisions.Where(Function(a) a.DivisionID = sale.DivisionID).Select(Function(b) b.Price).FirstOrDefault()
+                    EntriesTotal += db.Divisions.Where(Function(a) a.DivisionID = sale.DivisionID).Select(Function(b) b.Price).FirstOrDefault()
                 End If
                 If sale.RaceID Is Nothing Then
                     Total += db.AddonOptions.Where(Function(a) a.OptionID = sale.OptionID).Select(Function(b) b.Amount).FirstOrDefault()
                 End If
             Next
 
-            ViewBag.Total = Math.Round(Total, 2)
+            Dim PCSAdminCharge = 0.00
+            Dim PFAdminCharge = 0.00
+
+            If db.RaceEvents.Where(Function(a) a.RaceID = RaceID).Select(Function(b) b.Admin_ToClient).FirstOrDefault() = True Then
+                PCSAdminCharge = (EntriesTotal * Admin_rate)
+            End If
+
+            If db.RaceEvents.Where(Function(a) a.RaceID = RaceID).Select(Function(b) b.PF_ToClient).FirstOrDefault() = True Then
+                PFAdminCharge = ((Total + PCSAdminCharge + 2) / 0.965) - Total - PCSAdminCharge
+            End If
+
+            Dim AdminCharge = PCSAdminCharge + PFAdminCharge
+
+            Total = Math.Round(Total + AdminCharge, 2)
 
             ViewBag.MReference = db.Sales.Where(Function(a) a.Pf_reference Is Nothing And a.UserID = User.Identity.Name).Select(Function(b) b.M_reference).FirstOrDefault()
             ViewBag.EmailAddress = User.Identity.Name
@@ -152,7 +190,6 @@ Namespace Controllers
             ViewBag.CancelURL = hosturl + "/Entries/Cart"
             ViewBag.NotifyURL = hosturl + "/Entries/Confirmpayment"
             ViewBag.item_name = db.RaceEvents.Where(Function(a) a.RaceID = SingleTransaction.RaceID).Select(Function(b) b.RaceName).FirstOrDefault()
-            ViewBag.Amount = ViewBag.Total
 
             Dim TransactionString = "merchant_id=" + System.Net.WebUtility.UrlEncode(ViewBag.MerchantID) + "&merchant_key=" + System.Net.WebUtility.UrlEncode(ViewBag.Merchant_key) _
                  + "&return_url=" + System.Net.WebUtility.UrlEncode(ViewBag.ReturnURL) + "&cancel_url=" + System.Net.WebUtility.UrlEncode(ViewBag.CancelURL) _
@@ -181,12 +218,32 @@ Namespace Controllers
         ' GET: Entries/Cart
         <Authorize>
         Function Cart(ByVal id As Integer?, ByVal DivisionSelect As Integer?) As ActionResult
+
             Dim CartContent = db.Sales.Where(Function(a) a.Pf_reference Is Nothing And a.UserID = User.Identity.Name).OrderBy(Function(b) b.ParticipantID).ThenByDescending(Function(b) b.RaceID)
+            Dim ParticipantsInCart = CartContent.Select(Function(a) a.ParticipantID).Distinct().ToList()
             ViewBag.UniqueP = CartContent.Select(Function(a) a.ParticipantID).Distinct().ToList()
+
+            For Each Participant In ParticipantsInCart
+                Dim CheckEntry = CartContent.Where(Function(a) a.ParticipantID = Participant And a.RaceID IsNot Nothing).Count()
+                If CheckEntry = 0 Then
+                    Dim DeleteSales = db.Sales.Where(Function(a) a.ParticipantID = Participant And a.Pf_reference Is Nothing And a.UserID = User.Identity.Name).ToList()
+                    For Each Tsale In DeleteSales
+                        Dim sale As Sale = db.Sales.Find(Tsale.SaleID)
+                        db.Sales.Remove(sale)
+                        db.SaveChanges()
+                    Next
+                End If
+            Next
+
+            Dim RaceID = CartContent.Where(Function(a) a.RaceID IsNot Nothing).Select(Function(b) b.RaceID).FirstOrDefault()
+            Dim Admin_rate = db.RaceEvents.Where(Function(a) a.RaceID = RaceID).Select(Function(b) b.Admin_Rate).FirstOrDefault() / 100
+            Dim EntriesTotal = 0.00
+
             ViewBag.Total = 0
             For Each sale In CartContent
                 If sale.OptionID Is Nothing Then
                     ViewBag.Total = ViewBag.Total + db.Divisions.Where(Function(a) a.DivisionID = sale.DivisionID).Select(Function(b) b.Price).FirstOrDefault()
+                    EntriesTotal += db.Divisions.Where(Function(a) a.DivisionID = sale.DivisionID).Select(Function(b) b.Price).FirstOrDefault()
                 End If
 
                 If sale.RaceID Is Nothing Then
@@ -194,7 +251,22 @@ Namespace Controllers
                 End If
             Next
 
-            ViewBag.Total = Math.Round(ViewBag.Total, 2)
+            Dim PCSAdminCharge = 0.00
+            Dim PFAdminCharge = 0.00
+
+            If db.RaceEvents.Where(Function(a) a.RaceID = RaceID).Select(Function(b) b.Admin_ToClient).FirstOrDefault() = True Then
+                PCSAdminCharge = (EntriesTotal * Admin_rate)
+            End If
+
+            If db.RaceEvents.Where(Function(a) a.RaceID = RaceID).Select(Function(b) b.PF_ToClient).FirstOrDefault() = True Then
+                PFAdminCharge = ((ViewBag.Total + PCSAdminCharge + 2) / 0.965) - ViewBag.Total - PCSAdminCharge
+            End If
+
+            Dim AdminCharge = PCSAdminCharge + PFAdminCharge
+
+            ViewBag.AdminCharge = Math.Round(AdminCharge, 2)
+
+            ViewBag.Total = Math.Round(ViewBag.Total + AdminCharge, 2)
 
             Return View(CartContent.ToList())
         End Function
@@ -289,6 +361,8 @@ Namespace Controllers
             ViewBag.OptionID = OptionID1
             ViewBag.ItemID = ItemID
 
+
+
             Dim holding = db.Sales.Where(Function(a) a.ParticipantID = Id And a.Pf_reference Is Nothing)
             Dim AddItems = db.AddonItems.Where(Function(a) a.RaceID = RaceID1 And Not holding.Any(Function(b) b.ItemID = a.ItemID))
 
@@ -315,6 +389,8 @@ Namespace Controllers
                 End If
                 ViewBag.OptionID = Nothing
             End If
+
+            ViewBag.Required = AddItems.Where(Function(a) a.Required = True).Count()
 
             Return View(AddItems.ToList())
         End Function
@@ -351,7 +427,7 @@ Namespace Controllers
         End Function
 
         Function Get_DivisionName(Id As Integer?) As ActionResult
-            ViewBag.DivisionName = db.Divisions.Where(Function(a) a.DivisionID = Id).Select(Function(b) b.Description).FirstOrDefault()
+            ViewBag.DivisionName = db.Divisions.Where(Function(a) a.DivisionID = Id).Select(Function(b) b.Category).FirstOrDefault()
             Return PartialView()
         End Function
 

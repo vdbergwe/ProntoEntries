@@ -26,6 +26,11 @@ End Code
     @If ViewBag.DivisionCheck = 0 Then
         @<p>No Suitable Age Class Available for the distance selected</p>
     Else
+        @If ViewBag.Required > 0 Then
+            @<div class="warningbanner">
+                Required Item Selection Outstanding
+            </div>
+        End If
         @If Model.Count > 0 Then
             @<Table Class="table">
                 <tr>
@@ -34,6 +39,9 @@ End Code
                     </th>
                     <th>
                         @Html.DisplayNameFor(Function(model) model.Description)
+                    </th>
+                    <th>
+                        Required
                     </th>
                     <th>
                         Options
@@ -48,6 +56,13 @@ End Code
                         </td>
                         <td>
                             @Html.DisplayFor(Function(modelItem) item.Description)
+                        </td>
+                        <td>
+                            @If item.Required = True Then
+                                @<p>
+                                    Yes
+                                </p>
+                            End If
                         </td>
                         <td>
                             @Html.Action("get_AddonOptionList", New With {.Id = item.ItemID, .RaceID1 = ViewBag.RaceID, .DivisionID1 = ViewBag.DivisionID, .OptionID1 = ViewBag.OptionID, .ParticipantID = ViewBag.ParticipantID})
@@ -70,13 +85,17 @@ End Code
             <p>
                 @ViewBag.Indemnity
             </p>
-            <div Class="button-group">
-                <div Class="linkbutton">
-                    @*<button onclick="confirmaction()">Accept</button>*@
-                    @Html.ActionLink("Accept", "Addtocart", "Entries", New With {.Id = ViewBag.ParticipantID, .RaceID = ViewBag.RaceID, .Distance = ViewBag.DivisionID}, New With {.onclick = " return confirm('Please confirm all required Addons were selected.  By clicking on OK, you acknowledge acceptance of the indemnity waiver and Terms and Conditions clauses.');"})
+            @If ViewBag.Required > 0 Then
 
+            Else
+                @<div Class="button-group">
+                    <div Class="linkbutton">
+                        @*<button onclick="confirmaction()">Accept</button>*@
+                        @Html.ActionLink("Accept", "Addtocart", "Entries", New With {.Id = ViewBag.ParticipantID, .RaceID = ViewBag.RaceID, .Distance = ViewBag.DivisionID}, New With {.onclick = " return confirm('Please confirm all required Addons were selected.  By clicking on OK, you acknowledge acceptance of the indemnity waiver and Terms and Conditions clauses.');"})
+                    </div>
                 </div>
-            </div>
+            End If
+
         </div>
     End If
 

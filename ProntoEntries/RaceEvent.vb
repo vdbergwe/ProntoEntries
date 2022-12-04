@@ -34,5 +34,8 @@ Partial Public Class RaceEvent
     Public Property Indemnity As String
     Public Property TandC As String
     Public Property EntriesCloseDate As Nullable(Of Date)
+    Public Property PF_ToClient As Boolean
+    Public Property Admin_ToClient As Boolean
+    Public Property Admin_Rate As Decimal
 
 End Class

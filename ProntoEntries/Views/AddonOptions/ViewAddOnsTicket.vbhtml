@@ -9,7 +9,7 @@ End Code
             Item
         </th>
         <th>
-            @Html.DisplayNameFor(Function(model) model.Size)
+            Option
         </th>
     </tr>
 

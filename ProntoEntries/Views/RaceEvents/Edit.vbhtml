@@ -217,6 +217,24 @@ End Code
                 @Html.CheckBoxFor(Function(model) model.DispAddress, New With {.htmlAttributes = New With {.class = "toggle-checkbox"}})
                 @Html.ValidationMessageFor(Function(model) model.DispAddress, "", New With {.class = "text-danger"})
             </div>
+            <div Class="toggle-item">
+                @Html.LabelFor(Function(model) model.PF_ToClient, htmlAttributes:=New With {.class = "toggle-label", .id = "labelDispAddress"})
+                @Html.CheckBoxFor(Function(model) model.PF_ToClient, New With {.htmlAttributes = New With {.class = "toggle-checkbox"}})
+                @Html.ValidationMessageFor(Function(model) model.PF_ToClient, "", New With {.class = "text-danger"})
+            </div>
+            <div Class="toggle-item">
+                @Html.LabelFor(Function(model) model.Admin_ToClient, htmlAttributes:=New With {.class = "toggle-label", .id = "labelDispAddress"})
+                @Html.CheckBoxFor(Function(model) model.Admin_ToClient, New With {.htmlAttributes = New With {.class = "toggle-checkbox"}})
+                @Html.ValidationMessageFor(Function(model) model.Admin_ToClient, "", New With {.class = "text-danger"})
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(Function(model) model.Admin_Rate, htmlAttributes:=New With {.class = "control-label col-md-2"})
+            <div class="col-md-10">
+                @Html.EditorFor(Function(model) model.Admin_Rate, New With {.htmlAttributes = New With {.class = "form-control"}})
+                @Html.ValidationMessageFor(Function(model) model.Admin_Rate, "", New With {.class = "text-danger"})
+            </div>
         </div>
 
         <div class="form-group">

@@ -117,17 +117,18 @@ End Code
                             <strong>Distance:</strong> <br />
                             @Html.Action("Get_Distance", New With {.Id = item.DivisionID})
                             <br />
-                            <Strong>Division:</Strong> <br />
+                            <Strong>Category:</Strong> <br />
                             @Html.Action("Get_DivisionName", New With {.Id = item.DivisionID})
                         </td>
                         <td style="padding: 0 0 0 10px;">
                             <Strong>Add-ons:</Strong> <br />
                             @Html.Action("ViewAddOnsTicket", "AddonOptions", New With {.Id = item.PaymentReference, .ParticipantID = item.ParticipantID})
-                            <br />
-                            <br />
+                            <Strong>Collection Point:</Strong> <br />
+                            @Html.Action("Get_DivisionName", New With {.Id = item.DivisionID})
+
                         </td>
-                        <td>
-                        </td>
+                        @*<td>
+                        </td>*@
                     </tr>
                 Next
             </table>
