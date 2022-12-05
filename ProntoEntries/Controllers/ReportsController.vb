@@ -109,11 +109,10 @@ Namespace Controllers
 
         Function Get_PayFast(ByVal RaceId As Integer?) As ActionResult
             Dim AllPFReferences = db.Sales.Where(Function(a) a.RaceID = RaceId).Distinct()
-            Dim PFTransactions = db.pflogs.Where(Function(a) AllPFReferences.Any(Function(b) b.Pf_reference <> a.Pf_reference))
+            Dim PFTransactions = db.pflogs.Where(Function(a) AllPFReferences.Any(Function(b) b.Pf_reference = a.Pf_reference))
             ViewBag.Amount_Gross = PFTransactions.Select(Function(a) a.amount_gross).Sum()
             ViewBag.Amount_Fee = PFTransactions.Select(Function(a) a.amount_fee).Sum()
             ViewBag.Amount_Net = PFTransactions.Select(Function(a) a.amount_net).Sum()
-
 
             Return PartialView()
         End Function
@@ -127,7 +126,7 @@ Namespace Controllers
         End Function
 
         Function Get_OptionCount(Id As Integer?) As ActionResult
-            ViewBag.OptionCount = db.Sales.Where(Function(a) a.OptionID = Id).Count()
+            ViewBag.OptionCount = db.Sales.Where(Function(a) a.OptionID = Id And a.Pf_reference IsNot Nothing).Count()
             Return PartialView()
         End Function
 
@@ -140,7 +139,7 @@ Namespace Controllers
         End Function
 
         Function Get_AddonTotalAmount(Id As Integer?) As ActionResult
-            Dim OptionCount = db.Sales.Where(Function(a) a.OptionID = Id).Count()
+            Dim OptionCount = db.Sales.Where(Function(a) a.OptionID = Id And a.Pf_reference IsNot Nothing).Count()
             Dim OptionPrice = db.AddonOptions.Where(Function(a) a.OptionID = Id).Select(Function(b) b.Amount).FirstOrDefault()
             ViewBag.AddonTotalAmount = OptionCount * OptionPrice
 
