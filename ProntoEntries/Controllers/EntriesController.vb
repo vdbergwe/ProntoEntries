@@ -280,7 +280,10 @@ Namespace Controllers
             ViewBag.Background = raceEvent.Background
             ViewBag.OrgImage = Organiser.Image
             ViewBag.DivisionSelect = DivisionSelect
-            ViewBag.Distance = New SelectList(db.Divisions.Where(Function(a) a.RaceID = id), "Distance", "Distance", DivisionSelect).Distinct()
+            Dim Distances = db.Divisions.Where(Function(a) a.RaceID = id).Select(Function(b) b.Distance).Distinct()
+            ViewBag.Distance = New SelectList(Distances, Nothing, Nothing, DivisionSelect)
+            'ViewBag.Distance = New SelectList(db.Divisions.Where(Function(a) a.RaceID = id), "Distance", "Distance", DivisionSelect)
+
 
             ViewBag.DivisionID = New SelectList(db.Divisions.Where(Function(a) a.RaceID = id), "DivisionID", "Category", DivisionSelect)
             ViewBag.Background = raceEvent.Background
