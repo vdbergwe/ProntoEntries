@@ -193,6 +193,12 @@ End Code
                     @Html.EditorFor(Function(model) model.RaceNumber, New With {.htmlAttributes = New With {.class = "partelement item"}})
                     @Html.ValidationMessageFor(Function(model) model.RaceNumber, "", New With {.class = "text-danger"})
                 </div>
+
+                <div class="partelement">
+                    @Html.LabelFor(Function(model) model.Province, htmlAttributes:=New With {.class = "control-label col-md-2 labelfix"})
+                    @Html.EditorFor(Function(model) model.Province, New With {.htmlAttributes = New With {.class = "partelement item"}})
+                    @Html.ValidationMessageFor(Function(model) model.Province, "", New With {.class = "text-danger"})
+                </div>
             </div>
         </div>
 
@@ -220,13 +226,7 @@ End Code
                     @Html.LabelFor(Function(model) model.City, htmlAttributes:=New With {.class = "control-label col-md-2 labelfix"})
                     @Html.EditorFor(Function(model) model.City, New With {.htmlAttributes = New With {.class = "partelement item"}})
                     @Html.ValidationMessageFor(Function(model) model.City, "", New With {.class = "text-danger"})
-                </div>
-
-                <div class="partelement">
-                    @Html.LabelFor(Function(model) model.Province, htmlAttributes:=New With {.class = "control-label col-md-2 labelfix"})
-                    @Html.EditorFor(Function(model) model.Province, New With {.htmlAttributes = New With {.class = "partelement item"}})
-                    @Html.ValidationMessageFor(Function(model) model.Province, "", New With {.class = "text-danger"})
-                </div>
+                </div>               
             </div>
         </div>
 

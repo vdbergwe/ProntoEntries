@@ -36,6 +36,6 @@ Partial Public Class RaceEvent
     Public Property EntriesCloseDate As Nullable(Of Date)
     Public Property PF_ToClient As Boolean
     Public Property Admin_ToClient As Boolean
-    Public Property Admin_Rate As Decimal
+    Public Property Admin_Rate As Nullable(Of Decimal)
 
 End Class

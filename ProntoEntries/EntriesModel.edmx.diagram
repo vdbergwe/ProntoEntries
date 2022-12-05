@@ -9,26 +9,26 @@
         <EntityTypeShape EntityType="EntriesDBModel.AddonItem" Width="1.5" PointX="2.75" PointY="6.75" />
         <EntityTypeShape EntityType="EntriesDBModel.AddonOption" Width="1.5" PointX="4.75" PointY="6.75" />
         <EntityTypeShape EntityType="EntriesDBModel.AspNetRole" Width="1.5" PointX="0.75" PointY="2.5" />
-        <EntityTypeShape EntityType="EntriesDBModel.AspNetUserClaim" Width="1.5" PointX="5.25" PointY="3.625" />
-        <EntityTypeShape EntityType="EntriesDBModel.AspNetUserLogin" Width="1.5" PointX="5.25" PointY="1" />
+        <EntityTypeShape EntityType="EntriesDBModel.AspNetUserClaim" Width="1.5" PointX="5.25" PointY="1" />
+        <EntityTypeShape EntityType="EntriesDBModel.AspNetUserLogin" Width="1.5" PointX="5.25" PointY="3.75" />
         <EntityTypeShape EntityType="EntriesDBModel.AspNetUser" Width="1.5" PointX="3" PointY="1.375" />
         <EntityTypeShape EntityType="EntriesDBModel.Division" Width="1.5" PointX="6.75" PointY="6.75" />
         <EntityTypeShape EntityType="EntriesDBModel.Entry" Width="1.5" PointX="7.75" PointY="0.75" />
         <EntityTypeShape EntityType="EntriesDBModel.Organiser" Width="1.5" PointX="8.75" PointY="5.75" />
+        <EntityTypeShape EntityType="EntriesDBModel.Participant" Width="1.5" PointX="0.75" PointY="9.75" />
         <EntityTypeShape EntityType="EntriesDBModel.PaymentDetail" Width="1.5" PointX="9.75" PointY="0.75" />
         <EntityTypeShape EntityType="EntriesDBModel.pflog" Width="1.5" PointX="2.75" PointY="9.75" />
         <EntityTypeShape EntityType="EntriesDBModel.RaceEvent" Width="1.5" PointX="8.75" PointY="9.75" />
         <EntityTypeShape EntityType="EntriesDBModel.Sale" Width="1.5" PointX="10.75" PointY="3.75" />
         <EntityTypeShape EntityType="EntriesDBModel.Substitution" Width="1.5" PointX="4.75" PointY="10.75" />
-        <EntityTypeShape EntityType="EntriesDBModel.SystemLog" Width="1.5" PointX="10.75" PointY="7.75" />
-        <EntityTypeShape EntityType="EntriesDBModel.TypeLookup" Width="1.5" PointX="10.75" PointY="10.75" />
+        <EntityTypeShape EntityType="EntriesDBModel.SystemLog" Width="1.5" PointX="10.75" PointY="8.75" />
+        <EntityTypeShape EntityType="EntriesDBModel.TypeLookup" Width="1.5" PointX="11.75" PointY="0.75" />
+        <EntityTypeShape EntityType="EntriesDBModel.AddonView" Width="1.5" PointX="10.75" PointY="11.75" />
+        <EntityTypeShape EntityType="EntriesDBModel.PartDiv" Width="1.5" PointX="12.75" PointY="3.75" />
+        <EntityTypeShape EntityType="EntriesDBModel.ParticipantExport" Width="1.5" PointX="12.75" PointY="11.75" />
         <AssociationConnector Association="EntriesDBModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" />
         <AssociationConnector Association="EntriesDBModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" />
         <AssociationConnector Association="EntriesDBModel.AspNetUserRoles" />
-        <EntityTypeShape EntityType="EntriesDBModel.ParticipantExport" Width="1.5" PointX="13.375" PointY="0.75" />
-        <EntityTypeShape EntityType="EntriesDBModel.AddonView" Width="1.5" PointX="3.375" PointY="13.75" />
-        <EntityTypeShape EntityType="EntriesDBModel.Participant" Width="1.5" PointX="0.75" PointY="13.75" />
-        <EntityTypeShape EntityType="EntriesDBModel.PartDiv" Width="1.5" PointX="5.75" PointY="13.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

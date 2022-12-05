@@ -32,6 +32,7 @@ Partial Public Class EntriesDBEntities
     Public Overridable Property Divisions() As DbSet(Of Division)
     Public Overridable Property Entries() As DbSet(Of Entry)
     Public Overridable Property Organisers() As DbSet(Of Organiser)
+    Public Overridable Property Participants() As DbSet(Of Participant)
     Public Overridable Property PaymentDetails() As DbSet(Of PaymentDetail)
     Public Overridable Property pflogs() As DbSet(Of pflog)
     Public Overridable Property RaceEvents() As DbSet(Of RaceEvent)
@@ -39,9 +40,8 @@ Partial Public Class EntriesDBEntities
     Public Overridable Property Substitutions() As DbSet(Of Substitution)
     Public Overridable Property SystemLogs() As DbSet(Of SystemLog)
     Public Overridable Property TypeLookups() As DbSet(Of TypeLookup)
-    Public Overridable Property ParticipantExports() As DbSet(Of ParticipantExport)
     Public Overridable Property AddonViews() As DbSet(Of AddonView)
-    Public Overridable Property Participants() As DbSet(Of Participant)
     Public Overridable Property PartDivs() As DbSet(Of PartDiv)
+    Public Overridable Property ParticipantExports() As DbSet(Of ParticipantExport)
 
 End Class
