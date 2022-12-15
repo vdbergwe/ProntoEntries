@@ -148,8 +148,8 @@ Namespace Controllers
             Dim Transaction = db.Sales.Where(Function(a) a.Pf_reference Is Nothing And a.UserID = User.Identity.Name)
             Dim OrgID = db.RaceEvents.Where(Function(a) a.RaceID = SingleTransaction.RaceID).Select(Function(b) b.OrgID).FirstOrDefault()
             Dim OrgPassphrase = db.PaymentDetails.Where(Function(a) a.OrgID = OrgID).Select(Function(b) b.MerchantPassPhrase).FirstOrDefault()
-            'Dim hosturl = "https://entries.prontocs.co.za"
-            Dim hosturl = "https://7c13-197-245-42-36.in.ngrok.io"
+            Dim hosturl = "https://entries.prontocs.co.za"
+            'Dim hosturl = "https://7c13-197-245-42-36.in.ngrok.io"
 
             Dim RaceID = Transaction.Where(Function(a) a.RaceID IsNot Nothing).Select(Function(b) b.RaceID).FirstOrDefault()
             Dim Admin_rate = db.RaceEvents.Where(Function(a) a.RaceID = RaceID).Select(Function(b) b.Admin_Rate).FirstOrDefault() / 100
