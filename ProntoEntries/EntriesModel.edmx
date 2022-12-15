@@ -119,6 +119,7 @@
           <Property Name="TransferID" Type="int" />
           <Property Name="Result" Type="nvarchar" MaxLength="50" />
           <Property Name="MainUserID" Type="nvarchar" MaxLength="50" />
+          <Property Name="EntrySubmitDate" Type="datetime" />
         </EntityType>
         <EntityType Name="Organiser">
           <Key>
@@ -163,6 +164,7 @@
           <Property Name="UserID" Type="nvarchar" MaxLength="50" />
           <Property Name="EventMailer" Type="bit" Nullable="false" />
           <Property Name="Offers" Type="bit" Nullable="false" />
+          <Property Name="DateAdded" Type="datetime" />
         </EntityType>
         <EntityType Name="PaymentDetails">
           <Key>
@@ -187,6 +189,7 @@
           <Property Name="amount_fee" Type="decimal" Precision="18" Scale="2" />
           <Property Name="amount_net" Type="decimal" Precision="18" Scale="2" />
           <Property Name="SaleID" Type="int" />
+          <Property Name="TAdate" Type="datetime" />
         </EntityType>
         <EntityType Name="RaceEvent">
           <Key>
@@ -235,6 +238,7 @@
           <Property Name="M_reference" Type="int" />
           <Property Name="Pf_reference" Type="int" />
           <Property Name="Verified" Type="bit" />
+          <Property Name="SaleDate" Type="datetime" />
         </EntityType>
         <EntityType Name="Substitution">
           <Key>
@@ -669,6 +673,7 @@ warning 6002: The table/view 'EntriesDB.dbo.ParticipantExport' does not have a p
           <Property Name="TransferID" Type="Int32" />
           <Property Name="Result" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="MainUserID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EntrySubmitDate" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="Organiser">
           <Key>
@@ -706,6 +711,7 @@ warning 6002: The table/view 'EntriesDB.dbo.ParticipantExport' does not have a p
           <Property Name="amount_fee" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="amount_net" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="SaleID" Type="Int32" />
+          <Property Name="TAdate" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="RaceEvent">
           <Key>
@@ -754,6 +760,7 @@ warning 6002: The table/view 'EntriesDB.dbo.ParticipantExport' does not have a p
           <Property Name="Pf_reference" Type="Int32" />
           <Property Name="OptionID" Type="Int32" />
           <Property Name="Verified" Type="Boolean" />
+          <Property Name="SaleDate" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="Substitution">
           <Key>
@@ -890,6 +897,7 @@ warning 6002: The table/view 'EntriesDB.dbo.ParticipantExport' does not have a p
           <Property Name="UserID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="EventMailer" Type="Boolean" Nullable="false" />
           <Property Name="Offers" Type="Boolean" Nullable="false" />
+          <Property Name="DateAdded" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="PartDiv">
           <Key>
@@ -1029,6 +1037,7 @@ warning 6002: The table/view 'EntriesDB.dbo.ParticipantExport' does not have a p
           <EntitySetMapping Name="Entries">
             <EntityTypeMapping TypeName="EntriesDBModel.Entry">
               <MappingFragment StoreEntitySet="Entries">
+                <ScalarProperty Name="EntrySubmitDate" ColumnName="EntrySubmitDate" />
                 <ScalarProperty Name="MainUserID" ColumnName="MainUserID" />
                 <ScalarProperty Name="Result" ColumnName="Result" />
                 <ScalarProperty Name="TransferID" ColumnName="TransferID" />
@@ -1074,6 +1083,7 @@ warning 6002: The table/view 'EntriesDB.dbo.ParticipantExport' does not have a p
           <EntitySetMapping Name="pflogs">
             <EntityTypeMapping TypeName="EntriesDBModel.pflog">
               <MappingFragment StoreEntitySet="pflogs">
+                <ScalarProperty Name="TAdate" ColumnName="TAdate" />
                 <ScalarProperty Name="SaleID" ColumnName="SaleID" />
                 <ScalarProperty Name="amount_net" ColumnName="amount_net" />
                 <ScalarProperty Name="amount_fee" ColumnName="amount_fee" />
@@ -1121,6 +1131,7 @@ warning 6002: The table/view 'EntriesDB.dbo.ParticipantExport' does not have a p
           <EntitySetMapping Name="Sales">
             <EntityTypeMapping TypeName="EntriesDBModel.Sale">
               <MappingFragment StoreEntitySet="Sales">
+                <ScalarProperty Name="SaleDate" ColumnName="SaleDate" />
                 <ScalarProperty Name="Verified" ColumnName="Verified" />
                 <ScalarProperty Name="OptionID" ColumnName="OptionID" />
                 <ScalarProperty Name="Pf_reference" ColumnName="Pf_reference" />
@@ -1222,6 +1233,7 @@ warning 6002: The table/view 'EntriesDB.dbo.ParticipantExport' does not have a p
           <EntitySetMapping Name="Participants">
             <EntityTypeMapping TypeName="EntriesDBModel.Participant">
               <MappingFragment StoreEntitySet="Participants">
+                <ScalarProperty Name="DateAdded" ColumnName="DateAdded" />
                 <ScalarProperty Name="Offers" ColumnName="Offers" />
                 <ScalarProperty Name="EventMailer" ColumnName="EventMailer" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />

@@ -29,6 +29,7 @@ Namespace Controllers
                 pftrans.amount_gross = paymentdata.amount_gross
                 pftrans.amount_fee = paymentdata.amount_fee
                 pftrans.amount_net = paymentdata.amount_net
+                pftrans.TAdate = Now()
                 db.pflogs.Add(pftrans)
                 db.SaveChanges()
 
@@ -117,6 +118,7 @@ Namespace Controllers
                             entry.MainUserID = paymentdata.custom_str1
                             entry.PayFastReference = paymentdata.pf_payment_id.ToString()
                             entry.PayFastStatus = paymentdata.payment_status
+                            entry.EntrySubmitDate = Now()
                             result = SControl.UpdateEntries(entry)
                         Next
 
@@ -315,6 +317,7 @@ Namespace Controllers
                 sale.UserID = User.Identity.Name
                 sale.TandC = True
                 sale.Indemnity = True
+                sale.SaleDate = Now()
 
                 If (db.Sales.Where(Function(a) a.UserID = User.Identity.Name And a.Pf_reference Is Nothing).Count() > 0) Then
                     sale.M_reference = db.Sales.Where(Function(a) a.UserID = User.Identity.Name And a.Pf_reference Is Nothing).Select(Function(a) a.M_reference).FirstOrDefault()
@@ -385,6 +388,7 @@ Namespace Controllers
                 sale.ItemID = ItemID
                 sale.OptionID = OptionID1
                 sale.UserID = User.Identity.Name
+                sale.SaleDate = Now()
                 If ModelState.IsValid Then
                     db.Sales.Add(sale)
                     db.SaveChanges()

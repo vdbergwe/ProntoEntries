@@ -11,7 +11,7 @@ End Code
     <hr />
 
 
-    @Using (Html.BeginForm())
+    @Using (Html.BeginForm(New With {.EventId = ViewBag.EventID, .Distance = ViewBag.Distance}))
         @Html.AntiForgeryToken()
         @Html.ValidationSummary(True, "", New With {.class = "text-danger"})
 
@@ -49,7 +49,11 @@ End Code
                 <div class="partelement">
                     @Html.LabelFor(Function(model) model.IDNumber, htmlAttributes:=New With {.class = "control-label col-md-2 labelfix"})
                     @Html.EditorFor(Function(model) model.IDNumber, New With {.htmlAttributes = New With {.class = "partelement item"}})
-                    @Html.ValidationMessageFor(Function(model) model.IDNumber, "", New With {.class = "text-danger"})
+                    @If ViewBag.InvalidID = True Then
+                        @Html.ValidationMessageFor(Function(model) model.IDNumber, "ID MUST BE UNIQUE", New With {.class = "text-danger"})
+                    Else
+                        @Html.ValidationMessageFor(Function(model) model.IDNumber, "", New With {.class = "text-danger"})
+                    End If
                 </div>
 
                 <div class="partelement">

@@ -20,15 +20,10 @@ Namespace Controllers
             Type.Type = "ClubName"
             ViewBag.AllClubs = AllClubs
 
-
             For Each Club In AllClubs
-
                 Type.Value = Club
-
                 db.TypeLookups.Add(Type)
-                    db.SaveChanges()
-
-
+                db.SaveChanges()
             Next
 
             Return View()
@@ -87,8 +82,11 @@ Namespace Controllers
 
         ' GET: Participants/Create
         <Authorize>
-        Function Create() As ActionResult
+        Function Create(ByVal EventID As Integer?, ByVal Distance As Decimal?) As ActionResult
             'ViewBag.Gender = db.TypeLookups.Where(Function(a) a.Type = "Gender").Select(Function(b) b.Value).ToList()
+
+            ViewBag.EventID = EventID
+            ViewBag.Distance = Distance
 
             ViewBag.Gender = New SelectList(db.TypeLookups.Where(Function(a) a.Type = "Gender"), "Value", "Value")
             ViewBag.Clubname = New SelectList(db.TypeLookups.Where(Function(a) a.Type = "ClubName"), "Value", "Value")
@@ -105,17 +103,42 @@ Namespace Controllers
         <HttpPost()>
         <ValidateAntiForgeryToken()>
         <Authorize>
-        Function Create(<Bind(Include:="ParticipantID,FirstName,MiddleNames,LastName,IDNumber,DOB,Gender,RaceNumber,EmailAddress,MedicalName,MedicalNumber,EmergencyContact,EmergencyNumber,BoodType,Allergies,AdditionalInfo,DoctorName,DoctorContact,Clubname,Country,Address,City,Province,UserID,EventMailer,Offers")> ByVal participant As Participant) As ActionResult
+        Function Create(<Bind(Include:="ParticipantID,FirstName,MiddleNames,LastName,IDNumber,DOB,Gender,RaceNumber,EmailAddress,MedicalName,MedicalNumber,EmergencyContact,EmergencyNumber,BoodType,Allergies,AdditionalInfo,DoctorName,DoctorContact,Clubname,Country,Address,City,Province,UserID,EventMailer,Offers")> ByVal participant As Participant, ByVal EventID As Integer?, ByVal Distance As Decimal?) As ActionResult
             participant.UserID = User.Identity.Name
+
+            ViewBag.EventID = EventID
+            ViewBag.Distance = Distance
+
             ViewBag.Gender = New SelectList(db.TypeLookups.Where(Function(a) a.Type = "Gender"), "Value", "Value")
             ViewBag.Clubname = New SelectList(db.TypeLookups.Where(Function(a) a.Type = "ClubName"), "Value", "Value")
             ViewBag.Province = New SelectList(db.TypeLookups.Where(Function(a) a.Type = "Province"), "Value", "Value")
             ViewBag.BoodType = New SelectList(db.TypeLookups.Where(Function(a) a.Type = "BloodType"), "Value", "Value")
 
+            Dim IDCheck = db.Participants.Where(Function(a) a.IDNumber = participant.IDNumber).Count()
+
+            If IDCheck > 0 Then
+                ViewBag.InvalidID = True
+                Return View(participant)
+            End If
+
             If ModelState.IsValid Then
+                participant.DateAdded = Now()
                 db.Participants.Add(participant)
                 db.SaveChanges()
-                Return RedirectToAction("Index")
+                If EventID Is Nothing And Distance Is Nothing Then
+                    Return RedirectToAction("Index")
+                End If
+
+                If EventID IsNot Nothing And Distance = 0 Then
+                    Return RedirectToAction("NewEntry", "Entries", New With {.id = EventID, .DivisionSelect = 0})
+                End If
+
+                If EventID IsNot Nothing And Distance > 0 Then
+                    '@Html.ActionLink("Enter Event", "VerifyEntry", "Entries", New With {.id = item.ParticipantID, .RaceID1 = ViewBag.RaceID, .DivisionID1 = ViewBag.DivisionSelect}, Nothing)
+                    Dim ParticipantID = db.Participants.Where(Function(a) a.IDNumber = participant.IDNumber).Select(Function(b) b.ParticipantID).FirstOrDefault()
+                    Return RedirectToAction("VerifyEntry", "Entries", New With {.id = ParticipantID, .RaceID1 = EventID, .DivisionID1 = Distance})
+                End If
+
             End If
             Return View(participant)
         End Function

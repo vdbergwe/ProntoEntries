@@ -20,5 +20,6 @@ Partial Public Class pflog
     Public Property amount_fee As Nullable(Of Decimal)
     Public Property amount_net As Nullable(Of Decimal)
     Public Property SaleID As Nullable(Of Integer)
+    Public Property TAdate As Nullable(Of Date)
 
 End Class

@@ -25,5 +25,6 @@ Partial Public Class Entry
     Public Property TransferID As Nullable(Of Integer)
     Public Property Result As String
     Public Property MainUserID As String
+    Public Property EntrySubmitDate As Nullable(Of Date)
 
 End Class
