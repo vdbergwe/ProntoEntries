@@ -7,6 +7,7 @@ Imports System.Net
 Imports System.Web
 Imports System.Web.Mvc
 Imports ProntoEntries
+Imports System.IO
 
 Namespace Controllers
     Public Class ParticipantsController
@@ -14,6 +15,24 @@ Namespace Controllers
 
         Private db As New EntriesDBEntities
 
+        Function ImportClubs(ByVal Type As TypeLookup) As ActionResult
+            Dim AllClubs As Array = System.IO.File.ReadAllLines(Server.MapPath("~/Content/ClubNames.txt"))
+            Type.Type = "ClubName"
+            ViewBag.AllClubs = AllClubs
+
+
+            For Each Club In AllClubs
+
+                Type.Value = Club
+
+                db.TypeLookups.Add(Type)
+                    db.SaveChanges()
+
+
+            Next
+
+            Return View()
+        End Function
 
         Function Get_Age(Id As Integer?, RaceID As Integer?) As ActionResult
             Dim RaceDate As Date = db.RaceEvents.Where(Function(c) c.RaceID = RaceID).Select(Function(d) d.RaceDate).FirstOrDefault()
@@ -72,6 +91,11 @@ Namespace Controllers
             'ViewBag.Gender = db.TypeLookups.Where(Function(a) a.Type = "Gender").Select(Function(b) b.Value).ToList()
 
             ViewBag.Gender = New SelectList(db.TypeLookups.Where(Function(a) a.Type = "Gender"), "Value", "Value")
+            ViewBag.Clubname = New SelectList(db.TypeLookups.Where(Function(a) a.Type = "ClubName"), "Value", "Value")
+            ViewBag.Province = New SelectList(db.TypeLookups.Where(Function(a) a.Type = "Province"), "Value", "Value")
+            ViewBag.BoodType = New SelectList(db.TypeLookups.Where(Function(a) a.Type = "BloodType"), "Value", "Value")
+
+
             Return View()
         End Function
 
@@ -83,6 +107,11 @@ Namespace Controllers
         <Authorize>
         Function Create(<Bind(Include:="ParticipantID,FirstName,MiddleNames,LastName,IDNumber,DOB,Gender,RaceNumber,EmailAddress,MedicalName,MedicalNumber,EmergencyContact,EmergencyNumber,BoodType,Allergies,AdditionalInfo,DoctorName,DoctorContact,Clubname,Country,Address,City,Province,UserID,EventMailer,Offers")> ByVal participant As Participant) As ActionResult
             participant.UserID = User.Identity.Name
+            ViewBag.Gender = New SelectList(db.TypeLookups.Where(Function(a) a.Type = "Gender"), "Value", "Value")
+            ViewBag.Clubname = New SelectList(db.TypeLookups.Where(Function(a) a.Type = "ClubName"), "Value", "Value")
+            ViewBag.Province = New SelectList(db.TypeLookups.Where(Function(a) a.Type = "Province"), "Value", "Value")
+            ViewBag.BoodType = New SelectList(db.TypeLookups.Where(Function(a) a.Type = "BloodType"), "Value", "Value")
+
             If ModelState.IsValid Then
                 db.Participants.Add(participant)
                 db.SaveChanges()
@@ -94,10 +123,18 @@ Namespace Controllers
         ' GET: Participants/Edit/5
         <Authorize>
         Function Edit(ByVal id As Integer?) As ActionResult
+
+
             If IsNothing(id) Then
                 Return New HttpStatusCodeResult(HttpStatusCode.BadRequest)
             End If
             Dim participant As Participant = db.Participants.Find(id)
+
+            ViewBag.Gender = New SelectList(db.TypeLookups.Where(Function(a) a.Type = "Gender"), "Value", "Value", participant.Gender)
+            ViewBag.Clubname = New SelectList(db.TypeLookups.Where(Function(a) a.Type = "ClubName"), "Value", "Value", participant.Clubname)
+            ViewBag.Province = New SelectList(db.TypeLookups.Where(Function(a) a.Type = "Province"), "Value", "Value", participant.Province)
+            ViewBag.BoodType = New SelectList(db.TypeLookups.Where(Function(a) a.Type = "BloodType"), "Value", "Value", participant.BoodType)
+
             If IsNothing(participant) Then
                 Return HttpNotFound()
             End If
@@ -111,12 +148,34 @@ Namespace Controllers
         <ValidateAntiForgeryToken()>
         <Authorize>
         Function Edit(<Bind(Include:="ParticipantID,FirstName,MiddleNames,LastName,IDNumber,DOB,Gender,RaceNumber,EmailAddress,MedicalName,MedicalNumber,EmergencyContact,EmergencyNumber,BoodType,Allergies,AdditionalInfo,DoctorName,DoctorContact,Clubname,Country,Address,City,Province,UserID,EventMailer,Offers")> ByVal participant As Participant) As ActionResult
+
             participant.UserID = User.Identity.Name
-            If ModelState.IsValid Then
-                db.Entry(participant).State = EntityState.Modified
-                db.SaveChanges()
-                Return RedirectToAction("Index")
+
+            ViewBag.Gender = New SelectList(db.TypeLookups.Where(Function(a) a.Type = "Gender"), "Value", "Value", participant.Gender)
+            ViewBag.Clubname = New SelectList(db.TypeLookups.Where(Function(a) a.Type = "ClubName"), "Value", "Value", participant.Clubname)
+            ViewBag.Province = New SelectList(db.TypeLookups.Where(Function(a) a.Type = "Province"), "Value", "Value", participant.Province)
+            ViewBag.BoodType = New SelectList(db.TypeLookups.Where(Function(a) a.Type = "BloodType"), "Value", "Value", participant.BoodType)
+
+            If participant.FirstName = db.Participants.Where(Function(a) a.ParticipantID = participant.ParticipantID).Select(Function(b) b.FirstName).FirstOrDefault() Then
+                If participant.MiddleNames = db.Participants.Where(Function(a) a.ParticipantID = participant.ParticipantID).Select(Function(b) b.MiddleNames).FirstOrDefault() Then
+                    If participant.LastName = db.Participants.Where(Function(a) a.ParticipantID = participant.ParticipantID).Select(Function(b) b.LastName).FirstOrDefault() Then
+                        If participant.EmailAddress = db.Participants.Where(Function(a) a.ParticipantID = participant.ParticipantID).Select(Function(b) b.EmailAddress).FirstOrDefault() Then
+                            If participant.IDNumber = db.Participants.Where(Function(a) a.ParticipantID = participant.ParticipantID).Select(Function(b) b.IDNumber).FirstOrDefault() Then
+                                If participant.Gender = db.Participants.Where(Function(a) a.ParticipantID = participant.ParticipantID).Select(Function(b) b.Gender).FirstOrDefault() Then
+                                    If participant.DOB = db.Participants.Where(Function(a) a.ParticipantID = participant.ParticipantID).Select(Function(b) b.DOB).FirstOrDefault() Then
+                                        If ModelState.IsValid Then
+                                            db.Entry(participant).State = EntityState.Modified
+                                            db.SaveChanges()
+                                            Return RedirectToAction("Index")
+                                        End If
+                                    End If
+                                End If
+                            End If
+                        End If
+                    End If
+                End If
             End If
+
             Return View(participant)
         End Function
 

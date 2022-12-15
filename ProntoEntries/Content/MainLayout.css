@@ -105,6 +105,44 @@ li {
         padding: 5px;
     }
 
+dl {
+    display: flex;
+    width: 45%;
+    height: 45px;
+    margin: 0;
+    /*color: #838383;*/
+    font-size: 15px;
+    /*background: #f3f3f3;*/
+}
+
+    dl dt {
+        flex: 1;
+        padding: 0;
+        font-size: 12px;
+        margin: 0px auto;
+        text-align: left;
+    }
+
+    dl dd {
+        flex: 1;
+        width: 170px;
+        vertical-align: middle;
+        text-align: right;
+        position: relative;
+        color: white;
+    }
+
+.partelementdlfix {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    width: 100%;
+    text-align: center;
+    align-content: center;
+    justify-content: center;
+    padding-bottom: 10px;
+}
+
 div {
 }
 
@@ -669,6 +707,8 @@ input[type="checkbox"] {
         margin: 0px auto;
     }
 
+
+
     .partelement .checkbox {
         width: 45%;
         display: flex;
@@ -689,6 +729,22 @@ input[type="checkbox"] {
         outline: none;
         border-radius: 5px;
     }
+
+
+    .button-group .checkbox {
+        display: flex;
+        width: 80%;
+        justify-content: space-between;
+    }
+
+    .checkbox .toggle-checkbox {
+        width: 60px;
+    }
+
+    .checkbox {
+        color: lightgrey;
+    }
+   
 
 .participantleft p {
     text-align: center;
@@ -819,7 +875,7 @@ input[type="checkbox"] {
     }
 
     .col-md-8 .button-group {
-        margin: 10px 20px 0 50%;
+        margin: 10px 20px 0 55%;
     }
 
     .container {
@@ -969,7 +1025,6 @@ input[type="checkbox"] {
         position: relative;
         float: left;
         margin-top: 3px;
-
     }
 
     .diagonal.part-1 {
@@ -1018,7 +1073,39 @@ input[type="checkbox"] {
     .menuarea {
         display: inline;
     }
+
+    .linkbuttonlogin {
+        display: flex;
+        width: 40%;
+        height: 40px;
+        background: #42b72a;
+        border-radius: 6px;
+        border-color: transparent;
+        color: #000;
+        font-family: raleway, sans-serif;
+        text-transform: uppercase;
+    }
+
+        .linkbuttonlogin a {
+            align-self: center;
+            width: 100%;
+            text-align: center;
+            color: #000;
+        }
+
+    .button-grouplogin {
+        width: 60%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin: 10px auto;
+    }
+
+        .button-grouplogin input[type="submit"] {
+            width: 30%;
+        }
 }
+
 /*.logobox {
     width: 30%;
     content: url(/Content/Pronto-Logo-Black.png);

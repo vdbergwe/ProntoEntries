@@ -33,7 +33,6 @@ End Code
                             </div>
                         </div>
                         <div class="button-group">
-
                             <p style="text-align:center">
                                 @Html.ActionLink("Forgot your password?", "ForgotPassword")
                             </p>
@@ -41,8 +40,9 @@ End Code
                             <div class="button-group">
                                 <div class="col-md-10">
                                     <div class="checkbox">
-                                        @Html.CheckBoxFor(Function(m) m.RememberMe, New With {.class = "toggle-checkbox"})
                                         Remember Me
+                                        @Html.CheckBoxFor(Function(m) m.RememberMe, New With {.class = "toggle-checkbox"})
+
                                     </div>
                                 </div>
                             </div>

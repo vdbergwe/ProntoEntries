@@ -7,7 +7,6 @@ End Code
     <div class="titlediv">
         <h2>Participants</h2>
         @Html.ActionLink("Create New", "Create")
-
     </div>
 
     <hr />

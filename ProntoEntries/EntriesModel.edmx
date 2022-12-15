@@ -263,7 +263,7 @@
           </Key>
           <Property Name="LookupIP" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Type" Type="nvarchar" MaxLength="50" />
-          <Property Name="Value" Type="nvarchar" MaxLength="50" />
+          <Property Name="Value" Type="nvarchar" MaxLength="1000" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'EntriesDB.dbo.AddonView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -782,7 +782,7 @@ warning 6002: The table/view 'EntriesDB.dbo.ParticipantExport' does not have a p
           </Key>
           <Property Name="LookupIP" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Value" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Value" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Type="EntriesDBModel.AspNetUser" Role="AspNetUser" Multiplicity="1">
