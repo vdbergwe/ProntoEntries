@@ -421,6 +421,7 @@ input[type="submit"] {
     color: #000;
     font-family: raleway, sans-serif;
     text-transform: uppercase;
+    font-size: 14px;
 }
 
     .linkbuttonlogin a {
@@ -852,6 +853,23 @@ input[type="checkbox"] {
 }
 
 
+.addonoptionlist {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 300px;
+    text-align: center;
+    justify-content: center;
+    padding: 10px;
+    margin: 0 0 10px 0;
+    /*width: 40%;*/
+    height: auto;
+    background: dodgerblue;
+    border-radius: 6px;
+    border-color: transparent;
+    color: #000;
+    font-family: raleway, sans-serif;
+}
+
 /*css for mobile phones*/
 @media screen and (max-width: 1030px) {
     body {
@@ -1084,6 +1102,7 @@ input[type="checkbox"] {
         color: #000;
         font-family: raleway, sans-serif;
         text-transform: uppercase;
+        min-width: 80px;
     }
 
         .linkbuttonlogin a {
@@ -1091,6 +1110,7 @@ input[type="checkbox"] {
             width: 100%;
             text-align: center;
             color: #000;
+            font-size: small;
         }
 
     .button-grouplogin {
@@ -1099,10 +1119,13 @@ input[type="checkbox"] {
         flex-direction: row;
         justify-content: space-between;
         margin: 10px auto;
+        font-size: small;
     }
 
         .button-grouplogin input[type="submit"] {
             width: 30%;
+            min-width: 60px;
+            font-size: small;
         }
 }
 

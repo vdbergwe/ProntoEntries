@@ -10,7 +10,7 @@ End If
 
 
 @For Each item In Model
-    @<div>
+    @*@<div>
         @Html.DisplayFor(Function(modelItem) item.Size)
         - R
         @Html.DisplayFor(Function(modelItem) item.Amount)
@@ -19,10 +19,12 @@ End If
                 @Html.ActionLink("Select", "VerifyEntry", "Entries", New With {.id = ViewBag.ParticipantID, .RaceID1 = ViewBag.RaceID, .DivisionID1 = ViewBag.DivisionID, .OptionID1 = item.OptionID, .ItemID = item.ItemID}, Nothing)
             </li>
         </ul>
-    </div>
+    </div>*@
 
 
-
+    @<div class="addonoptionlist">
+                     @Html.ActionLink(item.Size.ToString() + " - R" + item.Amount.ToString(), "VerifyEntry", "Entries", New With {.id = ViewBag.ParticipantID, .RaceID1 = ViewBag.RaceID, .DivisionID1 = ViewBag.DivisionID, .OptionID1 = item.OptionID, .ItemID = item.ItemID}, Nothing)   
+     </div>
 
 
 Next
