@@ -10,6 +10,7 @@
     <script src="https://kit.fontawesome.com/8466fbcbdc.js" crossorigin="anonymous"></script>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    <link href="~/Content/bootstrap-chosen.css" rel="stylesheet" />
     <link href="~/Content/MainLayout.css" rel="stylesheet" />
 </head>
 <body class="mainbody">
@@ -128,5 +129,6 @@
     </script>
 
     @RenderSection("scripts", required:=False)
+    <script src="~/Scripts/chosen.jquery.js"></script>
 </body>
 </html>
