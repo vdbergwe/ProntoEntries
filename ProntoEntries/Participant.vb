@@ -37,5 +37,6 @@ Partial Public Class Participant
     Public Property UserID As String
     Public Property EventMailer As Boolean
     Public Property Offers As Boolean
+    Public Property DateAdded As Nullable(Of Date)
 
 End Class

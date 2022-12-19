@@ -119,6 +119,7 @@
           <Property Name="TransferID" Type="int" />
           <Property Name="Result" Type="nvarchar" MaxLength="50" />
           <Property Name="MainUserID" Type="nvarchar" MaxLength="50" />
+          <Property Name="EntrySubmitDate" Type="datetime" />
         </EntityType>
         <EntityType Name="Organiser">
           <Key>
@@ -163,6 +164,7 @@
           <Property Name="UserID" Type="nvarchar" MaxLength="50" />
           <Property Name="EventMailer" Type="bit" Nullable="false" />
           <Property Name="Offers" Type="bit" Nullable="false" />
+          <Property Name="DateAdded" Type="datetime" />
         </EntityType>
         <EntityType Name="PaymentDetails">
           <Key>
@@ -187,6 +189,7 @@
           <Property Name="amount_fee" Type="decimal" Precision="18" Scale="2" />
           <Property Name="amount_net" Type="decimal" Precision="18" Scale="2" />
           <Property Name="SaleID" Type="int" />
+          <Property Name="TAdate" Type="datetime" />
         </EntityType>
         <EntityType Name="RaceEvent">
           <Key>
@@ -211,13 +214,13 @@
           <Property Name="DispClasses" Type="bit" Nullable="false" />
           <Property Name="DispAdmCharge" Type="bit" Nullable="false" />
           <Property Name="DispAddress" Type="bit" Nullable="false" />
-          <Property Name="RaceHtmlPage" Type="nvarchar(max)" />
-          <Property Name="Indemnity" Type="nvarchar" MaxLength="1000" />
-          <Property Name="TandC" Type="nvarchar" MaxLength="1000" />
-          <Property Name="EntriesCloseDate" Type="date" />
           <Property Name="PF_ToClient" Type="bit" Nullable="false" />
           <Property Name="Admin_ToClient" Type="bit" Nullable="false" />
-          <Property Name="Admin_Rate" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Admin_Rate" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="RaceHtmlPage" Type="nvarchar(max)" />
+          <Property Name="Indemnity" Type="nvarchar" MaxLength="4000" />
+          <Property Name="TandC" Type="nvarchar" MaxLength="4000" />
+          <Property Name="EntriesCloseDate" Type="date" />
         </EntityType>
         <EntityType Name="Sales">
           <Key>
@@ -235,6 +238,7 @@
           <Property Name="M_reference" Type="int" />
           <Property Name="Pf_reference" Type="int" />
           <Property Name="Verified" Type="bit" />
+          <Property Name="SaleDate" Type="datetime" />
         </EntityType>
         <EntityType Name="Substitution">
           <Key>
@@ -263,7 +267,7 @@
           </Key>
           <Property Name="LookupIP" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Type" Type="nvarchar" MaxLength="50" />
-          <Property Name="Value" Type="nvarchar" MaxLength="50" />
+          <Property Name="Value" Type="nvarchar" MaxLength="1000" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'EntriesDB.dbo.AddonView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -533,7 +537,6 @@ warning 6002: The table/view 'EntriesDB.dbo.ParticipantExport' does not have a p
           <EntitySet Name="Divisions" EntityType="EntriesDBModel.Division" />
           <EntitySet Name="Entries" EntityType="EntriesDBModel.Entry" />
           <EntitySet Name="Organisers" EntityType="EntriesDBModel.Organiser" />
-          <EntitySet Name="Participants" EntityType="EntriesDBModel.Participant" />
           <EntitySet Name="PaymentDetails" EntityType="EntriesDBModel.PaymentDetail" />
           <EntitySet Name="pflogs" EntityType="EntriesDBModel.pflog" />
           <EntitySet Name="RaceEvents" EntityType="EntriesDBModel.RaceEvent" />
@@ -541,9 +544,6 @@ warning 6002: The table/view 'EntriesDB.dbo.ParticipantExport' does not have a p
           <EntitySet Name="Substitutions" EntityType="EntriesDBModel.Substitution" />
           <EntitySet Name="SystemLogs" EntityType="EntriesDBModel.SystemLog" />
           <EntitySet Name="TypeLookups" EntityType="EntriesDBModel.TypeLookup" />
-          <EntitySet Name="AddonViews" EntityType="EntriesDBModel.AddonView" />
-          <EntitySet Name="PartDivs" EntityType="EntriesDBModel.PartDiv" />
-          <EntitySet Name="ParticipantExports" EntityType="EntriesDBModel.ParticipantExport" />
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="EntriesDBModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
             <End Role="AspNetUser" EntitySet="AspNetUsers" />
             <End Role="AspNetUserClaim" EntitySet="AspNetUserClaims" />
@@ -556,6 +556,10 @@ warning 6002: The table/view 'EntriesDB.dbo.ParticipantExport' does not have a p
             <End Role="AspNetRole" EntitySet="AspNetRoles" />
             <End Role="AspNetUser" EntitySet="AspNetUsers" />
           </AssociationSet>
+          <EntitySet Name="ParticipantExports" EntityType="EntriesDBModel.ParticipantExport" />
+          <EntitySet Name="AddonViews" EntityType="EntriesDBModel.AddonView" />
+          <EntitySet Name="Participants" EntityType="EntriesDBModel.Participant" />
+          <EntitySet Name="PartDivs" EntityType="EntriesDBModel.PartDiv" />
         </EntityContainer>
         <EntityType Name="C__MigrationHistory">
           <Key>
@@ -669,6 +673,7 @@ warning 6002: The table/view 'EntriesDB.dbo.ParticipantExport' does not have a p
           <Property Name="TransferID" Type="Int32" />
           <Property Name="Result" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="MainUserID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EntrySubmitDate" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="Organiser">
           <Key>
@@ -680,8 +685,187 @@ warning 6002: The table/view 'EntriesDB.dbo.ParticipantExport' does not have a p
           <Property Name="OrgTel" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="OrgWebsite" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="OrgVatNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="AdminUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="AdminUserID" Type="String" MaxLength="128" Unicode="true" FixedLength="false" />
           <Property Name="Image" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="PaymentDetail">
+          <Key>
+            <PropertyRef Name="PaymentID" />
+          </Key>
+          <Property Name="PaymentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrgID" Type="Int32" />
+          <Property Name="MerchantID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MerchantKey" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MerchantPassPhrase" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="pflog">
+          <Key>
+            <PropertyRef Name="TA_id" />
+          </Key>
+          <Property Name="TA_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Pf_status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="M_reference" Type="Int32" />
+          <Property Name="Pf_reference" Type="Int32" />
+          <Property Name="Merchant_id" Type="Int32" />
+          <Property Name="amount_gross" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="amount_fee" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="amount_net" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="SaleID" Type="Int32" />
+          <Property Name="TAdate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="RaceEvent">
+          <Key>
+            <PropertyRef Name="RaceID" />
+          </Key>
+          <Property Name="RaceID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RaceName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RaceDescription" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RaceDate" Type="DateTime" Precision="0" />
+          <Property Name="RaceType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Coordinates" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Province" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AdminCharge" Type="Double" />
+          <Property Name="OrgID" Type="Int32" />
+          <Property Name="Image" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Background" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ImgDetail1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ImgDetail2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ImgDetail3" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DispClasses" Type="Boolean" Nullable="false" />
+          <Property Name="DispAdmCharge" Type="Boolean" Nullable="false" />
+          <Property Name="DispAddress" Type="Boolean" Nullable="false" />
+          <Property Name="RaceHtmlPage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Indemnity" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="TandC" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="EntriesCloseDate" Type="DateTime" Precision="0" />
+          <Property Name="PF_ToClient" Type="Boolean" Nullable="false" />
+          <Property Name="Admin_ToClient" Type="Boolean" Nullable="false" />
+          <Property Name="Admin_Rate" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+        </EntityType>
+        <EntityType Name="Sale">
+          <Key>
+            <PropertyRef Name="SaleID" />
+          </Key>
+          <Property Name="SaleID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RaceID" Type="Int32" />
+          <Property Name="DivisionID" Type="Int32" />
+          <Property Name="ItemID" Type="Int32" />
+          <Property Name="UserID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Indemnity" Type="Boolean" />
+          <Property Name="TandC" Type="Boolean" />
+          <Property Name="ParticipantID" Type="Int32" />
+          <Property Name="M_reference" Type="Int32" />
+          <Property Name="Pf_reference" Type="Int32" />
+          <Property Name="OptionID" Type="Int32" />
+          <Property Name="Verified" Type="Boolean" />
+          <Property Name="SaleDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="Substitution">
+          <Key>
+            <PropertyRef Name="TransferID" />
+          </Key>
+          <Property Name="TransferID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FromParticipantID" Type="Int32" />
+          <Property Name="ToParticipantID" Type="Int32" />
+          <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Amount" Type="Double" />
+          <Property Name="PaymentReference" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="SystemLog">
+          <Key>
+            <PropertyRef Name="LogID" />
+          </Key>
+          <Property Name="LogID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" />
+          <Property Name="ActionPerformed" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Date" Type="DateTime" Precision="0" />
+          <Property Name="Time" Type="Time" Precision="7" />
+        </EntityType>
+        <EntityType Name="TypeLookup">
+          <Key>
+            <PropertyRef Name="LookupIP" />
+          </Key>
+          <Property Name="LookupIP" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Value" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+          <End Type="EntriesDBModel.AspNetUser" Role="AspNetUser" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="EntriesDBModel.AspNetUserClaim" Role="AspNetUserClaim" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserClaim">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+          <End Type="EntriesDBModel.AspNetUser" Role="AspNetUser" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="EntriesDBModel.AspNetUserLogin" Role="AspNetUserLogin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserLogin">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="AspNetUserRoles">
+          <End Type="EntriesDBModel.AspNetRole" Role="AspNetRole" Multiplicity="*" />
+          <End Type="EntriesDBModel.AspNetUser" Role="AspNetUser" Multiplicity="*" />
+        </Association>
+        <EntityType Name="ParticipantExport">
+          <Key>
+            <PropertyRef Name="ParticipantID" />
+            <PropertyRef Name="EventMailer" />
+            <PropertyRef Name="Offers" />
+          </Key>
+          <Property Name="ParticipantID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MiddleNames" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IDNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DOB" Type="DateTime" Precision="3" />
+          <Property Name="EmailAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MedicalName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MedicalNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EmergencyContact" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EmergencyNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="BoodType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Allergies" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AdditionalInfo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DoctorName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DoctorContact" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Clubname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RaceNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Country" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Province" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EventMailer" Type="Boolean" Nullable="false" />
+          <Property Name="Offers" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AddonView">
+          <Key>
+            <PropertyRef Name="ItemID" />
+            <PropertyRef Name="OptionID" />
+          </Key>
+          <Property Name="ItemID" Type="Int32" Nullable="false" />
+          <Property Name="OptionID" Type="Int32" Nullable="false" />
+          <Property Name="RaceID" Type="Int32" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Size" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Amount" Type="Decimal" Precision="18" Scale="2" />
         </EntityType>
         <EntityType Name="Participant">
           <Key>
@@ -713,120 +897,7 @@ warning 6002: The table/view 'EntriesDB.dbo.ParticipantExport' does not have a p
           <Property Name="UserID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="EventMailer" Type="Boolean" Nullable="false" />
           <Property Name="Offers" Type="Boolean" Nullable="false" />
-        </EntityType>
-        <EntityType Name="PaymentDetail">
-          <Key>
-            <PropertyRef Name="PaymentID" />
-          </Key>
-          <Property Name="PaymentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="OrgID" Type="Int32" />
-          <Property Name="MerchantID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="MerchantKey" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="MerchantPassPhrase" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="pflog">
-          <Key>
-            <PropertyRef Name="TA_id" />
-          </Key>
-          <Property Name="TA_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Pf_status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="M_reference" Type="Int32" />
-          <Property Name="Pf_reference" Type="Int32" />
-          <Property Name="Merchant_id" Type="Int32" />
-          <Property Name="amount_gross" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="amount_fee" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="amount_net" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="SaleID" Type="Int32" />
-        </EntityType>
-        <EntityType Name="RaceEvent">
-          <Key>
-            <PropertyRef Name="RaceID" />
-          </Key>
-          <Property Name="RaceID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="RaceName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="RaceDescription" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="RaceDate" Type="DateTime" Precision="0" />
-          <Property Name="RaceType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Coordinates" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Address" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Province" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="AdminCharge" Type="Double" />
-          <Property Name="OrgID" Type="Int32" />
-          <Property Name="Image" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Background" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ImgDetail1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ImgDetail2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ImgDetail3" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="DispClasses" Type="Boolean" Nullable="false" />
-          <Property Name="DispAdmCharge" Type="Boolean" Nullable="false" />
-          <Property Name="DispAddress" Type="Boolean" Nullable="false" />
-          <Property Name="RaceHtmlPage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Indemnity" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="TandC" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="EntriesCloseDate" Type="DateTime" Precision="0" />
-          <Property Name="PF_ToClient" Type="Boolean" Nullable="false" />
-          <Property Name="Admin_ToClient" Type="Boolean" Nullable="false" />
-          <Property Name="Admin_Rate" Type="Decimal" Precision="18" Scale="2" />
-        </EntityType>
-        <EntityType Name="Sale">
-          <Key>
-            <PropertyRef Name="SaleID" />
-          </Key>
-          <Property Name="SaleID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="RaceID" Type="Int32" />
-          <Property Name="DivisionID" Type="Int32" />
-          <Property Name="ItemID" Type="Int32" />
-          <Property Name="OptionID" Type="Int32" />
-          <Property Name="UserID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Indemnity" Type="Boolean" />
-          <Property Name="TandC" Type="Boolean" />
-          <Property Name="ParticipantID" Type="Int32" />
-          <Property Name="M_reference" Type="Int32" />
-          <Property Name="Pf_reference" Type="Int32" />
-          <Property Name="Verified" Type="Boolean" />
-        </EntityType>
-        <EntityType Name="Substitution">
-          <Key>
-            <PropertyRef Name="TransferID" />
-          </Key>
-          <Property Name="TransferID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="FromParticipantID" Type="Int32" />
-          <Property Name="ToParticipantID" Type="Int32" />
-          <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Amount" Type="Double" />
-          <Property Name="PaymentReference" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="SystemLog">
-          <Key>
-            <PropertyRef Name="LogID" />
-          </Key>
-          <Property Name="LogID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserID" Type="Int32" />
-          <Property Name="ActionPerformed" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Date" Type="DateTime" Precision="0" />
-          <Property Name="Time" Type="Time" Precision="7" />
-        </EntityType>
-        <EntityType Name="TypeLookup">
-          <Key>
-            <PropertyRef Name="LookupIP" />
-          </Key>
-          <Property Name="LookupIP" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Value" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="AddonView">
-          <Key>
-            <PropertyRef Name="ItemID" />
-            <PropertyRef Name="OptionID" />
-          </Key>
-          <Property Name="ItemID" Type="Int32" Nullable="false" />
-          <Property Name="OptionID" Type="Int32" Nullable="false" />
-          <Property Name="RaceID" Type="Int32" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Size" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Amount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="DateAdded" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="PartDiv">
           <Key>
@@ -864,69 +935,6 @@ warning 6002: The table/view 'EntriesDB.dbo.ParticipantExport' does not have a p
           <Property Name="Pf_reference" Type="Int32" />
           <Property Name="RaceID" Type="Int32" />
         </EntityType>
-        <EntityType Name="ParticipantExport">
-          <Key>
-            <PropertyRef Name="ParticipantID" />
-            <PropertyRef Name="EventMailer" />
-            <PropertyRef Name="Offers" />
-          </Key>
-          <Property Name="ParticipantID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="MiddleNames" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="IDNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="DOB" Type="DateTime" Precision="3" />
-          <Property Name="EmailAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="MedicalName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="MedicalNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="EmergencyContact" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="EmergencyNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="BoodType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Allergies" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="AdditionalInfo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="DoctorName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="DoctorContact" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Clubname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="RaceNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Country" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Address" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Province" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="EventMailer" Type="Boolean" Nullable="false" />
-          <Property Name="Offers" Type="Boolean" Nullable="false" />
-        </EntityType>
-        <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
-          <End Type="EntriesDBModel.AspNetUser" Role="AspNetUser" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="EntriesDBModel.AspNetUserClaim" Role="AspNetUserClaim" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUser">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="AspNetUserClaim">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
-          <End Type="EntriesDBModel.AspNetUser" Role="AspNetUser" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="EntriesDBModel.AspNetUserLogin" Role="AspNetUserLogin" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUser">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="AspNetUserLogin">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="AspNetUserRoles">
-          <End Type="EntriesDBModel.AspNetRole" Role="AspNetRole" Multiplicity="*" />
-          <End Type="EntriesDBModel.AspNetUser" Role="AspNetUser" Multiplicity="*" />
-        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1029,6 +1037,7 @@ warning 6002: The table/view 'EntriesDB.dbo.ParticipantExport' does not have a p
           <EntitySetMapping Name="Entries">
             <EntityTypeMapping TypeName="EntriesDBModel.Entry">
               <MappingFragment StoreEntitySet="Entries">
+                <ScalarProperty Name="EntrySubmitDate" ColumnName="EntrySubmitDate" />
                 <ScalarProperty Name="MainUserID" ColumnName="MainUserID" />
                 <ScalarProperty Name="Result" ColumnName="Result" />
                 <ScalarProperty Name="TransferID" ColumnName="TransferID" />
@@ -1060,38 +1069,6 @@ warning 6002: The table/view 'EntriesDB.dbo.ParticipantExport' does not have a p
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Participants">
-            <EntityTypeMapping TypeName="EntriesDBModel.Participant">
-              <MappingFragment StoreEntitySet="Participants">
-                <ScalarProperty Name="Offers" ColumnName="Offers" />
-                <ScalarProperty Name="EventMailer" ColumnName="EventMailer" />
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="Province" ColumnName="Province" />
-                <ScalarProperty Name="City" ColumnName="City" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
-                <ScalarProperty Name="Country" ColumnName="Country" />
-                <ScalarProperty Name="Clubname" ColumnName="Clubname" />
-                <ScalarProperty Name="DoctorContact" ColumnName="DoctorContact" />
-                <ScalarProperty Name="DoctorName" ColumnName="DoctorName" />
-                <ScalarProperty Name="AdditionalInfo" ColumnName="AdditionalInfo" />
-                <ScalarProperty Name="Allergies" ColumnName="Allergies" />
-                <ScalarProperty Name="BoodType" ColumnName="BoodType" />
-                <ScalarProperty Name="EmergencyNumber" ColumnName="EmergencyNumber" />
-                <ScalarProperty Name="EmergencyContact" ColumnName="EmergencyContact" />
-                <ScalarProperty Name="MedicalNumber" ColumnName="MedicalNumber" />
-                <ScalarProperty Name="MedicalName" ColumnName="MedicalName" />
-                <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
-                <ScalarProperty Name="RaceNumber" ColumnName="RaceNumber" />
-                <ScalarProperty Name="Gender" ColumnName="Gender" />
-                <ScalarProperty Name="DOB" ColumnName="DOB" />
-                <ScalarProperty Name="IDNumber" ColumnName="IDNumber" />
-                <ScalarProperty Name="LastName" ColumnName="LastName" />
-                <ScalarProperty Name="MiddleNames" ColumnName="MiddleNames" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-                <ScalarProperty Name="ParticipantID" ColumnName="ParticipantID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="PaymentDetails">
             <EntityTypeMapping TypeName="EntriesDBModel.PaymentDetail">
               <MappingFragment StoreEntitySet="PaymentDetails">
@@ -1106,6 +1083,7 @@ warning 6002: The table/view 'EntriesDB.dbo.ParticipantExport' does not have a p
           <EntitySetMapping Name="pflogs">
             <EntityTypeMapping TypeName="EntriesDBModel.pflog">
               <MappingFragment StoreEntitySet="pflogs">
+                <ScalarProperty Name="TAdate" ColumnName="TAdate" />
                 <ScalarProperty Name="SaleID" ColumnName="SaleID" />
                 <ScalarProperty Name="amount_net" ColumnName="amount_net" />
                 <ScalarProperty Name="amount_fee" ColumnName="amount_fee" />
@@ -1153,14 +1131,15 @@ warning 6002: The table/view 'EntriesDB.dbo.ParticipantExport' does not have a p
           <EntitySetMapping Name="Sales">
             <EntityTypeMapping TypeName="EntriesDBModel.Sale">
               <MappingFragment StoreEntitySet="Sales">
+                <ScalarProperty Name="SaleDate" ColumnName="SaleDate" />
                 <ScalarProperty Name="Verified" ColumnName="Verified" />
+                <ScalarProperty Name="OptionID" ColumnName="OptionID" />
                 <ScalarProperty Name="Pf_reference" ColumnName="Pf_reference" />
                 <ScalarProperty Name="M_reference" ColumnName="M_reference" />
                 <ScalarProperty Name="ParticipantID" ColumnName="ParticipantID" />
                 <ScalarProperty Name="TandC" ColumnName="TandC" />
                 <ScalarProperty Name="Indemnity" ColumnName="Indemnity" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="OptionID" ColumnName="OptionID" />
                 <ScalarProperty Name="ItemID" ColumnName="ItemID" />
                 <ScalarProperty Name="DivisionID" ColumnName="DivisionID" />
                 <ScalarProperty Name="RaceID" ColumnName="RaceID" />
@@ -1200,6 +1179,44 @@ warning 6002: The table/view 'EntriesDB.dbo.ParticipantExport' does not have a p
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <AssociationSetMapping Name="AspNetUserRoles" TypeName="EntriesDBModel.AspNetUserRoles" StoreEntitySet="AspNetUserRoles">
+            <EndProperty Name="AspNetUser">
+              <ScalarProperty Name="Id" ColumnName="UserId" />
+            </EndProperty>
+            <EndProperty Name="AspNetRole">
+              <ScalarProperty Name="Id" ColumnName="RoleId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <EntitySetMapping Name="ParticipantExports">
+            <EntityTypeMapping TypeName="EntriesDBModel.ParticipantExport">
+              <MappingFragment StoreEntitySet="ParticipantExport">
+                <ScalarProperty Name="Offers" ColumnName="Offers" />
+                <ScalarProperty Name="EventMailer" ColumnName="EventMailer" />
+                <ScalarProperty Name="Province" ColumnName="Province" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="RaceNumber" ColumnName="RaceNumber" />
+                <ScalarProperty Name="Clubname" ColumnName="Clubname" />
+                <ScalarProperty Name="DoctorContact" ColumnName="DoctorContact" />
+                <ScalarProperty Name="DoctorName" ColumnName="DoctorName" />
+                <ScalarProperty Name="AdditionalInfo" ColumnName="AdditionalInfo" />
+                <ScalarProperty Name="Allergies" ColumnName="Allergies" />
+                <ScalarProperty Name="BoodType" ColumnName="BoodType" />
+                <ScalarProperty Name="EmergencyNumber" ColumnName="EmergencyNumber" />
+                <ScalarProperty Name="EmergencyContact" ColumnName="EmergencyContact" />
+                <ScalarProperty Name="MedicalNumber" ColumnName="MedicalNumber" />
+                <ScalarProperty Name="MedicalName" ColumnName="MedicalName" />
+                <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
+                <ScalarProperty Name="DOB" ColumnName="DOB" />
+                <ScalarProperty Name="IDNumber" ColumnName="IDNumber" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="MiddleNames" ColumnName="MiddleNames" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="ParticipantID" ColumnName="ParticipantID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="AddonViews">
             <EntityTypeMapping TypeName="EntriesDBModel.AddonView">
               <MappingFragment StoreEntitySet="AddonView">
@@ -1210,6 +1227,39 @@ warning 6002: The table/view 'EntriesDB.dbo.ParticipantExport' does not have a p
                 <ScalarProperty Name="RaceID" ColumnName="RaceID" />
                 <ScalarProperty Name="OptionID" ColumnName="OptionID" />
                 <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Participants">
+            <EntityTypeMapping TypeName="EntriesDBModel.Participant">
+              <MappingFragment StoreEntitySet="Participants">
+                <ScalarProperty Name="DateAdded" ColumnName="DateAdded" />
+                <ScalarProperty Name="Offers" ColumnName="Offers" />
+                <ScalarProperty Name="EventMailer" ColumnName="EventMailer" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Province" ColumnName="Province" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="Clubname" ColumnName="Clubname" />
+                <ScalarProperty Name="DoctorContact" ColumnName="DoctorContact" />
+                <ScalarProperty Name="DoctorName" ColumnName="DoctorName" />
+                <ScalarProperty Name="AdditionalInfo" ColumnName="AdditionalInfo" />
+                <ScalarProperty Name="Allergies" ColumnName="Allergies" />
+                <ScalarProperty Name="BoodType" ColumnName="BoodType" />
+                <ScalarProperty Name="EmergencyNumber" ColumnName="EmergencyNumber" />
+                <ScalarProperty Name="EmergencyContact" ColumnName="EmergencyContact" />
+                <ScalarProperty Name="MedicalNumber" ColumnName="MedicalNumber" />
+                <ScalarProperty Name="MedicalName" ColumnName="MedicalName" />
+                <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
+                <ScalarProperty Name="RaceNumber" ColumnName="RaceNumber" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="DOB" ColumnName="DOB" />
+                <ScalarProperty Name="IDNumber" ColumnName="IDNumber" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="MiddleNames" ColumnName="MiddleNames" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="ParticipantID" ColumnName="ParticipantID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1250,44 +1300,6 @@ warning 6002: The table/view 'EntriesDB.dbo.ParticipantExport' does not have a p
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ParticipantExports">
-            <EntityTypeMapping TypeName="EntriesDBModel.ParticipantExport">
-              <MappingFragment StoreEntitySet="ParticipantExport">
-                <ScalarProperty Name="Offers" ColumnName="Offers" />
-                <ScalarProperty Name="EventMailer" ColumnName="EventMailer" />
-                <ScalarProperty Name="Province" ColumnName="Province" />
-                <ScalarProperty Name="City" ColumnName="City" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
-                <ScalarProperty Name="Country" ColumnName="Country" />
-                <ScalarProperty Name="RaceNumber" ColumnName="RaceNumber" />
-                <ScalarProperty Name="Clubname" ColumnName="Clubname" />
-                <ScalarProperty Name="DoctorContact" ColumnName="DoctorContact" />
-                <ScalarProperty Name="DoctorName" ColumnName="DoctorName" />
-                <ScalarProperty Name="AdditionalInfo" ColumnName="AdditionalInfo" />
-                <ScalarProperty Name="Allergies" ColumnName="Allergies" />
-                <ScalarProperty Name="BoodType" ColumnName="BoodType" />
-                <ScalarProperty Name="EmergencyNumber" ColumnName="EmergencyNumber" />
-                <ScalarProperty Name="EmergencyContact" ColumnName="EmergencyContact" />
-                <ScalarProperty Name="MedicalNumber" ColumnName="MedicalNumber" />
-                <ScalarProperty Name="MedicalName" ColumnName="MedicalName" />
-                <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
-                <ScalarProperty Name="DOB" ColumnName="DOB" />
-                <ScalarProperty Name="IDNumber" ColumnName="IDNumber" />
-                <ScalarProperty Name="LastName" ColumnName="LastName" />
-                <ScalarProperty Name="MiddleNames" ColumnName="MiddleNames" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-                <ScalarProperty Name="ParticipantID" ColumnName="ParticipantID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <AssociationSetMapping Name="AspNetUserRoles" TypeName="EntriesDBModel.AspNetUserRoles" StoreEntitySet="AspNetUserRoles">
-            <EndProperty Name="AspNetUser">
-              <ScalarProperty Name="Id" ColumnName="UserId" />
-            </EndProperty>
-            <EndProperty Name="AspNetRole">
-              <ScalarProperty Name="Id" ColumnName="RoleId" />
-            </EndProperty>
-          </AssociationSetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

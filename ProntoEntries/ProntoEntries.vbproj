@@ -724,6 +724,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
+    <Content Include="Content\ClubNames.txt" />
     <Content Include="Content\MainLayout.css" />
     <Content Include="Content\Pronto-Logo-Black.png" />
     <Content Include="Content\ProntoBackground.jpg" />
@@ -1290,6 +1291,7 @@
     <Content Include="Scripts\jquery-3.6.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.6.1.min.map" />
     <Content Include="Views\Reports\EntryDetail.vbhtml" />
+    <Content Include="Views\Participants\ImportClubs.vbhtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />

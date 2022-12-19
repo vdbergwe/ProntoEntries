@@ -6,7 +6,7 @@ End Code
 <div class="orgcontainer">
     <div class="titlediv">
         <h2>Participants</h2>
-        @Html.ActionLink("Create New", "Create")
+        @Html.ActionLink("Create New", "Create", New With {.EventID = ViewBag.RaceID, .Distance = ViewBag.DivisionSelect})
 
     </div>
 
@@ -76,7 +76,9 @@ End Code
         <hr />
         <div class="raceflex">
             <div class="linkbutton">
-                @Html.ActionLink("Create New", "Create")
+                @*@Html.ActionLink("Create New", "Create")*@
+                @Html.ActionLink("Create New", "Create", New With {.EventID = ViewBag.RaceID, .Distance = ViewBag.DivisionSelect})
+
             </div>
             <div class="linkbutton">
                 @Html.ActionLink("View Cart", "Cart", "Entries")

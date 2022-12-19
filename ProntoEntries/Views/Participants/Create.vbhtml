@@ -11,7 +11,7 @@ End Code
     <hr />
 
 
-    @Using (Html.BeginForm())
+    @Using (Html.BeginForm(New With {.EventId = ViewBag.EventID, .Distance = ViewBag.Distance}))
         @Html.AntiForgeryToken()
         @Html.ValidationSummary(True, "", New With {.class = "text-danger"})
 
@@ -49,7 +49,11 @@ End Code
                 <div class="partelement">
                     @Html.LabelFor(Function(model) model.IDNumber, htmlAttributes:=New With {.class = "control-label col-md-2 labelfix"})
                     @Html.EditorFor(Function(model) model.IDNumber, New With {.htmlAttributes = New With {.class = "partelement item"}})
-                    @Html.ValidationMessageFor(Function(model) model.IDNumber, "", New With {.class = "text-danger"})
+                    @If ViewBag.InvalidID = True Then
+                        @Html.ValidationMessageFor(Function(model) model.IDNumber, "ID MUST BE UNIQUE", New With {.class = "text-danger"})
+                    Else
+                        @Html.ValidationMessageFor(Function(model) model.IDNumber, "", New With {.class = "text-danger"})
+                    End If
                 </div>
 
                 <div class="partelement">
@@ -101,7 +105,8 @@ End Code
 
                 <div Class="partelement">
                     @Html.LabelFor(Function(model) model.BoodType, htmlAttributes:=New With {.class = "control-label col-md-2 labelfix"})
-                    @Html.EditorFor(Function(model) model.BoodType, New With {.htmlAttributes = New With {.class = "partelement item"}})
+                    @Html.DropDownList("BoodType", Nothing, htmlAttributes:=New With {.class = "form-controlDDL"}, optionLabel:="")
+                    @*@Html.EditorFor(Function(model) model.BoodType, New With {.htmlAttributes = New With {.class = "partelement item"}})*@
                     @Html.ValidationMessageFor(Function(model) model.BoodType, "", New With {.class = "text-danger"})
                 </div>
 
@@ -141,7 +146,8 @@ End Code
             <div Class="participantright">
                 <div class="partelement">
                     @Html.LabelFor(Function(model) model.Clubname, htmlAttributes:=New With {.class = "control-label col-md-2 labelfix"})
-                    @Html.EditorFor(Function(model) model.Clubname, New With {.htmlAttributes = New With {.class = "partelement item"}})
+                    @Html.DropDownList("Clubname", Nothing, htmlAttributes:=New With {.class = "form-controlDDL"}, optionLabel:="")
+                    @*@Html.EditorFor(Function(model) model.Clubname, New With {.htmlAttributes = New With {.class = "partelement item"}})*@
                     @Html.ValidationMessageFor(Function(model) model.Clubname, "", New With {.class = "text-danger"})
                 </div>
 
@@ -181,7 +187,8 @@ End Code
 
                 <div class="partelement">
                     @Html.LabelFor(Function(model) model.Province, htmlAttributes:=New With {.class = "control-label col-md-2 labelfix"})
-                    @Html.EditorFor(Function(model) model.Province, New With {.htmlAttributes = New With {.class = "partelement item"}})
+                    @Html.DropDownList("Province", Nothing, htmlAttributes:=New With {.class = "form-controlDDL"}, optionLabel:="")
+                    @*@Html.EditorFor(Function(model) model.Province, New With {.htmlAttributes = New With {.class = "partelement item"}})*@
                     @Html.ValidationMessageFor(Function(model) model.Province, "", New With {.class = "text-danger"})
                 </div>
             </div>
