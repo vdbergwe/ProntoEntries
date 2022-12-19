@@ -42,7 +42,7 @@ End Class
 Public Class LoginViewModel
     <Required>
     <Display(Name:="Email")>
-    <EmailAddress(ErrorMessage:="Invalid Email - Ensure No Spaces")>
+    <EmailAddress(ErrorMessage:="Invalid Email - Ensure No Spaces - Verify Cursor Position")>
     Public Property Email As String
 
     <Required>

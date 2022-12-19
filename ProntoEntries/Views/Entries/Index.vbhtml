@@ -39,8 +39,8 @@ End Code
                         @Html.DisplayNameFor(Function(model) model.Status)
                     </th>
                     @*<th style="text-align: center">
-                        Additional Items
-                    </th>*@
+                            Additional Items
+                        </th>*@
                 </tr>
                 <tr>
                     <template>
@@ -68,12 +68,16 @@ End Code
                             @Html.DisplayFor(Function(modelItem) item.Status)
                         </td>
                         @*<td>
-                            @Html.Action("ViewAddOns", "AddonOptions", New With {.Id = item.PaymentReference, .ParticipantID = item.ParticipantID})
+                                @Html.Action("ViewAddOns", "AddonOptions", New With {.Id = item.PaymentReference, .ParticipantID = item.ParticipantID})
 
-                        </td>*@
-                        <td>
-                            @Html.ActionLink("Print Ticket", "GenerateTicket", New With {.id = item.EntryID}) @*|
-                                @Html.ActionLink("Details", "Details", New With {.id = item.EntryID}) |
+                            </td>*@
+                        <td class="PrintConfirmation">
+
+                            @Html.ActionLink("Print Confirmation", "GenerateTicket", New With {.id = item.EntryID})
+
+
+
+                            @*  @Html.ActionLink("Details", "Details", New With {.id = item.EntryID}) |
                                 @Html.ActionLink("Delete", "Delete", New With {.id = item.EntryID})*@
                         </td>
                     </tr>

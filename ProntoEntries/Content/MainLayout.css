@@ -412,6 +412,11 @@ input[type="submit"] {
         color: lightgrey;
     }
 
+.PrintConfirmation a {
+    color: White;
+    font-weight: bold;
+}
+
 .linkbuttonlogin {
     display: flex;
     width: 40%;
