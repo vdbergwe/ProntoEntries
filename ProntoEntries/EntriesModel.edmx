@@ -322,6 +322,7 @@ warning 6002: The table/view 'EntriesDB.dbo.PartDiv' does not have a primary key
           <Property Name="M_reference" Type="int" />
           <Property Name="Pf_reference" Type="int" />
           <Property Name="RaceID" Type="int" />
+          <Property Name="Mobile" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'EntriesDB.dbo.ParticipantExport' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -475,7 +476,8 @@ warning 6002: The table/view 'EntriesDB.dbo.ParticipantExport' does not have a p
     [PartDiv].[Price] AS [Price], 
     [PartDiv].[M_reference] AS [M_reference], 
     [PartDiv].[Pf_reference] AS [Pf_reference], 
-    [PartDiv].[RaceID] AS [RaceID]
+    [PartDiv].[RaceID] AS [RaceID], 
+    [PartDiv].[Mobile] AS [Mobile]
     FROM [dbo].[PartDiv] AS [PartDiv]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="ParticipantExport" EntityType="Self.ParticipantExport" store:Type="Views" store:Schema="dbo">
@@ -936,6 +938,7 @@ warning 6002: The table/view 'EntriesDB.dbo.ParticipantExport' does not have a p
           <Property Name="M_reference" Type="Int32" />
           <Property Name="Pf_reference" Type="Int32" />
           <Property Name="RaceID" Type="Int32" />
+          <Property Name="Mobile" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -1269,6 +1272,7 @@ warning 6002: The table/view 'EntriesDB.dbo.ParticipantExport' does not have a p
           <EntitySetMapping Name="PartDivs">
             <EntityTypeMapping TypeName="EntriesDBModel.PartDiv">
               <MappingFragment StoreEntitySet="PartDiv">
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
                 <ScalarProperty Name="RaceID" ColumnName="RaceID" />
                 <ScalarProperty Name="Pf_reference" ColumnName="Pf_reference" />
                 <ScalarProperty Name="M_reference" ColumnName="M_reference" />

@@ -214,7 +214,7 @@ Namespace Controllers
 
             TransactionString = TransactionString + "&" + "signature=" + ViewBag.Signature
 
-            Return Redirect("https://sandbox.payfast.co.za/eng/process?" + TransactionString)
+            Return Redirect("https://www.payfast.co.za/eng/process?" + TransactionString)
         End Function
 
         ' GET: Entries/Cart
@@ -351,7 +351,7 @@ Namespace Controllers
             Dim Age As TimeSpan = RaceDate - ParticipantDOB
             Dim AgeInt As Decimal = Age.TotalDays / 365
 
-            Dim DivisionID = db.Divisions.Where(Function(a) a.RaceID = RaceID1 And a.MinAge < AgeInt And a.MaxAge > AgeInt And a.Distance = DivisionID1).Select(Function(b) b.DivisionID).FirstOrDefault()
+            Dim DivisionID = db.Divisions.Where(Function(a) a.RaceID = RaceID1 And a.MinAge <= AgeInt And a.MaxAge >= AgeInt And a.Distance = DivisionID1).Select(Function(b) b.DivisionID).FirstOrDefault()
 
             ViewBag.DivisionCheck = DivisionID
 
@@ -370,7 +370,7 @@ Namespace Controllers
 
 
             Dim holding = db.Sales.Where(Function(a) a.ParticipantID = Id And a.Pf_reference Is Nothing)
-            Dim AddItems = db.AddonItems.Where(Function(a) a.RaceID = RaceID1 And Not holding.Any(Function(b) b.ItemID = a.ItemID))
+            Dim AddItems = db.AddonItems.Where(Function(a) a.RaceID = RaceID1 And Not holding.Any(Function(b) b.ItemID = a.ItemID)).OrderBy(Function(b) b.Name)
 
             If (db.Sales.Where(Function(a) a.UserID = User.Identity.Name And a.Pf_reference Is Nothing).Count() > 0) Then
                 sale.M_reference = db.Sales.Where(Function(a) a.UserID = User.Identity.Name And a.Pf_reference Is Nothing).Select(Function(a) a.M_reference).FirstOrDefault()

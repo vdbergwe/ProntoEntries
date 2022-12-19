@@ -42,5 +42,6 @@ Partial Public Class PartDiv
     Public Property M_reference As Nullable(Of Integer)
     Public Property Pf_reference As Nullable(Of Integer)
     Public Property RaceID As Nullable(Of Integer)
+    Public Property Mobile As String
 
 End Class
