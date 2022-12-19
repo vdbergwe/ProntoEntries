@@ -76,7 +76,7 @@ End Code
         <hr />
         <div class="raceflex">
             <div class="linkbutton">
-                @*@Html.ActionLink("Create New", "Create")*@
+                @*@Html.ActionLink("Create New1", "Create")*@
                 @Html.ActionLink("Create New", "Create", New With {.EventID = ViewBag.RaceID, .Distance = ViewBag.DivisionSelect})
 
             </div>
