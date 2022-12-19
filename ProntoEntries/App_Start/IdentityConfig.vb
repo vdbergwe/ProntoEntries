@@ -22,9 +22,16 @@ Public Class EmailService
 
     Private Function SendMail(Message As IdentityMessage)
         Dim text As String = String.Format("Please click on this link to {0}: {1}", Message.Subject, Message.Body)
-        Dim Html As String = "Please confirm your account by clicking <a href=""" & Message.Body & """>Confirmation Link</a><br/><br/>"
+        Dim Html As String
 
-        Html += HttpUtility.HtmlEncode("Or copy the following link to your browser:" + Message.Body)
+        If Message.Subject = "Reset your Password" Then
+            Html = "Please reset your password by clicking <a href=""" & Message.Body & """>Reset Link</a><br/><br/>"
+        Else
+            Html = "Please confirm your account by clicking <a href=""" & Message.Body & """>Confirmation Link</a><br/><br/>"
+        End If
+
+
+        Html += HttpUtility.HtmlEncode("Or copy the following link to your browser: " + Message.Body)
 
 
         Dim msg As New MailMessage With {

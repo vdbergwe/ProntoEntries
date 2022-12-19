@@ -732,6 +732,8 @@
     <Content Include="Content\Pronto-Logo-Black.png" />
     <Content Include="Content\ProntoBackground.jpg" />
     <Content Include="Content\ProntoLogo.jpg" />
+    <Content Include="Content\QRCodes\LVCCQRCode.png" />
+    <Content Include="Content\QRCodes\WatervalBovenQRCode.png" />
     <Content Include="EntriesModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>EntriesModel.edmx</DependentUpon>

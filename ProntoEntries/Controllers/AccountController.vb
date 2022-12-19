@@ -187,7 +187,9 @@ Public Class AccountController
             ' Send an email with this link
             Dim code = Await UserManager.GeneratePasswordResetTokenAsync(user.Id)
             Dim callbackUrl = Url.Action("ResetPassword", "Account", New With {.userId = user.Id, code}, protocol:=Request.Url.Scheme)
-            Await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=""" & callbackUrl & """>here</a>")
+            Await UserManager.SendEmailAsync(user.Id, "Reset your Password", callbackUrl)
+
+            'Await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=""" & callbackUrl & """>here</a>")
             Return RedirectToAction("ForgotPasswordConfirmation", "Account")
         End If
 

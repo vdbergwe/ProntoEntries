@@ -221,8 +221,8 @@ End Code
             <div Class="participantright">
                 <div class="partelement">
                     @Html.LabelFor(Function(model) model.Clubname, htmlAttributes:=New With {.class = "control-label col-md-2 labelfix"})
-                    @Html.DropDownList("Clubname", Nothing, htmlAttributes:=New With {.class = "form-controlDDL"}, optionLabel:="")
-                    @*@Html.EditorFor(Function(model) model.Clubname, New With {.htmlAttributes = New With {.class = "partelement item"}})*@
+                    @*@Html.DropDownList("Clubname", Nothing, htmlAttributes:=New With {.class = "form-controlDDL"}, optionLabel:="")*@
+                    @Html.EditorFor(Function(model) model.Clubname, New With {.htmlAttributes = New With {.class = "partelement item"}})
                     @Html.ValidationMessageFor(Function(model) model.Clubname, "", New With {.class = "text-danger"})
                 </div>
 

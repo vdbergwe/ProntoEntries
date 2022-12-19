@@ -21,7 +21,7 @@ End Code
         }
 
             .ticketflex .item {
-    /*            -webkit-box-flex: 1;
+                /*            -webkit-box-flex: 1;
                 -webkit-flex: 1;
                 flex: 1;*/
             }
@@ -65,13 +65,13 @@ End Code
                     <p>
                         <strong>Ticket Number:</strong> <br />
                         @Html.DisplayFor(Function(modelItem) item.EntryID)
-                    </p>                   
+                    </p>
                 </div>
                 <div class="ticketflextop item">
                     <p>
                         <strong>Confirmation:</strong> <br />
                         @Html.DisplayFor(Function(modelItem) item.PayFastReference)
-                    </p>                    
+                    </p>
                 </div>
             </div>
         Next
@@ -83,20 +83,20 @@ End Code
         <div class="ticketflex item" style="width: 35%;">
             <img src="@Url.Content(ViewBag.Background)" style="width: 220px; margin: 0 0 0 10px" />
         </div>
-        <div class="ticketflex item" >
+        <div class="ticketflex item">
 
             <table class="table">
                 @*<tr>
-                    <th>
-                        Participant
-                    </th>
-                    <th style="padding: 0 0 0 10px;">
-                        Event
-                    </th>
-                    <th style="padding: 0 0 0 10px;">
-                        Selections
-                    </th>
-                </tr>*@
+                        <th>
+                            Participant
+                        </th>
+                        <th style="padding: 0 0 0 10px;">
+                            Event
+                        </th>
+                        <th style="padding: 0 0 0 10px;">
+                            Selections
+                        </th>
+                    </tr>*@
 
                 @For Each item In Model
                     @<tr style="border: 15px solid white">
@@ -110,7 +110,7 @@ End Code
                             <strong>ID Number:</strong> <br />
                             @Html.Action("Get_ParticipantID", New With {.Id = item.ParticipantID})
                         </td>
-                        <td style="padding: 0 0 0 10px;">
+                        <td style="padding: 0 0 0 100px;">
                             <strong>Event:</strong> <br />
                             @Html.Action("Get_RaceName", New With {.Id = item.RaceID})
                             <br />
@@ -120,19 +120,32 @@ End Code
                             <Strong>Category:</Strong> <br />
                             @Html.Action("Get_DivisionName", New With {.Id = item.DivisionID})
                         </td>
-                        <td style="padding: 0 0 0 10px;">
-                            <Strong>Add-ons:</Strong> <br />
-                            @Html.Action("ViewAddOnsTicket", "AddonOptions", New With {.Id = item.PaymentReference, .ParticipantID = item.ParticipantID})
-                            @*<Strong>Collection Point:</Strong> <br />
+                        <!--<td style="padding: 0 0 0 10px;">
+                        <Strong>Add-ons:</Strong> <br />
+                        @Html.Action("ViewAddOnsTicket", "AddonOptions", New With {.Id = item.PaymentReference, .ParticipantID = item.ParticipantID})-->
+                        @*<Strong>Collection Point:</Strong> <br />
                             @Html.Action("Get_DivisionName", New With {.Id = item.DivisionID})*@
-
-                        </td>
+                        <!--</td>-->
                         @*<td>
-                        </td>*@
+                            </td>*@
                     </tr>
                 Next
             </table>
+           
+
         </div>
+    </div>
+    <div>
+        @For Each item In Model
+            
+
+            @<div style="padding: 0 0 0 20px;">
+                <br />
+                <br />
+                <Strong>Add-ons:</Strong> <br />
+                @Html.Action("ViewAddOnsTicket", "AddonOptions", New With {.Id = item.PaymentReference, .ParticipantID = item.ParticipantID})
+            </div>
+        Next
     </div>
 
 
