@@ -103,7 +103,7 @@ Namespace Controllers
         <HttpPost()>
         <ValidateAntiForgeryToken()>
         <Authorize>
-        Function Create(<Bind(Include:="ParticipantID,FirstName,MiddleNames,LastName,IDNumber,DOB,Gender,RaceNumber,EmailAddress,MedicalName,MedicalNumber,EmergencyContact,EmergencyNumber,BoodType,Allergies,AdditionalInfo,DoctorName,DoctorContact,Clubname,Country,Address,City,Province,UserID,EventMailer,Offers")> ByVal participant As Participant, ByVal EventID As Integer?, ByVal Distance As Decimal?) As ActionResult
+        Function Create(<Bind(Include:="ParticipantID,FirstName,MiddleNames,LastName,IDNumber,DOB,Gender,RaceNumber,EmailAddress,Mobile,MedicalName,MedicalNumber,EmergencyContact,EmergencyNumber,BoodType,Allergies,AdditionalInfo,DoctorName,DoctorContact,Clubname,Country,Address,City,Province,UserID,EventMailer,Offers")> ByVal participant As Participant, ByVal EventID As Integer?, ByVal Distance As Decimal?) As ActionResult
             participant.UserID = User.Identity.Name
 
             ViewBag.EventID = EventID
@@ -170,7 +170,7 @@ Namespace Controllers
         <HttpPost()>
         <ValidateAntiForgeryToken()>
         <Authorize>
-        Function Edit(<Bind(Include:="ParticipantID,FirstName,MiddleNames,LastName,IDNumber,DOB,Gender,RaceNumber,EmailAddress,MedicalName,MedicalNumber,EmergencyContact,EmergencyNumber,BoodType,Allergies,AdditionalInfo,DoctorName,DoctorContact,Clubname,Country,Address,City,Province,UserID,EventMailer,Offers")> ByVal participant As Participant) As ActionResult
+        Function Edit(<Bind(Include:="ParticipantID,FirstName,MiddleNames,LastName,IDNumber,DOB,Gender,RaceNumber,EmailAddress,Mobile,MedicalName,MedicalNumber,EmergencyContact,EmergencyNumber,BoodType,Allergies,AdditionalInfo,DoctorName,DoctorContact,Clubname,Country,Address,City,Province,UserID,EventMailer,Offers")> ByVal participant As Participant) As ActionResult
 
             participant.UserID = User.Identity.Name
 

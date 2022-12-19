@@ -26,7 +26,6 @@ Partial Public Class Meta_Participant
     <Required>
     Public Property Gender As String
     <DisplayName("Licence Number")>
-    <Required>
     Public Property RaceNumber As String
     <DisplayName("Email")>
     <DataType(DataType.EmailAddress)>
@@ -70,4 +69,6 @@ Partial Public Class Meta_Participant
     Public Property EventMailer As Nullable(Of Boolean)
     <DisplayName("Special Offers")>
     Public Property Offers As Nullable(Of Boolean)
+    <Required>
+    Public Property Mobile As String
 End Class

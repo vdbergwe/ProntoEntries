@@ -414,7 +414,7 @@ Namespace Controllers
 
         <Authorize>
         Function get_AddonOptionlist(Id As Integer?, ByVal RaceID As Integer?, ByVal DivisionID1 As Decimal?, ByVal OptionID As Integer?, ByVal ParticipantID As Integer?) As ActionResult
-            Dim Optionlist = db.AddonOptions.Where(Function(a) a.ItemID = Id And a.StopDate > Now())
+            Dim Optionlist = db.AddonOptions.Where(Function(a) a.ItemID = Id And a.StopDate > Now()).OrderBy(Function(b) b.Size)
             ViewBag.ParticipantID = ParticipantID
             ViewBag.RaceID = RaceID
             ViewBag.DivisionID = DivisionID1

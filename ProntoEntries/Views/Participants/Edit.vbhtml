@@ -149,6 +149,12 @@ End Code
             <div Class="participantright">
 
                 <div Class="partelement">
+                    @Html.LabelFor(Function(model) model.Mobile, htmlAttributes:=New With {.class = "control-label col-md-2 labelfix"})
+                    @Html.EditorFor(Function(model) model.Mobile, New With {.htmlAttributes = New With {.class = "partelement item"}})
+                    @Html.ValidationMessageFor(Function(model) model.Mobile, "", New With {.class = "text-danger"})
+                </div>
+
+                <div Class="partelement">
                     @Html.LabelFor(Function(model) model.MedicalName, htmlAttributes:=New With {.class = "control-label col-md-2 labelfix"})
                     @Html.EditorFor(Function(model) model.MedicalName, New With {.htmlAttributes = New With {.class = "partelement item"}})
                     @Html.ValidationMessageFor(Function(model) model.MedicalName, "", New With {.class = "text-danger"})

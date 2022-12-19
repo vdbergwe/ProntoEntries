@@ -19,6 +19,11 @@ Namespace Controllers
             Return PartialView()
         End Function
 
+        Function Get_ItemSize(Id As Integer?) As ActionResult
+            ViewBag.ItemSize = db.AddonOptions.Where(Function(a) a.ItemID = Id).Select(Function(b) b.Size).FirstOrDefault()
+            Return PartialView()
+        End Function
+
         ' GET: AddonOptions
         <Authorize>
         Function IndexPartial(Id As Integer?) As ActionResult

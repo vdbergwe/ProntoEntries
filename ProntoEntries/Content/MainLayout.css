@@ -267,6 +267,7 @@ input[type="submit"] {
     color: #000;
     font-family: raleway, sans-serif;
     text-transform: uppercase;
+    min-width: 70px;
 }
 
     .linkbutton a {

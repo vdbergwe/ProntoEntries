@@ -46,6 +46,12 @@ End Code
                     @Html.ValidationMessageFor(Function(model) model.EmailAddress, "", New With {.class = "text-danger"})
                 </div>
 
+                <div Class="partelement">
+                    @Html.LabelFor(Function(model) model.Mobile, htmlAttributes:=New With {.class = "control-label col-md-2 labelfix"})
+                    @Html.EditorFor(Function(model) model.Mobile, New With {.htmlAttributes = New With {.class = "partelement item"}})
+                    @Html.ValidationMessageFor(Function(model) model.Mobile, "", New With {.class = "text-danger"})
+                </div>
+
                 <div class="partelement">
                     @Html.LabelFor(Function(model) model.IDNumber, htmlAttributes:=New With {.class = "control-label col-md-2 labelfix"})
                     @Html.EditorFor(Function(model) model.IDNumber, New With {.htmlAttributes = New With {.class = "partelement item"}})
@@ -227,4 +233,14 @@ End Code
         </div>
     End Using
 </div>
+
+
+@Section Scripts
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(function () {
+            $("#Clubname").chosen();
+        });
+    </script>
+End Section
 

@@ -168,12 +168,12 @@ End Code
                 </div>
 
                 @*<dt>
-                        @Html.DisplayNameFor(Function(model) model.Image)
-                    </dt>
+            @Html.DisplayNameFor(Function(model) model.Image)
+        </dt>
 
-                    <dd>
-                        @Html.DisplayFor(Function(model) model.Image)
-                    </dd>*@
+        <dd>
+            @Html.DisplayFor(Function(model) model.Image)
+        </dd>*@
 
                 <div Class="RaceControlBanner Small">
                     <p>
@@ -185,6 +185,21 @@ End Code
                     @If (Model.DispClasses = True) Then
                         @Html.Action("ViewClasses", "Divisions", New With {.Id = Model.RaceID})
                     End If
+                </div>
+
+                <div class="RaceControlBanner Small">
+                    <p>
+                        For Technical Support
+                    </p>
+                </div>
+
+                <div class="RC--1">
+                    <p>
+                        Email
+                    </p>
+                    <p>
+                        <a href="mailto:support@prontocs.co.za?subject=Entries_Portal_Support">support@prontocs.co.za</a>
+                    </p>
                 </div>
 
                 <div Class="RaceControlBanner EntryLink">
