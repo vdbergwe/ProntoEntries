@@ -13,8 +13,15 @@ Namespace Controllers
         Function Index(ByVal RaceId As Integer?, ByVal SearchValue As String) As ActionResult
             ViewBag.SearchText = SearchValue
             Dim OrgId = db.Organisers.Where(Function(a) a.AdminUserID = User.Identity.Name).Select(Function(b) b.OrgID).FirstOrDefault()
+
+
+
             ViewBag.RaceID = New SelectList(db.RaceEvents.Where(Function(a) a.OrgID = OrgId), "RaceID", "RaceName", RaceId)
             ViewBag.SelectedRace = RaceId
+
+            If User.IsInRole("Admin") Then
+                ViewBag.RaceID = New SelectList(db.RaceEvents, "RaceID", "RaceName", RaceId)
+            End If
 
             Dim RaceParticipants = db.Entries.Where(Function(a) a.RaceID = RaceId)
             Dim results = db.Participants.Where(Function(a) RaceParticipants.Any(Function(b) b.ParticipantID = a.ParticipantID))
@@ -39,6 +46,11 @@ Namespace Controllers
             ViewBag.SearchText = SearchValue
             Dim OrgId = db.Organisers.Where(Function(a) a.AdminUserID = User.Identity.Name).Select(Function(b) b.OrgID).FirstOrDefault()
             ViewBag.RaceID = New SelectList(db.RaceEvents.Where(Function(a) a.OrgID = OrgId), "RaceID", "RaceName", RaceId)
+
+            If User.IsInRole("Admin") Then
+                ViewBag.RaceID = New SelectList(db.RaceEvents, "RaceID", "RaceName", RaceId)
+            End If
+
             ViewBag.SelectedRace = RaceId
 
             Dim RaceParticipants = db.Entries.Where(Function(a) a.RaceID = RaceId)
