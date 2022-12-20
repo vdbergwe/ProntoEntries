@@ -139,30 +139,30 @@
             <PropertyRef Name="ParticipantID" />
           </Key>
           <Property Name="ParticipantID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="FirstName" Type="nvarchar" MaxLength="50" />
-          <Property Name="MiddleNames" Type="nvarchar" MaxLength="50" />
-          <Property Name="LastName" Type="nvarchar" MaxLength="50" />
-          <Property Name="IDNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="100" />
+          <Property Name="MiddleNames" Type="nvarchar" MaxLength="100" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="100" />
+          <Property Name="IDNumber" Type="nvarchar" MaxLength="100" />
           <Property Name="DOB" Type="datetime" />
-          <Property Name="Gender" Type="nvarchar" MaxLength="50" />
-          <Property Name="RaceNumber" Type="nvarchar" MaxLength="50" />
-          <Property Name="EmailAddress" Type="nvarchar" MaxLength="50" />
-          <Property Name="Mobile" Type="nvarchar" MaxLength="50" />
-          <Property Name="MedicalName" Type="nvarchar" MaxLength="50" />
-          <Property Name="MedicalNumber" Type="nvarchar" MaxLength="50" />
-          <Property Name="EmergencyContact" Type="nvarchar" MaxLength="50" />
-          <Property Name="EmergencyNumber" Type="nvarchar" MaxLength="50" />
-          <Property Name="BoodType" Type="nvarchar" MaxLength="50" />
-          <Property Name="Allergies" Type="nvarchar" MaxLength="50" />
-          <Property Name="AdditionalInfo" Type="nvarchar" MaxLength="50" />
-          <Property Name="DoctorName" Type="nvarchar" MaxLength="50" />
-          <Property Name="DoctorContact" Type="nvarchar" MaxLength="50" />
-          <Property Name="Clubname" Type="nvarchar" MaxLength="50" />
-          <Property Name="Country" Type="nvarchar" MaxLength="50" />
-          <Property Name="Address" Type="nvarchar" MaxLength="50" />
-          <Property Name="City" Type="nvarchar" MaxLength="50" />
-          <Property Name="Province" Type="nvarchar" MaxLength="50" />
-          <Property Name="UserID" Type="nvarchar" MaxLength="50" />
+          <Property Name="Gender" Type="nvarchar" MaxLength="100" />
+          <Property Name="RaceNumber" Type="nvarchar" MaxLength="100" />
+          <Property Name="EmailAddress" Type="nvarchar" MaxLength="100" />
+          <Property Name="Mobile" Type="nvarchar" MaxLength="100" />
+          <Property Name="MedicalName" Type="nvarchar" MaxLength="100" />
+          <Property Name="MedicalNumber" Type="nvarchar" MaxLength="100" />
+          <Property Name="EmergencyContact" Type="nvarchar" MaxLength="100" />
+          <Property Name="EmergencyNumber" Type="nvarchar" MaxLength="100" />
+          <Property Name="BoodType" Type="nvarchar" MaxLength="100" />
+          <Property Name="Allergies" Type="nvarchar" MaxLength="100" />
+          <Property Name="AdditionalInfo" Type="nvarchar" MaxLength="200" />
+          <Property Name="DoctorName" Type="nvarchar" MaxLength="100" />
+          <Property Name="DoctorContact" Type="nvarchar" MaxLength="100" />
+          <Property Name="Clubname" Type="nvarchar" MaxLength="100" />
+          <Property Name="Country" Type="nvarchar" MaxLength="100" />
+          <Property Name="Address" Type="nvarchar" MaxLength="100" />
+          <Property Name="City" Type="nvarchar" MaxLength="100" />
+          <Property Name="Province" Type="nvarchar" MaxLength="100" />
+          <Property Name="UserID" Type="nvarchar" MaxLength="100" />
           <Property Name="EventMailer" Type="bit" Nullable="false" />
           <Property Name="Offers" Type="bit" Nullable="false" />
           <Property Name="DateAdded" Type="datetime" />
@@ -875,33 +875,33 @@ warning 6002: The table/view 'EntriesDB.dbo.ParticipantExport' does not have a p
             <PropertyRef Name="ParticipantID" />
           </Key>
           <Property Name="ParticipantID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="MiddleNames" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="IDNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FirstName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="MiddleNames" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="IDNumber" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="DOB" Type="DateTime" Precision="3" />
-          <Property Name="Gender" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="RaceNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="EmailAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="MedicalName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="MedicalNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="EmergencyContact" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="EmergencyNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="BoodType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Allergies" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="AdditionalInfo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="DoctorName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="DoctorContact" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Clubname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Country" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Address" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Province" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="UserID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Gender" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="RaceNumber" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="EmailAddress" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="MedicalName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="MedicalNumber" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="EmergencyContact" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="EmergencyNumber" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="BoodType" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Allergies" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="AdditionalInfo" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="DoctorName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="DoctorContact" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Clubname" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Country" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Province" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="UserID" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="EventMailer" Type="Boolean" Nullable="false" />
           <Property Name="Offers" Type="Boolean" Nullable="false" />
           <Property Name="DateAdded" Type="DateTime" Precision="3" />
-          <Property Name="Mobile" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Mobile" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="PartDiv">
           <Key>

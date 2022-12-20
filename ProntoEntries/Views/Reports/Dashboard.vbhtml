@@ -36,7 +36,11 @@ End Code
 
     <hr />
 
+
     @If ViewBag.SelectedRace IsNot Nothing Then
+
+        @<p style="text-align:center; color:white">Total Entries: @ViewBag.TotalEntries</p>
+
         @* MAIN CONTAINER FLEX*@
 
         @<div Class="dashboardcontainer">

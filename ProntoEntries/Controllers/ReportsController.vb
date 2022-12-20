@@ -65,6 +65,7 @@ Namespace Controllers
                 End If
             End If
 
+            ViewBag.TotalEntries = results.Count()
 
             Return View(results.ToList())
         End Function
