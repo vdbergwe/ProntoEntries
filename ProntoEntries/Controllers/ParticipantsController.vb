@@ -158,6 +158,12 @@ Namespace Controllers
             ViewBag.Province = New SelectList(db.TypeLookups.Where(Function(a) a.Type = "Province"), "Value", "Value", participant.Province)
             ViewBag.BoodType = New SelectList(db.TypeLookups.Where(Function(a) a.Type = "BloodType"), "Value", "Value", participant.BoodType)
 
+            If db.Entries.Where(Function(a) a.ParticipantID = id).Count() > 0 Then
+                ViewBag.InRace = True
+            Else
+                ViewBag.InRace = False
+            End If
+
             If IsNothing(participant) Then
                 Return HttpNotFound()
             End If
@@ -179,25 +185,33 @@ Namespace Controllers
             ViewBag.Province = New SelectList(db.TypeLookups.Where(Function(a) a.Type = "Province"), "Value", "Value", participant.Province)
             ViewBag.BoodType = New SelectList(db.TypeLookups.Where(Function(a) a.Type = "BloodType"), "Value", "Value", participant.BoodType)
 
-            If participant.FirstName = db.Participants.Where(Function(a) a.ParticipantID = participant.ParticipantID).Select(Function(b) b.FirstName).FirstOrDefault() Then
-                If participant.MiddleNames = db.Participants.Where(Function(a) a.ParticipantID = participant.ParticipantID).Select(Function(b) b.MiddleNames).FirstOrDefault() Then
-                    If participant.LastName = db.Participants.Where(Function(a) a.ParticipantID = participant.ParticipantID).Select(Function(b) b.LastName).FirstOrDefault() Then
-                        If participant.EmailAddress = db.Participants.Where(Function(a) a.ParticipantID = participant.ParticipantID).Select(Function(b) b.EmailAddress).FirstOrDefault() Then
-                            If participant.IDNumber = db.Participants.Where(Function(a) a.ParticipantID = participant.ParticipantID).Select(Function(b) b.IDNumber).FirstOrDefault() Then
-                                If participant.Gender = db.Participants.Where(Function(a) a.ParticipantID = participant.ParticipantID).Select(Function(b) b.Gender).FirstOrDefault() Then
-                                    If participant.DOB = db.Participants.Where(Function(a) a.ParticipantID = participant.ParticipantID).Select(Function(b) b.DOB).FirstOrDefault() Then
-                                        If ModelState.IsValid Then
-                                            db.Entry(participant).State = EntityState.Modified
-                                            db.SaveChanges()
-                                            Return RedirectToAction("Index")
-                                        End If
-                                    End If
-                                End If
-                            End If
-                        End If
-                    End If
-                End If
+            If db.Entries.Where(Function(a) a.ParticipantID = participant.IDNumber).Count() > 0 Then
+                ViewBag.InRace = True
+            Else
+                ViewBag.InRace = False
             End If
+
+            If ModelState.IsValid Then
+                db.Entry(participant).State = EntityState.Modified
+                db.SaveChanges()
+                Return RedirectToAction("Index")
+            End If
+
+            'If participant.FirstName = db.Participants.Where(Function(a) a.ParticipantID = participant.ParticipantID).Select(Function(b) b.FirstName).FirstOrDefault() Then
+            '    If participant.MiddleNames = db.Participants.Where(Function(a) a.ParticipantID = participant.ParticipantID).Select(Function(b) b.MiddleNames).FirstOrDefault() Then
+            '        If participant.LastName = db.Participants.Where(Function(a) a.ParticipantID = participant.ParticipantID).Select(Function(b) b.LastName).FirstOrDefault() Then
+            '            If participant.EmailAddress = db.Participants.Where(Function(a) a.ParticipantID = participant.ParticipantID).Select(Function(b) b.EmailAddress).FirstOrDefault() Then
+            '                If participant.IDNumber = db.Participants.Where(Function(a) a.ParticipantID = participant.ParticipantID).Select(Function(b) b.IDNumber).FirstOrDefault() Then
+            '                    If participant.Gender = db.Participants.Where(Function(a) a.ParticipantID = participant.ParticipantID).Select(Function(b) b.Gender).FirstOrDefault() Then
+            '                        If participant.DOB = db.Participants.Where(Function(a) a.ParticipantID = participant.ParticipantID).Select(Function(b) b.DOB).FirstOrDefault() Then
+
+            '                        End If
+            '                    End If
+            '                End If
+            '            End If
+            '        End If
+            '    End If
+            'End If
 
             Return View(participant)
         End Function

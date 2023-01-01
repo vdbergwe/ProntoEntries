@@ -58,7 +58,7 @@ End Code
                                         @If item.RaceID Is Nothing Then
                                             @<div>
                                                 @Html.Action("Get_ItemName", "AddonOptions", New With {.Id = item.ItemID}) ->
-                                                @Html.Action("Get_ItemSize", "AddonOptions", New With {.Id = item.ItemID})
+                                                @Html.Action("Get_ItemSize", "AddonOptions", New With {.Id = item.OptionID})
                                             </div>
 
                                         End If

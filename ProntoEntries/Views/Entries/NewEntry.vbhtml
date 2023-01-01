@@ -57,12 +57,17 @@ End Code
 
 @Section Scripts
     @Scripts.Render("~/bundles/jqueryval")
-    <script>
+<script>
         $("#divisionselect").change(function () {
             var did = $("#divisionselect option:selected").val();
             window.location.replace("?DivisionSelect=" + did);
         });
-    </script>
+
+        if(@ViewBag.TotalEntries > 0)
+            {
+            alert("You have entered (" + @ViewBag.TotalEntries.ToString() + ") Participants.  Please view the cart for payment.");
+        };
+</script>
 End Section
 
 

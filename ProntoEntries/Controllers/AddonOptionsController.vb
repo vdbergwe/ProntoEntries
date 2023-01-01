@@ -20,7 +20,7 @@ Namespace Controllers
         End Function
 
         Function Get_ItemSize(Id As Integer?) As ActionResult
-            ViewBag.ItemSize = db.AddonOptions.Where(Function(a) a.ItemID = Id).Select(Function(b) b.Size).FirstOrDefault()
+            ViewBag.ItemSize = db.AddonOptions.Where(Function(a) a.OptionID = Id).Select(Function(b) b.Size).FirstOrDefault()
             Return PartialView()
         End Function
 

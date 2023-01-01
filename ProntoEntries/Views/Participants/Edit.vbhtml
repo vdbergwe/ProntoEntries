@@ -16,7 +16,7 @@ End Code
         @<div class="participantcontainer">
             @Html.ValidationSummary(True, "", New With {.class = "text-danger"})
             @Html.HiddenFor(Function(model) model.ParticipantID)
-            @If User.Identity.IsAuthenticated And (User.IsInRole("Admin") Or User.IsInRole("SuperUser")) Then
+            @If User.Identity.IsAuthenticated And (User.IsInRole("Admin") Or User.IsInRole("SuperUser")) Or ViewBag.InRace = False Then
                 @<div class="participantleft">
                     <p> Personal Information</p>
                 </div>
@@ -24,31 +24,31 @@ End Code
                 @<div class="participantright">
                     <div class="partelement">
                         @Html.LabelFor(Function(model) model.FirstName, htmlAttributes:=New With {.class = "control-label col-md-2 labelfix"})
-                        @Html.EditorFor(Function(model) model.FirstName, New With {.htmlAttributes = New With {.class = "partelement item", .disabled = "enabled"}})
+                        @Html.EditorFor(Function(model) model.FirstName, New With {.htmlAttributes = New With {.class = "partelement item"}})
                         @Html.ValidationMessageFor(Function(model) model.FirstName, "", New With {.class = "text-danger"})
                     </div>
 
                     <div class="partelement">
                         @Html.LabelFor(Function(model) model.MiddleNames, htmlAttributes:=New With {.class = "control-label col-md-2 labelfix"})
-                        @Html.EditorFor(Function(model) model.MiddleNames, New With {.htmlAttributes = New With {.class = "partelement item", .disabled = "enabled"}})
+                        @Html.EditorFor(Function(model) model.MiddleNames, New With {.htmlAttributes = New With {.class = "partelement item"}})
                         @Html.ValidationMessageFor(Function(model) model.MiddleNames, "", New With {.class = "text-danger"})
                     </div>
 
                     <div class="partelement">
                         @Html.LabelFor(Function(model) model.LastName, htmlAttributes:=New With {.class = "control-label col-md-2 labelfix"})
-                        @Html.EditorFor(Function(model) model.LastName, New With {.htmlAttributes = New With {.class = "partelement item", .disabled = "enabled"}})
+                        @Html.EditorFor(Function(model) model.LastName, New With {.htmlAttributes = New With {.class = "partelement item"}})
                         @Html.ValidationMessageFor(Function(model) model.LastName, "", New With {.class = "text-danger"})
                     </div>
 
                     <div Class="partelement">
                         @Html.LabelFor(Function(model) model.EmailAddress, htmlAttributes:=New With {.class = "control-label col-md-2 labelfix"})
-                        @Html.EditorFor(Function(model) model.EmailAddress, New With {.htmlAttributes = New With {.class = "partelement item", .disabled = "enabled"}})
+                        @Html.EditorFor(Function(model) model.EmailAddress, New With {.htmlAttributes = New With {.class = "partelement item"}})
                         @Html.ValidationMessageFor(Function(model) model.EmailAddress, "", New With {.class = "text-danger"})
                     </div>
 
                     <div class="partelement">
                         @Html.LabelFor(Function(model) model.IDNumber, htmlAttributes:=New With {.class = "control-label col-md-2 labelfix"})
-                        @Html.EditorFor(Function(model) model.IDNumber, New With {.htmlAttributes = New With {.class = "partelement item", .disabled = "enabled"}})
+                        @Html.EditorFor(Function(model) model.IDNumber, New With {.htmlAttributes = New With {.class = "partelement item"}})
                         @Html.ValidationMessageFor(Function(model) model.IDNumber, "", New With {.class = "text-danger"})
                     </div>
 
@@ -60,7 +60,7 @@ End Code
 
                     <div class="partelement">
                         @Html.LabelFor(Function(model) model.DOB, htmlAttributes:=New With {.class = "control-label col-md-2 labelfix"})
-                        @Html.EditorFor(Function(model) model.DOB, New With {.htmlAttributes = New With {.class = "partelement item", .disabled = "enabled"}})
+                        @Html.EditorFor(Function(model) model.DOB, New With {.htmlAttributes = New With {.class = "partelement item"}})
                         @Html.ValidationMessageFor(Function(model) model.DOB, "", New With {.class = "text-danger"})
                     </div>
                 </div>

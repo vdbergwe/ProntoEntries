@@ -286,6 +286,8 @@ Namespace Controllers
             ViewBag.Distance = New SelectList(Distances, Nothing, Nothing, DivisionSelect)
             'ViewBag.Distance = New SelectList(db.Divisions.Where(Function(a) a.RaceID = id), "Distance", "Distance", DivisionSelect)
 
+            ViewBag.TotalEntries = db.Sales.Where(Function(a) a.UserID = User.Identity.Name And a.Pf_reference Is Nothing And a.RaceID IsNot Nothing).Count()
+
 
             ViewBag.DivisionID = New SelectList(db.Divisions.Where(Function(a) a.RaceID = id), "DivisionID", "Category", DivisionSelect)
             ViewBag.Background = raceEvent.Background
@@ -366,8 +368,6 @@ Namespace Controllers
             ViewBag.DivisionID = DivisionID1
             ViewBag.OptionID = OptionID1
             ViewBag.ItemID = ItemID
-
-
 
             Dim holding = db.Sales.Where(Function(a) a.ParticipantID = Id And a.Pf_reference Is Nothing)
             Dim AddItems = db.AddonItems.Where(Function(a) a.RaceID = RaceID1 And Not holding.Any(Function(b) b.ItemID = a.ItemID)).OrderBy(Function(b) b.Name)
