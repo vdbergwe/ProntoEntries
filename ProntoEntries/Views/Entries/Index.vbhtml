@@ -71,15 +71,16 @@ End Code
                                 @Html.Action("ViewAddOns", "AddonOptions", New With {.Id = item.PaymentReference, .ParticipantID = item.ParticipantID})
 
                             </td>*@
-                        <td class="PrintConfirmation">
+                     <td class="PrintConfirmation">
 
-                            @Html.ActionLink("Print Confirmation", "GenerateTicket", New With {.id = item.EntryID})
+                         @Html.ActionLink("Print Confirmation", "IssueTicket", New With {.id = item.EntryID})
+                         @*@Html.ActionLink("Print Confirmation", "GenerateTicket", New With {.id = item.EntryID})*@
 
 
 
-                            @*  @Html.ActionLink("Details", "Details", New With {.id = item.EntryID}) |
-                                @Html.ActionLink("Delete", "Delete", New With {.id = item.EntryID})*@
-                        </td>
+                         @*  @Html.ActionLink("Details", "Details", New With {.id = item.EntryID}) |
+        @Html.ActionLink("Delete", "Delete", New With {.id = item.EntryID})*@
+                     </td>
                     </tr>
 
 
