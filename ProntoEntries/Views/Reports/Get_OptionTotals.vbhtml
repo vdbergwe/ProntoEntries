@@ -1,7 +1,7 @@
 ﻿@ModelType IEnumerable(Of ProntoEntries.AddonOption)
 
 <p>
-    Total Per Division:
+    Total Per Add-on:
 </p>
 
 <div Class="ReportContent">

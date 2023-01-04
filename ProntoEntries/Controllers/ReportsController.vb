@@ -70,6 +70,14 @@ Namespace Controllers
             Return View(results.ToList())
         End Function
 
+        Function Get_TotalEntries(ByVal RaceId As Integer?)
+            Dim RaceParticipants = db.Entries.Where(Function(a) a.RaceID = RaceId)
+
+            ViewBag.TotalEntries = RaceParticipants.Count()
+
+            Return PartialView()
+        End Function
+
         Function EntryDetail(ByVal Id As Integer?, ByVal RaceID As Integer?, ByVal SearchValue As String) As ActionResult
             Dim Participant = db.Participants.Where(Function(a) a.ParticipantID = Id).FirstOrDefault()
             ViewBag.RaceID = RaceID
