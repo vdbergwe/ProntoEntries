@@ -1303,6 +1303,7 @@
     <Content Include="Views\Participants\ImportClubs.vbhtml" />
     <Content Include="Views\AddonOptions\Get_ItemSize.vbhtml" />
     <Content Include="Views\Reports\Get_TotalEntries.vbhtml" />
+    <Content Include="Views\Participants\Get_IsInRace.vbhtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />

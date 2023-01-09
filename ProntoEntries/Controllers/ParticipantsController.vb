@@ -60,6 +60,19 @@ Namespace Controllers
             Return PartialView(Participant)
         End Function
 
+        Function Get_IsInRace(ByVal id As Integer?) As ActionResult
+
+            If db.Entries.Where(Function(a) a.ParticipantID = id).Count() > 0 Then
+                ViewBag.InRace = True
+            Else
+                ViewBag.InRace = False
+            End If
+
+            ViewBag.ParticipantID = id
+
+            Return PartialView()
+        End Function
+
         ' GET: Participants
         <Authorize>
         Function Index(ByVal SearchValue As String) As ActionResult

@@ -3,204 +3,30 @@
     ViewData("Title") = "Delete"
 End Code
 
-<h2>Delete</h2>
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>Participant</h4>
+<div class="orgcontainer create">
+    <div class="titlediv">
+        <h2>Delete Participant</h2>
+        @Html.ActionLink("Back to Participants", "Index", "Participants")
+
+    </div>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(Function(model) model.FirstName)
-        </dt>
 
-        <dd>
-            @Html.DisplayFor(Function(model) model.FirstName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(Function(model) model.MiddleNames)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(Function(model) model.MiddleNames)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(Function(model) model.LastName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(Function(model) model.LastName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(Function(model) model.IDNumber)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(Function(model) model.IDNumber)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(Function(model) model.RaceNumber)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(Function(model) model.RaceNumber)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(Function(model) model.EmailAddress)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(Function(model) model.EmailAddress)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(Function(model) model.MedicalName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(Function(model) model.MedicalName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(Function(model) model.MedicalNumber)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(Function(model) model.MedicalNumber)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(Function(model) model.EmergencyContact)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(Function(model) model.EmergencyContact)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(Function(model) model.EmergencyNumber)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(Function(model) model.EmergencyNumber)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(Function(model) model.BoodType)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(Function(model) model.BoodType)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(Function(model) model.Allergies)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(Function(model) model.Allergies)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(Function(model) model.AdditionalInfo)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(Function(model) model.AdditionalInfo)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(Function(model) model.DoctorName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(Function(model) model.DoctorName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(Function(model) model.DoctorContact)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(Function(model) model.DoctorContact)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(Function(model) model.Clubname)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(Function(model) model.Clubname)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(Function(model) model.Country)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(Function(model) model.Country)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(Function(model) model.Address)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(Function(model) model.Address)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(Function(model) model.City)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(Function(model) model.City)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(Function(model) model.Province)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(Function(model) model.Province)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(Function(model) model.UserID)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(Function(model) model.UserID)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(Function(model) model.EventMailer)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(Function(model) model.EventMailer)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(Function(model) model.Offers)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(Function(model) model.Offers)
-        </dd>
-
-    </dl>
-    @Using (Html.BeginForm())
-        @Html.AntiForgeryToken()
-
-        @<div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
+    <div style="text-align:center">
+        <div style="align-items:center">
+            <p style="color:white;">
+                Deleting @Html.DisplayFor(Function(model) model.FirstName) @Html.DisplayFor(Function(model) model.LastName) (@Html.DisplayFor(Function(model) model.IDNumber))
+            </p>
         </div>
-    End Using
+
+        @Using (Html.BeginForm())
+            @Html.AntiForgeryToken()
+
+            @<div class="form-actions no-color" style="align-items:center">
+                <input type="submit" value="Delete" class="btn btn-default" />
+            </div>
+        End Using
+
+
+    </div>
 </div>

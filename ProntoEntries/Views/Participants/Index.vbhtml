@@ -59,8 +59,9 @@ End Code
                 </td>
                 <td>
                     @Html.ActionLink("Edit", "Edit", New With {.id = item.ParticipantID}) @*|
-                        @Html.ActionLink("Details", "Details", New With {.id = item.ParticipantID}) |*@
-                    @*@Html.ActionLink("Delete", "Delete", New With {.id = item.ParticipantID })*@
+
+        @Html.ActionLink("Details", "Details", New With {.id = item.ParticipantID}) *@ | 
+                    @Html.Action("Get_IsInRace", New With {.Id = item.ParticipantID})
                 </td>
             </tr>
         Next
