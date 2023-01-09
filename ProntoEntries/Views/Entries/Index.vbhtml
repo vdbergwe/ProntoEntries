@@ -19,6 +19,19 @@ End Code
 
                 @Html.ActionLink("Change Event", "Index", "RaceEvents")*@
         </div>
+
+        @If User.Identity.IsAuthenticated And ((User.IsInRole("Admin"))) Then
+            @<form action="" method="get">
+                <div Class="DropdownSearches">
+                    <div Class="DropdownSearches item">
+                        <p> Search Value</p>
+                        <input type="text" name="SearchValue" id="SearchValue" Class="form-control" placeholder="@ViewBag.SearchText" />
+                    </div>
+                </div>
+            </form>
+        End If
+
+
         <hr />
         @If Model.Count > 0 Then
             @<Table Class="table">
@@ -73,10 +86,13 @@ End Code
                             </td>*@
                      <td class="PrintConfirmation">
 
-                         @Html.ActionLink("Print Confirmation", "IssueTicket", New With {.id = item.EntryID})
+                         @Html.ActionLink("Print Confirmation", "IssueTicket", New With {.id = item.EntryID}) 
                          @*@Html.ActionLink("Print Confirmation", "GenerateTicket", New With {.id = item.EntryID})*@
 
-
+                         @If User.Identity.IsAuthenticated And ((User.IsInRole("Admin"))) Then
+                             @<i> | </i>
+                             @Html.ActionLink("Edit", "Edit", New With {.id = item.EntryID})
+                         End If
 
                          @*  @Html.ActionLink("Details", "Details", New With {.id = item.EntryID}) |
         @Html.ActionLink("Delete", "Delete", New With {.id = item.EntryID})*@

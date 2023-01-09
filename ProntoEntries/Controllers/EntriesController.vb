@@ -490,8 +490,19 @@ Namespace Controllers
 
         ' GET: Entries
         <Authorize>
-        Function Index() As ActionResult
+        Function Index(ByVal SearchValue As String) As ActionResult
             Dim EntriesContent = db.Entries.Where(Function(a) a.Status <> "UnPaid" And User.Identity.Name = a.MainUserID)
+            ViewBag.SearchText = SearchValue
+            If User.IsInRole("Admin") Then
+                If SearchValue Is Nothing Then
+                    EntriesContent = db.Entries.Where(Function(a) a.Status <> "UnPaid")
+                Else
+                    Dim Participant = db.Participants.Where(Function(b) b.FirstName.Contains(SearchValue) Or b.LastName.Contains(SearchValue) _
+                                                        Or b.IDNumber.Contains(SearchValue) Or b.Mobile.Contains(SearchValue) Or b.EmailAddress.Contains(SearchValue)).OrderBy(Function(a) a.LastName)
+                    EntriesContent = db.Entries.Where(Function(a) a.Status <> "UnPaid" And Participant.Any(Function(b) b.ParticipantID = a.ParticipantID))
+                End If
+            End If
+
             Return View(EntriesContent.ToList())
         End Function
 

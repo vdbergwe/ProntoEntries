@@ -1,7 +1,7 @@
 ﻿@ModelType ProntoEntries.Entry
 
 @Code
-    Layout = Nothing
+    ViewData("Title") = "Entries"
 End Code
 
 <!DOCTYPE html>
