@@ -9,6 +9,17 @@ End Code
         @Html.ActionLink("Create New", "Create")
     </div>
 
+    @If User.Identity.IsAuthenticated And ((User.IsInRole("Admin"))) Then
+        @<form action="" method="get">
+            <div Class="DropdownSearches">
+                <div Class="DropdownSearches item">
+                    <p> Search Value</p>
+                    <input type="text" name="SearchValue" id="SearchValue" Class="form-control" placeholder="@ViewBag.SearchText" />
+                </div>
+            </div>
+        </form>
+    End If
+
     <hr />
     <table class="table">
         <tr>
@@ -48,7 +59,7 @@ End Code
                 </td>
                 <td>
                     @Html.ActionLink("Edit", "Edit", New With {.id = item.ParticipantID}) @*|
-                    @Html.ActionLink("Details", "Details", New With {.id = item.ParticipantID}) |*@
+                        @Html.ActionLink("Details", "Details", New With {.id = item.ParticipantID}) |*@
                     @*@Html.ActionLink("Delete", "Delete", New With {.id = item.ParticipantID })*@
                 </td>
             </tr>

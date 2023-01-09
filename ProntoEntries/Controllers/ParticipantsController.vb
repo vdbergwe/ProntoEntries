@@ -62,8 +62,19 @@ Namespace Controllers
 
         ' GET: Participants
         <Authorize>
-        Function Index() As ActionResult
+        Function Index(ByVal SearchValue As String) As ActionResult
             Dim Participant = db.Participants.Where(Function(a) a.UserID = User.Identity.Name)
+            ViewBag.SearchText = SearchValue
+
+            If User.IsInRole("Admin") Then
+                If SearchValue IsNot Nothing Then
+                    Participant = db.Participants.Where(Function(b) b.FirstName.Contains(SearchValue) Or b.LastName.Contains(SearchValue) _
+                                                        Or b.IDNumber.Contains(SearchValue) Or b.Mobile.Contains(SearchValue) Or b.EmailAddress.Contains(SearchValue)).OrderBy(Function(a) a.LastName)
+                Else
+                    Participant = db.Participants
+                End If
+            End If
+
             Return View(Participant.ToList())
         End Function
 
