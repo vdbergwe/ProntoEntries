@@ -14,7 +14,7 @@ End Code
                         @Html.ActionLink("Export Race Detail", "ExporttoExcelRaceDetail", New With {.id = ViewBag.SelectedRace})
                     </li>
                     <li>
-                        @Html.ActionLink("Export All Participants", "ExporttoExcel", New With {.id = ViewBag.SelectedRace})
+                        @Html.ActionLink("Race Detail With Add-ons", "ExporttoExcelAddonSales", New With {.id = ViewBag.SelectedRace})
                     </li>
                 </ul>
             </div>
