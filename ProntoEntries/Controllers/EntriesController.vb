@@ -480,6 +480,12 @@ Namespace Controllers
             Return PartialView()
         End Function
 
+        Function Get_AddonDropDown(Id As Integer?, SaleID As Integer?) As ActionResult
+            ViewBag.Addon = New SelectList(db.AddonOptions.Where(Function(a) a.ItemID = Id), "OptionID", "Size")
+            ViewBag.SaleID = SaleID
+            Return PartialView()
+        End Function
+
         Function GenerateTicket(Id As Integer?) As ActionResult
             Dim MyPDF As New Rotativa.ActionAsPdf("IssueTicket", New With {.id = Id})
             MyPDF.FileName = "ProntoEntries_Ticket_" + Id.ToString() + ".pdf"
@@ -497,6 +503,11 @@ Namespace Controllers
             Dim EntriesContent = db.Entries.Where(Function(a) a.EntryID = Id)
             Return PartialView(EntriesContent.ToList())
 
+        End Function
+
+        Function UpdateEntry(Id As Integer?) As ActionResult
+
+            Return View()
         End Function
 
         ' GET: Entries
@@ -549,6 +560,27 @@ Namespace Controllers
                 Return RedirectToAction("Index")
             End If
             Return View(entry)
+        End Function
+
+        Function Update(ByVal id As Integer?, ByVal OptionID As Integer?, ByVal SaleID As Integer?, ByVal NewOptionID As Integer?) As ActionResult
+            Dim Sale = db.Sales.Where(Function(a) a.SaleID = SaleID).FirstOrDefault()
+            ViewBag.ParticipantID = Sale.ParticipantID
+            ViewBag.OptionID = New SelectList(db.AddonOptions.Where(Function(a) a.ItemID = id), "OptionID", "Size", OptionID)
+
+
+            Return View(Sale)
+        End Function
+
+        <HttpPost()>
+        <ValidateAntiForgeryToken()>
+        <Authorize>
+        Function Update(<Bind(Include:="SaleID,RaceID,DivisionID,ItemID,OptionID,UserID,Indemnity,TandC,ParticipantID,M_reference,Pf_Reference,Verified,SaleDate")> ByVal Sale As Sale) As ActionResult
+            If ModelState.IsValid Then
+                db.Entry(Sale).State = EntityState.Modified
+                db.SaveChanges()
+                Return RedirectToAction("Index")
+            End If
+            Return View(Sale)
         End Function
 
         ' GET: Entries/Edit/5
