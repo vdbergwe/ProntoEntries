@@ -31,6 +31,16 @@ End Code
             <div class="RaceSelection">
                 <div Class="form-group">
                     @*DISTANCE*@
+                    <p style="text-align:center;">
+                        Quick-Step Guide:<br /><br />
+         
+                        1. Select Distance in Dropdown Below<br />                        
+                        2. Click on Create New<br />
+                        3. Enter Participant Details<br />
+                        4. You Will Be Redirected To Select The Required Options<br />
+                        5. If Redirection Fails, Click on Enter Now Next To The Participant Name Below<br />
+                        6. Participant Is Added To The Cart For Payment. Please Select View Cart
+                    </p>
                     <div Class="col-md-10", id="divisionselect">
                         @Html.DropDownList("Distance", Nothing, htmlAttributes:=New With {.class = "form-controlDDL"}, optionLabel:="Select Distance")
                         @*@Html.EditorFor(Function(model) model.DivisionID, New With {.htmlAttributes = New With {.class = "form-control"}})*@
