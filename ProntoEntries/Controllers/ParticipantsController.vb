@@ -200,9 +200,13 @@ Namespace Controllers
         <HttpPost()>
         <ValidateAntiForgeryToken()>
         <Authorize>
-        Function Edit(<Bind(Include:="ParticipantID,FirstName,MiddleNames,LastName,IDNumber,DOB,Gender,RaceNumber,EmailAddress,Mobile,MedicalName,MedicalNumber,EmergencyContact,EmergencyNumber,BoodType,Allergies,AdditionalInfo,DoctorName,DoctorContact,Clubname,Country,Address,City,Province,UserID,EventMailer,Offers")> ByVal participant As Participant) As ActionResult
+        Function Edit(<Bind(Include:="ParticipantID,FirstName,MiddleNames,LastName,IDNumber,DOB,Gender,RaceNumber,EmailAddress,Mobile,MedicalName,MedicalNumber,EmergencyContact,EmergencyNumber,BoodType,Allergies,AdditionalInfo,DoctorName,DoctorContact,Clubname,Country,Address,City,Province,UserID,EventMailer,Offers,DateAdded")> ByVal participant As Participant) As ActionResult
 
-            participant.UserID = User.Identity.Name
+            If User.IsInRole("Admin") Then
+                participant.UserID = participant.UserID
+            Else
+                participant.UserID = User.Identity.Name
+            End If
 
             ViewBag.Gender = New SelectList(db.TypeLookups.Where(Function(a) a.Type = "Gender"), "Value", "Value", participant.Gender)
             ViewBag.Clubname = New SelectList(db.TypeLookups.Where(Function(a) a.Type = "ClubName"), "Value", "Value", participant.Clubname)

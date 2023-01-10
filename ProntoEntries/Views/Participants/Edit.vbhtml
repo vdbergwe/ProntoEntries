@@ -14,130 +14,134 @@ End Code
         @Html.AntiForgeryToken()
 
         @<div class="participantcontainer">
-            @Html.ValidationSummary(True, "", New With {.class = "text-danger"})
-            @Html.HiddenFor(Function(model) model.ParticipantID)
-            @If User.Identity.IsAuthenticated And (User.IsInRole("Admin") Or User.IsInRole("SuperUser")) Or ViewBag.InRace = False Then
-                @<div class="participantleft">
-                    <p> Personal Information</p>
-                </div>
+    @Html.ValidationSummary(True, "", New With {.class = "text-danger"})
+    @Html.HiddenFor(Function(model) model.ParticipantID)
+    @Html.HiddenFor(Function(model) model.UserID)
+    @Html.HiddenFor(Function(model) model.DateAdded)
 
-                @<div class="participantright">
-                    <div class="partelement">
-                        @Html.LabelFor(Function(model) model.FirstName, htmlAttributes:=New With {.class = "control-label col-md-2 labelfix"})
-                        @Html.EditorFor(Function(model) model.FirstName, New With {.htmlAttributes = New With {.class = "partelement item"}})
-                        @Html.ValidationMessageFor(Function(model) model.FirstName, "", New With {.class = "text-danger"})
-                    </div>
 
-                    <div class="partelement">
-                        @Html.LabelFor(Function(model) model.MiddleNames, htmlAttributes:=New With {.class = "control-label col-md-2 labelfix"})
-                        @Html.EditorFor(Function(model) model.MiddleNames, New With {.htmlAttributes = New With {.class = "partelement item"}})
-                        @Html.ValidationMessageFor(Function(model) model.MiddleNames, "", New With {.class = "text-danger"})
-                    </div>
-
-                    <div class="partelement">
-                        @Html.LabelFor(Function(model) model.LastName, htmlAttributes:=New With {.class = "control-label col-md-2 labelfix"})
-                        @Html.EditorFor(Function(model) model.LastName, New With {.htmlAttributes = New With {.class = "partelement item"}})
-                        @Html.ValidationMessageFor(Function(model) model.LastName, "", New With {.class = "text-danger"})
-                    </div>
-
-                    <div Class="partelement">
-                        @Html.LabelFor(Function(model) model.EmailAddress, htmlAttributes:=New With {.class = "control-label col-md-2 labelfix"})
-                        @Html.EditorFor(Function(model) model.EmailAddress, New With {.htmlAttributes = New With {.class = "partelement item"}})
-                        @Html.ValidationMessageFor(Function(model) model.EmailAddress, "", New With {.class = "text-danger"})
-                    </div>
-
-                    <div class="partelement">
-                        @Html.LabelFor(Function(model) model.IDNumber, htmlAttributes:=New With {.class = "control-label col-md-2 labelfix"})
-                        @Html.EditorFor(Function(model) model.IDNumber, New With {.htmlAttributes = New With {.class = "partelement item"}})
-                        @Html.ValidationMessageFor(Function(model) model.IDNumber, "", New With {.class = "text-danger"})
-                    </div>
-
-                    <div class="partelement">
-                        @Html.LabelFor(Function(model) model.Gender, htmlAttributes:=New With {.class = "control-label col-md-2 labelfix"})
-                        @Html.EditorFor(Function(model) model.Gender, New With {.htmlAttributes = New With {.class = "partelement item"}})
-                        @Html.ValidationMessageFor(Function(model) model.Gender, "", New With {.class = "text-danger"})
-                    </div>
-
-                    <div class="partelement">
-                        @Html.LabelFor(Function(model) model.DOB, htmlAttributes:=New With {.class = "control-label col-md-2 labelfix"})
-                        @Html.EditorFor(Function(model) model.DOB, New With {.htmlAttributes = New With {.class = "partelement item"}})
-                        @Html.ValidationMessageFor(Function(model) model.DOB, "", New With {.class = "text-danger"})
-                    </div>
-                </div>
-            Else
-                @<div class="participantleft">
-                    <p> Personal Information</p>
-                </div>
-
-                @<div class="participantright">
-                     <div class="partelementdlfix">
-                         <dl>
-                             <dt>
-                                 @Html.LabelFor(Function(model) model.FirstName, htmlAttributes:=New With {.class = "control-label col-md-2 labelfix"})
-                             </dt>
-                             <dd>
-                                 @Model.FirstName
-                                 @Html.HiddenFor(Function(model) model.FirstName)
-                             </dd>
-                         </dl>
-                         <dl>
-                             <dt>
-                                 @Html.LabelFor(Function(model) model.MiddleNames, htmlAttributes:=New With {.class = "control-label col-md-2 labelfix"})
-                             </dt>
-                             <dd>
-                                 @Model.MiddleNames
-                                 @Html.HiddenFor(Function(model) model.MiddleNames)
-                             </dd>
-                         </dl>
-                         <dl>
-                             <dt>
-                                 @Html.LabelFor(Function(model) model.LastName, htmlAttributes:=New With {.class = "control-label col-md-2 labelfix"})
-                             </dt>
-                             <dd>
-                                 @Model.LastName
-                                 @Html.HiddenFor(Function(model) model.LastName)
-                             </dd>
-                         </dl>
-                         <dl>
-                             <dt>
-                                 @Html.LabelFor(Function(model) model.EmailAddress, htmlAttributes:=New With {.class = "control-label col-md-2 labelfix"})
-                             </dt>
-                             <dd>
-                                 @Model.EmailAddress
-                                 @Html.HiddenFor(Function(model) model.EmailAddress)
-                             </dd>
-                         </dl>
-                         <dl>
-                             <dt>
-                                 @Html.LabelFor(Function(model) model.IDNumber, htmlAttributes:=New With {.class = "control-label col-md-2 labelfix"})
-                             </dt>
-                             <dd>
-                                 @Model.IDNumber
-                                 @Html.HiddenFor(Function(model) model.IDNumber)
-                             </dd>
-                         </dl>
-                         <dl>
-                             <dt>
-                                 @Html.LabelFor(Function(model) model.Gender, htmlAttributes:=New With {.class = "control-label col-md-2 labelfix"})
-                             </dt>
-                             <dd>
-                                 @Model.Gender
-                                 @Html.HiddenFor(Function(model) model.Gender)
-                             </dd>
-                         </dl>
-                         <dl>
-                             <dt>
-                                 @Html.LabelFor(Function(model) model.DOB, htmlAttributes:=New With {.class = "control-label col-md-2 labelfix"})
-                             </dt>
-                             <dd>
-                                 @Model.DOB.Value.ToString("dd MMMM yyyy")
-                                 @Html.HiddenFor(Function(model) model.DOB)
-                             </dd>
-                         </dl>
-                     </div>                                    
-                </div>
-            End If
+    @If User.Identity.IsAuthenticated And (User.IsInRole("Admin") Or User.IsInRole("SuperUser")) Or ViewBag.InRace = False Then
+        @<div class="participantleft">
+            <p> Personal Information</p>
         </div>
+
+        @<div class="participantright">
+            <div class="partelement">
+                @Html.LabelFor(Function(model) model.FirstName, htmlAttributes:=New With {.class = "control-label col-md-2 labelfix"})
+                @Html.EditorFor(Function(model) model.FirstName, New With {.htmlAttributes = New With {.class = "partelement item"}})
+                @Html.ValidationMessageFor(Function(model) model.FirstName, "", New With {.class = "text-danger"})
+            </div>
+
+            <div class="partelement">
+                @Html.LabelFor(Function(model) model.MiddleNames, htmlAttributes:=New With {.class = "control-label col-md-2 labelfix"})
+                @Html.EditorFor(Function(model) model.MiddleNames, New With {.htmlAttributes = New With {.class = "partelement item"}})
+                @Html.ValidationMessageFor(Function(model) model.MiddleNames, "", New With {.class = "text-danger"})
+            </div>
+
+            <div class="partelement">
+                @Html.LabelFor(Function(model) model.LastName, htmlAttributes:=New With {.class = "control-label col-md-2 labelfix"})
+                @Html.EditorFor(Function(model) model.LastName, New With {.htmlAttributes = New With {.class = "partelement item"}})
+                @Html.ValidationMessageFor(Function(model) model.LastName, "", New With {.class = "text-danger"})
+            </div>
+
+            <div Class="partelement">
+                @Html.LabelFor(Function(model) model.EmailAddress, htmlAttributes:=New With {.class = "control-label col-md-2 labelfix"})
+                @Html.EditorFor(Function(model) model.EmailAddress, New With {.htmlAttributes = New With {.class = "partelement item"}})
+                @Html.ValidationMessageFor(Function(model) model.EmailAddress, "", New With {.class = "text-danger"})
+            </div>
+
+            <div class="partelement">
+                @Html.LabelFor(Function(model) model.IDNumber, htmlAttributes:=New With {.class = "control-label col-md-2 labelfix"})
+                @Html.EditorFor(Function(model) model.IDNumber, New With {.htmlAttributes = New With {.class = "partelement item"}})
+                @Html.ValidationMessageFor(Function(model) model.IDNumber, "", New With {.class = "text-danger"})
+            </div>
+
+            <div class="partelement">
+                @Html.LabelFor(Function(model) model.Gender, htmlAttributes:=New With {.class = "control-label col-md-2 labelfix"})
+                @Html.EditorFor(Function(model) model.Gender, New With {.htmlAttributes = New With {.class = "partelement item"}})
+                @Html.ValidationMessageFor(Function(model) model.Gender, "", New With {.class = "text-danger"})
+            </div>
+
+            <div class="partelement">
+                @Html.LabelFor(Function(model) model.DOB, htmlAttributes:=New With {.class = "control-label col-md-2 labelfix"})
+                @Html.EditorFor(Function(model) model.DOB, New With {.htmlAttributes = New With {.class = "partelement item"}})
+                @Html.ValidationMessageFor(Function(model) model.DOB, "", New With {.class = "text-danger"})
+            </div>
+        </div>
+    Else
+        @<div class="participantleft">
+            <p> Personal Information</p>
+        </div>
+
+        @<div class="participantright">
+            <div class="partelementdlfix">
+                <dl>
+                    <dt>
+                        @Html.LabelFor(Function(model) model.FirstName, htmlAttributes:=New With {.class = "control-label col-md-2 labelfix"})
+                    </dt>
+                    <dd>
+                        @Model.FirstName
+                        @Html.HiddenFor(Function(model) model.FirstName)
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>
+                        @Html.LabelFor(Function(model) model.MiddleNames, htmlAttributes:=New With {.class = "control-label col-md-2 labelfix"})
+                    </dt>
+                    <dd>
+                        @Model.MiddleNames
+                        @Html.HiddenFor(Function(model) model.MiddleNames)
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>
+                        @Html.LabelFor(Function(model) model.LastName, htmlAttributes:=New With {.class = "control-label col-md-2 labelfix"})
+                    </dt>
+                    <dd>
+                        @Model.LastName
+                        @Html.HiddenFor(Function(model) model.LastName)
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>
+                        @Html.LabelFor(Function(model) model.EmailAddress, htmlAttributes:=New With {.class = "control-label col-md-2 labelfix"})
+                    </dt>
+                    <dd>
+                        @Model.EmailAddress
+                        @Html.HiddenFor(Function(model) model.EmailAddress)
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>
+                        @Html.LabelFor(Function(model) model.IDNumber, htmlAttributes:=New With {.class = "control-label col-md-2 labelfix"})
+                    </dt>
+                    <dd>
+                        @Model.IDNumber
+                        @Html.HiddenFor(Function(model) model.IDNumber)
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>
+                        @Html.LabelFor(Function(model) model.Gender, htmlAttributes:=New With {.class = "control-label col-md-2 labelfix"})
+                    </dt>
+                    <dd>
+                        @Model.Gender
+                        @Html.HiddenFor(Function(model) model.Gender)
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>
+                        @Html.LabelFor(Function(model) model.DOB, htmlAttributes:=New With {.class = "control-label col-md-2 labelfix"})
+                    </dt>
+                    <dd>
+                        @Model.DOB.Value.ToString("dd MMMM yyyy")
+                        @Html.HiddenFor(Function(model) model.DOB)
+                    </dd>
+                </dl>
+            </div>
+        </div>
+    End If
+</div>
 
         @<hr />
         @<div class="participantcontainer">
