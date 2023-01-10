@@ -1304,6 +1304,8 @@
     <Content Include="Views\AddonOptions\Get_ItemSize.vbhtml" />
     <Content Include="Views\Reports\Get_TotalEntries.vbhtml" />
     <Content Include="Views\Participants\Get_IsInRace.vbhtml" />
+    <Content Include="Views\Entries\Get_ItemName.vbhtml" />
+    <Content Include="Views\Entries\Get_ItemChosen.vbhtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />

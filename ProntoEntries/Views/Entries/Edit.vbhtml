@@ -1,4 +1,4 @@
-﻿@ModelType ProntoEntries.Entry
+﻿@ModelType IEnumerable(Of ProntoEntries.Sale)
 
 @Code
     ViewData("Title") = "Entries"
@@ -14,11 +14,53 @@ End Code
 <body>
     @Using (Html.BeginForm())
         @Html.AntiForgeryToken()
-        
+
         @<div class="form-horizontal">
-            <h4>Entry</h4>
-            <hr />
-            @Html.ValidationSummary(True, "", New With { .class = "text-danger" })
+             <h4>Entry - @Html.Action("Get_ParticipantName", New With {.Id = ViewBag.ParticipantID})</h4>
+    <hr />
+
+    <div Class="ReportContent">
+        <Table Class="table">
+            <tr>
+                <th>
+                    SaleID
+                </th>
+                <th>
+                    Option Name
+                </th>
+                <th>
+                    Current Value
+                </th>
+                <th>
+                    New Value
+                </th>
+            </tr>
+
+            @For Each item In Model
+                @<tr>
+                    <td>
+                        @Html.DisplayFor(Function(modelItem) item.SaleID)
+                    </td>
+                    <td>
+                        @*@Html.DisplayFor(Function(modelItem) item.ItemID)*@
+                        @Html.Action("Get_ItemName", New With {.Id = item.ItemID})
+                    </td>
+                    <td>
+                        @*@Html.DisplayFor(Function(modelItem) item.OptionID)*@
+                        @Html.Action("Get_ItemChosen", New With {.Id = item.OptionID})
+
+                    </td>
+                    <td>
+                        Code New Value
+                    </td>
+                </tr>
+            Next
+        </Table>
+    </div>
+
+
+</div>
+            @*@Html.ValidationSummary(True, "", New With {.class = "text-danger"})
             @Html.HiddenFor(Function(model) model.EntryID)
     
             <div class="form-group">
@@ -109,10 +151,11 @@ End Code
                 </div>
             </div>
         </div>
-    End Using
+   
     
     <div>
         @Html.ActionLink("Back to List", "Index")
-    </div>
+    </div>*@
+    End Using
 </body>
 </html>

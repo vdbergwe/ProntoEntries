@@ -469,6 +469,17 @@ Namespace Controllers
             Return PartialView()
         End Function
 
+        Function Get_ItemName(Id As Integer?) As ActionResult
+            ViewBag.ItemName = db.AddonItems.Where(Function(a) a.ItemID = Id).Select(Function(b) b.Description).FirstOrDefault()
+            Return PartialView()
+        End Function
+
+        Function Get_ItemChosen(Id As Integer?) As ActionResult
+            ViewBag.ItemChosen = db.AddonOptions.Where(Function(a) a.OptionID = Id).Select(Function(b) b.Size).FirstOrDefault()
+
+            Return PartialView()
+        End Function
+
         Function GenerateTicket(Id As Integer?) As ActionResult
             Dim MyPDF As New Rotativa.ActionAsPdf("IssueTicket", New With {.id = Id})
             MyPDF.FileName = "ProntoEntries_Ticket_" + Id.ToString() + ".pdf"
@@ -547,10 +558,15 @@ Namespace Controllers
                 Return New HttpStatusCodeResult(HttpStatusCode.BadRequest)
             End If
             Dim entry As Entry = db.Entries.Find(id)
+            Dim Sales = db.Sales.Where(Function(a) a.ParticipantID = entry.ParticipantID And a.M_reference = entry.PaymentReference And a.RaceID Is Nothing)
+
+            ViewBag.ParticipantID = entry.ParticipantID
+
+
             If IsNothing(entry) Then
                 Return HttpNotFound()
             End If
-            Return View(entry)
+            Return View(Sales.ToList())
         End Function
 
         ' POST: Entries/Edit/5
