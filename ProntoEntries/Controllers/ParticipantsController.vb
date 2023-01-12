@@ -142,7 +142,19 @@ Namespace Controllers
 
             If IDCheck > 0 Then
                 ViewBag.InvalidID = True
-                Return View(participant)
+                If EventID Is Nothing And Distance Is Nothing Then
+                    Return RedirectToAction("Index")
+                End If
+
+                If EventID IsNot Nothing And Distance = 0 Then
+                    Return RedirectToAction("NewEntry", "Entries", New With {.id = EventID, .DivisionSelect = 0})
+                End If
+
+                If EventID IsNot Nothing And Distance > 0 Then
+                    '@Html.ActionLink("Enter Event", "VerifyEntry", "Entries", New With {.id = item.ParticipantID, .RaceID1 = ViewBag.RaceID, .DivisionID1 = ViewBag.DivisionSelect}, Nothing)
+                    Dim ParticipantID = db.Participants.Where(Function(a) a.IDNumber = participant.IDNumber).Select(Function(b) b.ParticipantID).FirstOrDefault()
+                    Return RedirectToAction("VerifyEntry", "Entries", New With {.id = ParticipantID, .RaceID1 = EventID, .DivisionID1 = Distance})
+                End If
             End If
 
             If ModelState.IsValid Then
