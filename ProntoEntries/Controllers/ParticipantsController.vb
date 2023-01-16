@@ -52,6 +52,10 @@ Namespace Controllers
             Dim Participant = db.Participants.Where(Function(a) a.UserID = User.Identity.Name And (db.Entries.Where(Function(b) b.RaceID = id And b.ParticipantID = a.ParticipantID).Count() = 0 _
                                                          And db.Sales.Where(Function(b) b.RaceID = id And b.ParticipantID = a.ParticipantID).Count() = 0)).ToList()
 
+            If User.IsInRole("Admin") Then
+                Participant = db.Participants.Where(Function(a) (db.Entries.Where(Function(b) b.RaceID = id And b.ParticipantID = a.ParticipantID).Count() = 0 _
+                                                         And db.Sales.Where(Function(b) b.RaceID = id And b.ParticipantID = a.ParticipantID).Count() = 0)).ToList()
+            End If
 
             'Dim Participant = db.Participants.ToList()
             If IsNothing(Participant) Then
@@ -157,7 +161,7 @@ Namespace Controllers
                 End If
             End If
 
-            If ModelState.IsValid Then
+            If ModelState.IsValid And IDCheck = 0 Then
                 participant.DateAdded = Now()
                 db.Participants.Add(participant)
                 db.SaveChanges()
