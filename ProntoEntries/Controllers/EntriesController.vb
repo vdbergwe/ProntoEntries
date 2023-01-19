@@ -489,7 +489,7 @@ Namespace Controllers
 
         Function GenerateTicket(Id As Integer?) As FileResult
 
-            Dim url As String = "https://entries.prontocs.co.za/Entries/IssueTicket/" + Id.ToString()
+            Dim url As String = "https://192.168.1.20/Entries/IssueTicket/" + Id.ToString()
             Dim converter As New HtmlToPdf()
             Dim doc As PdfDocument = converter.ConvertUrl(url)
             Dim stream As New MemoryStream()
