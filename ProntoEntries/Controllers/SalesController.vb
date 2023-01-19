@@ -7,6 +7,9 @@ Imports System.Net
 Imports System.Web
 Imports System.Web.Mvc
 Imports ProntoEntries
+Imports System.Net.Mail
+Imports System.Net.Mime
+Imports System.Configuration
 
 Namespace Controllers
     Public Class SalesController
@@ -42,7 +45,39 @@ Namespace Controllers
                 db.SaveChanges()
                 Result = True
             End If
+            SendConfirmationLink(entry.ParticipantID, entry.EntryID)
             Return Result
+        End Function
+
+        Function SendConfirmationLink(ParticipantID As Integer?, EntryID As Integer?)
+            Dim Html As String
+
+            Dim Email = db.Participants.Where(Function(a) a.ParticipantID = ParticipantID).Select(Function(b) b.EmailAddress).FirstOrDefault()
+
+            Dim link As String
+            link = "https://entries.prontocs.co.za/Entries/IssueTicket/" + EntryID.ToString()
+
+            Html = "You have successfully entered the event. <br/><br/>"
+
+            Html += HttpUtility.HtmlEncode("Your confirmation can be viewed and printed at: " + link)
+
+
+            Dim msg As New MailMessage With {
+            .From = New MailAddress(ConfigurationManager.AppSettings("Email").ToString())
+        }
+            msg.To.Add(New MailAddress(Email))
+            msg.Bcc.Add(New MailAddress("vdbergwe@gmail.com"))
+            msg.Subject = "Entry Confirmation"
+
+            msg.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(Html, Nothing, MediaTypeNames.Text.Html))
+
+            Dim smtpClient As New SmtpClient("prontocs.co.za", Convert.ToInt32(587))
+            Dim credentials As New System.Net.NetworkCredential(ConfigurationManager.AppSettings("Email").ToString(), ConfigurationManager.AppSettings("Password").ToString())
+            smtpClient.Credentials = credentials
+            smtpClient.EnableSsl = True
+            smtpClient.Send(msg)
+
+            Return True
         End Function
 
         ' GET: Sales

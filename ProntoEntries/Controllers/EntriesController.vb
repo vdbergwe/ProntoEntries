@@ -8,6 +8,7 @@ Imports System.Web
 Imports System.Web.Mvc
 Imports ProntoEntries
 Imports System.Security.Cryptography
+Imports SelectPdf
 Imports System.IO
 
 
@@ -486,12 +487,21 @@ Namespace Controllers
             Return PartialView()
         End Function
 
-        Function GenerateTicket(Id As Integer?) As ActionResult
-            Dim MyPDF As New Rotativa.ActionAsPdf("IssueTicket", New With {.id = Id})
-            MyPDF.FileName = "ProntoEntries_Ticket_" + Id.ToString() + ".pdf"
-            MyPDF.PageSize = Rotativa.Options.Size.A4
-            MyPDF.PageMargins = New Rotativa.Options.Margins(20, 20, 20, 20)
-            Return MyPDF
+        Function GenerateTicket(Id As Integer?) As FileResult
+
+            Dim url As String = "https://entries.prontocs.co.za/Entries/IssueTicket/" + Id.ToString()
+            Dim converter As New HtmlToPdf()
+            Dim doc As PdfDocument = converter.ConvertUrl(url)
+            Dim stream As New MemoryStream()
+            doc.Save(stream)
+            doc.Close()
+            Return File(stream.ToArray(), "application/pdf", "ProntoEntries_Ticket_" + Id.ToString() + ".pdf")
+
+            'Dim MyPDF As New Rotativa.ActionAsPdf("IssueTicket", New With {.id = Id})
+            'MyPDF.FileName = "ProntoEntries_Ticket_" + Id.ToString() + ".pdf"
+            'MyPDF.PageSize = Rotativa.Options.Size.A4
+            'MyPDF.PageMargins = New Rotativa.Options.Margins(20, 20, 20, 20)
+            'Return MyPDF
         End Function
 
         ' GET: Entries
