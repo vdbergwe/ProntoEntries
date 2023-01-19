@@ -39,7 +39,7 @@
                         @<li>@Html.ActionLink("Entries", "Index", "Entries")</li>
                     End If
                     @If User.Identity.IsAuthenticated And Not ((User.IsInRole("Org"))) Then
-                        @<li>@Html.ActionLink("Participants", "Index", "Participants")</li>
+                        @<li>@Html.ActionLink("User Profiles", "Index", "Participants")</li>
                     End If
                     @If User.Identity.IsAuthenticated And Not ((User.IsInRole("Admin") Or User.IsInRole("Org") Or User.IsInRole("SuperUser"))) Then
                         @<li>@Html.ActionLink("Results", "Index", "RaceEvents")</li>

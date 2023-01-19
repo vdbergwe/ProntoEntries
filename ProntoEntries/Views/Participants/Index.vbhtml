@@ -1,11 +1,11 @@
 ﻿@ModelType IEnumerable(Of ProntoEntries.Participant)
 @Code
-    ViewData("Title") = "Participants"
+    ViewData("Title") = "User Profiles"
 End Code
 
 <div class="orgcontainer">
     <div class="titlediv">
-        <h2>Participants</h2>
+        <h2>User Profiles</h2>
         @Html.ActionLink("Create New", "Create")
     </div>
 

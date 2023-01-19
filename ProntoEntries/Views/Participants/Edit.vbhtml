@@ -1,11 +1,11 @@
 ﻿@ModelType ProntoEntries.Participant
 @Code
-    ViewData("Title") = "Edit"
+    ViewData("Title") = "Update User Profile"
 End Code
 
 <div class="orgcontainer partcreate">
     <div class="titlediv">
-        <h2>Update Participant</h2>
+        <h2>Update User Profile</h2>
         @Html.ActionLink("Back to List", "Index")
     </div>
     <hr />
