@@ -53,11 +53,13 @@ Namespace Controllers
             Dim Html As String
 
             Dim Email = db.Participants.Where(Function(a) a.ParticipantID = ParticipantID).Select(Function(b) b.EmailAddress).FirstOrDefault()
+            Dim RaceID = db.Entries.Where(Function(a) a.EntryID = EntryID).Select(Function(b) b.RaceID).FirstOrDefault()
+            Dim EventName = db.RaceEvents.Where(Function(a) a.RaceID = RaceID).Select(Function(b) b.RaceName).FirstOrDefault()
 
             Dim link As String
             link = "https://entries.prontocs.co.za/Entries/GenerateTicket/" + EntryID.ToString()
 
-            Html = "You have successfully entered the event. <br/><br/>"
+            Html = "You have successfully entered: " + EventName.ToString() + ". <br/><br/>"
 
             Html += HttpUtility.HtmlEncode("Your confirmation can be viewed and printed at: " + link)
 
@@ -67,7 +69,7 @@ Namespace Controllers
         }
             msg.To.Add(New MailAddress(Email))
             msg.Bcc.Add(New MailAddress("vdbergwe@gmail.com"))
-            msg.Subject = "Entry Confirmation"
+            msg.Subject = "Entry Confirmation:" + EventName.ToString()
 
             msg.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(Html, Nothing, MediaTypeNames.Text.Html))
 
