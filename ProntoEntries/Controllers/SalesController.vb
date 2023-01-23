@@ -69,7 +69,7 @@ Namespace Controllers
         }
             msg.To.Add(New MailAddress(Email))
             msg.Bcc.Add(New MailAddress("vdbergwe@gmail.com"))
-            msg.Subject = "Entry Confirmation:" + EventName.ToString()
+            msg.Subject = "Entry Confirmation: " + EventName.ToString()
 
             msg.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(Html, Nothing, MediaTypeNames.Text.Html))
 
