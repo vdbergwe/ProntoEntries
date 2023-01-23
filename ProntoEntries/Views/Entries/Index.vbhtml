@@ -86,7 +86,7 @@ End Code
                             </td>*@
                      <td class="PrintConfirmation">
 
-                         @Html.ActionLink("Print Confirmation", "IssueTicket", New With {.id = item.EntryID}) 
+                         @Html.ActionLink("Print Confirmation", "GenerateTicket", New With {.id = item.EntryID}) 
                          @*@Html.ActionLink("Print Confirmation", "GenerateTicket", New With {.id = item.EntryID})*@
 
                          @If User.Identity.IsAuthenticated And ((User.IsInRole("Admin"))) Then

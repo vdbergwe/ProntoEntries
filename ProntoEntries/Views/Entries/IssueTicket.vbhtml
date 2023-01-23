@@ -167,9 +167,9 @@ End Code
         </div>
     </div>
 
-    <div class="linkbutton1">
+    @*<div class="linkbutton1">
         <input type="button" value="Print Confirmation" onclick="window.print()">
-    </div>
+    </div>*@
 
 
 </body>

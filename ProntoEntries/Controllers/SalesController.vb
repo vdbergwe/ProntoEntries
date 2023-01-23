@@ -55,7 +55,7 @@ Namespace Controllers
             Dim Email = db.Participants.Where(Function(a) a.ParticipantID = ParticipantID).Select(Function(b) b.EmailAddress).FirstOrDefault()
 
             Dim link As String
-            link = "https://entries.prontocs.co.za/Entries/IssueTicket/" + EntryID.ToString()
+            link = "https://entries.prontocs.co.za/Entries/GenerateTicket/" + EntryID.ToString()
 
             Html = "You have successfully entered the event. <br/><br/>"
 
