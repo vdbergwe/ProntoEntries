@@ -21,9 +21,12 @@ Namespace Controllers
 
         ' GET: AddonItems
         <Authorize>
-        Function Index() As ActionResult
+        Function Index(RaceID As Integer?) As ActionResult
             ViewBag.RaceID = New SelectList(db.RaceEvents, "RaceID", "RaceName")
-            Return View(db.AddonItems.ToList())
+            ViewBag.SelectedRace = RaceID
+            Dim AddItems = db.AddonItems.Where(Function(a) a.RaceID = RaceID).ToList()
+
+            Return View(AddItems)
         End Function
 
         ' GET: AddonItems/Details/5

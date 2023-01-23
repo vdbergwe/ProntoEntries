@@ -28,7 +28,9 @@ Namespace Controllers
         <Authorize>
         Function IndexPartial(Id As Integer?) As ActionResult
             Dim Options = db.AddonOptions.Where(Function(a) a.ItemID = Id).ToList()
-            Return PartialView(Options)
+            ViewBag.ItemID = Id
+            ViewBag.RaceID = db.AddonItems.Where(Function(a) a.ItemID = Id).Select(Function(b) b.RaceID).FirstOrDefault()
+            Return View(Options)
         End Function
 
         <Authorize>

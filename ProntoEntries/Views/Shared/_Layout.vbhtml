@@ -104,7 +104,7 @@
         @RenderBody()
         @*<hr />*@
         <footer>
-            <p>&copy;@DateTime.Now.Year - Pronto Computer Solutions PTY (Ltd) </p>
+            <p>&copy;@DateTime.Now.Year - WS van der Berg </p>
         </footer>
     </div>
 
