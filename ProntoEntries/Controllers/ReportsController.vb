@@ -413,7 +413,7 @@ Namespace Controllers
                 Using stream
                     workbook.SaveAs(stream)
                     Dim content = stream.ToArray()
-                    Return File(content, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "ProntoEntries_RaceDetails.xlsx")
+                    Return File(content, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "ProntoEntries_RaceDetails_Addons.xlsx")
                 End Using
 
 

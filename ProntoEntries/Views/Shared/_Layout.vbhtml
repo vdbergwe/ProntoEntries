@@ -104,7 +104,7 @@
         @RenderBody()
         @*<hr />*@
         <footer>
-            <p>&copy;@DateTime.Now.Year - WS van der Berg </p>
+            @*<p style="font-size: 14px;">&copy;@DateTime.Now.Year - WS van der Berg </p>*@
         </footer>
     </div>
 
