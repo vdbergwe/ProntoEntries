@@ -2,6 +2,7 @@
 Imports System.IO
 Imports ClosedXML.Excel
 Imports Newtonsoft.Json
+Imports System.Web.Script.Serialization
 
 Namespace Controllers
     Public Class ReportsController
@@ -74,16 +75,14 @@ Namespace Controllers
         <HttpGet>
         Function Get_TotalEntries(ByVal RaceId As Integer?) As JsonResult
             Dim RaceParticipants = db.Entries.Where(Function(a) a.RaceID = RaceId)
-            Dim jsonData As String
-            Dim jsonString As String
+            Dim myObject As New With {.number = RaceParticipants.Count().ToString}
 
-            jsonString = "{'number':'" + RaceParticipants.Count().ToString + "'}"
 
-            jsonData = JsonConvert.SerializeObject(jsonString)
+            Dim jsonData = JsonConvert.SerializeObject(myObject)
 
             ViewBag.TotalEntries = RaceParticipants.Count()
 
-            Return Json(jsonString, JsonRequestBehavior.AllowGet)
+            Return Json(myObject, JsonRequestBehavior.AllowGet)
         End Function
 
         Function EntryDetail(ByVal Id As Integer?, ByVal RaceID As Integer?, ByVal SearchValue As String) As ActionResult
