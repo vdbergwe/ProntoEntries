@@ -9,14 +9,14 @@ End Code
         <h2>Event Dashboard</h2>
         @If ViewBag.SelectedRace IsNot Nothing Then
             @<div>
-                 <ul>
-                     <li>
-                         @Html.ActionLink("Export Race Detail", "ExporttoExcelRaceDetail", New With {.id = ViewBag.SelectedRace})
-                     </li>
-                     <li>
-                         @Html.ActionLink("Race Detail With Add-ons", "ExporttoExcelAddonSales", New With {.id = ViewBag.SelectedRace})
-                     </li>
-                 </ul>
+                <ul>
+                    <li>
+                        @Html.ActionLink("Export Race Detail", "ExporttoExcelRaceDetail", New With {.id = ViewBag.SelectedRace})
+                    </li>
+                    <li>
+                        @Html.ActionLink("Race Detail With Add-ons", "ExporttoExcelAddonSales", New With {.id = ViewBag.SelectedRace})
+                    </li>
+                </ul>
             </div>
         End If
     </div>
@@ -77,6 +77,14 @@ End Code
             <div Class="reportitem">
                 @Html.Action("Get_PayFast", New With {.RaceId = ViewBag.SelectedRace})
             </div>
+
+            @If User.IsInRole("Admin") Then
+                @* Verification and Pronto Fees*@
+
+                @<div Class="reportitem">
+                    @Html.Action("Get_VerifiedTotals", New With {.RaceId = ViewBag.SelectedRace})
+                </div>
+            End If
 
         </div>
     Else

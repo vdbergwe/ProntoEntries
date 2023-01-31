@@ -145,7 +145,20 @@ Namespace Controllers
             Return PartialView()
         End Function
 
+        Function Get_VerifiedTotals(ByVal RaceId As Integer?) As ActionResult
+            Dim RaceOptions = db.AddonItems.Where(Function(a) a.RaceID = RaceId)
+            Dim AllAddons = db.Sales.Where(Function(a) RaceOptions.Any(Function(b) b.ItemID = a.ItemID) And a.Verified IsNot Nothing)
+            Dim AddonTotal = 0
+            For Each item In AllAddons
+                AddonTotal += db.AddonOptions.Where(Function(a) a.OptionID = item.OptionID).Select(Function(b) b.Amount).FirstOrDefault()
+            Next
 
+            ViewBag.EntryTotal = db.Entries.Where(Function(a) a.RaceID = RaceId).Select(Function(b) b.Amount).Sum()
+            ViewBag.AddonTotal = AddonTotal
+            ViewBag.ProntoFee = ViewBag.EntryTotal * 0.03
+            ViewBag.GlobalTotal = ViewBag.EntryTotal + ViewBag.AddonTotal + ViewBag.ProntoFee
+            Return PartialView()
+        End Function
 
 
         Function Get_DivisionTotal(Id As Integer?) As ActionResult
