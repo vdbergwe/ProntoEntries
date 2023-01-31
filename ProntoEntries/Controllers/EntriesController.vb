@@ -311,36 +311,45 @@ Namespace Controllers
             Dim AgeInt As Decimal = Age.TotalDays / 365
 
             Dim DivisionID = db.Divisions.Where(Function(a) a.RaceID = RaceID And a.MinAge < AgeInt And a.MaxAge > AgeInt And a.Distance = Distance).Select(Function(b) b.DivisionID).FirstOrDefault()
-            If DivisionID > 0 Then
-                sale.ParticipantID = id
-                sale.RaceID = RaceID
-                sale.DivisionID = DivisionID
-                Dim Amount = db.Divisions.Where(Function(a) a.DivisionID = DivisionID).Select(Function(a) a.Price).FirstOrDefault
-                Dim Status = "UnPaid"
-                sale.UserID = User.Identity.Name
-                sale.TandC = True
-                sale.Indemnity = True
-                sale.SaleDate = Now()
 
-                If (db.Sales.Where(Function(a) a.UserID = User.Identity.Name And a.Pf_reference Is Nothing).Count() > 0) Then
-                    sale.M_reference = db.Sales.Where(Function(a) a.UserID = User.Identity.Name And a.Pf_reference Is Nothing).Select(Function(a) a.M_reference).FirstOrDefault()
-                Else
-                    If IsNothing(db.Sales.Max(Function(a) a.M_reference)) Then
-                        sale.M_reference = 1
+            If db.Sales.Where(Function(a) a.ParticipantID = id And a.RaceID = RaceID And a.Verified = True).Count > 0 Then
+                Return RedirectToAction("Index", "Entries")
+
+            Else
+                If DivisionID > 0 Then
+                    sale.ParticipantID = id
+                    sale.RaceID = RaceID
+                    sale.DivisionID = DivisionID
+                    Dim Amount = db.Divisions.Where(Function(a) a.DivisionID = DivisionID).Select(Function(a) a.Price).FirstOrDefault
+                    Dim Status = "UnPaid"
+                    sale.UserID = User.Identity.Name
+                    sale.TandC = True
+                    sale.Indemnity = True
+                    sale.SaleDate = Now()
+
+                    If (db.Sales.Where(Function(a) a.UserID = User.Identity.Name And a.Pf_reference Is Nothing).Count() > 0) Then
+                        sale.M_reference = db.Sales.Where(Function(a) a.UserID = User.Identity.Name And a.Pf_reference Is Nothing).Select(Function(a) a.M_reference).FirstOrDefault()
                     Else
-                        OrderNumber = db.Sales.Max(Function(a) a.M_reference)
-                        sale.M_reference = OrderNumber + 1
+                        If IsNothing(db.Sales.Max(Function(a) a.M_reference)) Then
+                            sale.M_reference = 1
+                        Else
+                            OrderNumber = db.Sales.Max(Function(a) a.M_reference)
+                            sale.M_reference = OrderNumber + 1
+                        End If
+                    End If
+                    If ModelState.IsValid Then
+                        db.Sales.Add(sale)
+                        db.SaveChanges()
+                        '@Html.ActionLink("Enter Now", "NewEntry", "Entries", New With {.id = Model.RaceID}, New With {.class = "btnEntryLink"})
+                        Return RedirectToAction("NewEntry", "Entries", New With {.id = RaceID, .DivisionSelect = DivisionID})
                     End If
                 End If
-                If ModelState.IsValid Then
-                    db.Sales.Add(sale)
-                    db.SaveChanges()
-                    '@Html.ActionLink("Enter Now", "NewEntry", "Entries", New With {.id = Model.RaceID}, New With {.class = "btnEntryLink"})
-                    Return RedirectToAction("NewEntry", "Entries", New With {.id = RaceID, .DivisionSelect = DivisionID})
-                End If
+
+                Return RedirectToAction("NewEntry", "Entries", New With {.id = RaceID, .DivisionSelect = DivisionID, .alert = "No Suitable Age Category for selected Participant"})
             End If
 
             Return RedirectToAction("NewEntry", "Entries", New With {.id = RaceID, .DivisionSelect = DivisionID, .alert = "No Suitable Age Category for selected Participant"})
+
         End Function
 
         <Authorize>

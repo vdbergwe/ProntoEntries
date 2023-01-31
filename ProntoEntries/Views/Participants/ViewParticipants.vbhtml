@@ -17,7 +17,7 @@ End Code
                 No Available Participants. Please select from options below.
             </p>
         Else
-            @<Table Class="table" style="margin: 0 10%">
+            @<Table Class="table" style="padding: 0 0 0 5%">
                 <tr>
                     <th>
                         @Html.DisplayNameFor(Function(model) model.FirstName)
@@ -31,7 +31,10 @@ End Code
                     <th>
                         Age
                     </th>
-                        @*<th>
+                    <th>
+
+                    </th>
+                    @*<th>
                             @Html.DisplayNameFor(Function(model) model.EmailAddress)
                         </th>*@
                 </tr>
@@ -47,10 +50,10 @@ End Code
                         <td>
                             @Html.DisplayFor(Function(modelItem) item.IDNumber)
                         </td>
-                        <td>                            
+                        <td>
                             @Html.Action("Get_Age", "Participants", New With {.Id = item.ParticipantID, .RaceID = ViewBag.RaceID})
                         </td>
-                            @*<td>
+                        @*<td>
                                 @Html.DisplayFor(Function(modelItem) item.EmailAddress)
                             </td>*@
                         @If (ViewBag.DivisionSelect > 0) Then
@@ -66,6 +69,15 @@ End Code
 
 
                             </td>
+                        Else
+                            @<td>
+                            </td>
+                        End If
+                        @If User.IsInRole("Admin") Then
+                            @<td>
+                                @*@Html.Action("Get_IsInRace", "Participants", New With {.Id = item.ParticipantID})*@
+                                @Html.DisplayFor(Function(modelItem) item.ParticipantID)
+                            </td>
                         End If
                     </tr>
                 Next
@@ -78,6 +90,7 @@ End Code
             <div class="linkbutton">
                 @*@Html.ActionLink("Create New1", "Create")*@
                 @Html.ActionLink("Create New", "Create", New With {.EventID = ViewBag.RaceID, .Distance = ViewBag.DivisionSelect})
+
 
             </div>
             <div class="linkbutton">
