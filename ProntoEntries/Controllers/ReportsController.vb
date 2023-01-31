@@ -148,7 +148,7 @@ Namespace Controllers
         Function Get_VerifiedTotals(ByVal RaceId As Integer?) As ActionResult
             Dim RaceOptions = db.AddonItems.Where(Function(a) a.RaceID = RaceId)
             Dim AllAddons = db.Sales.Where(Function(a) RaceOptions.Any(Function(b) b.ItemID = a.ItemID) And a.Verified IsNot Nothing)
-            Dim AddonTotal = 0
+            Dim AddonTotal = 0.00
             For Each item In AllAddons
                 AddonTotal += db.AddonOptions.Where(Function(a) a.OptionID = item.OptionID).Select(Function(b) b.Amount).FirstOrDefault()
             Next
