@@ -40,12 +40,47 @@ Namespace Controllers
         <ValidateAntiForgeryToken()>
         Function UpdateEntries(<Bind(Include:="EntryID,ParticipantID,RaceID,DivisionID,Amount,Status,PaymentReference,DistanceChange,ChangePaymentRef,TransferID,Result")> ByVal entry As Entry)
             Dim Result As Boolean
+            Dim logText As New SystemLog
+
+            logText.UserID = entry.ParticipantID
+            logText.Date = Now()
+            logText.Time = Now().TimeOfDay()
+
+            Result = False
             If ModelState.IsValid Then
                 db.Entries.Add(entry)
                 db.SaveChanges()
+                logText.ActionPerformed = "Entry: " + entry.MainUserID.ToString() + " - " + entry.RaceID.ToString()
+                If ModelState.IsValid Then
+                    db.SystemLogs.Add(logText)
+                    db.SaveChanges()
+                End If
                 Result = True
             End If
-            SendConfirmationLink(entry.ParticipantID, entry.EntryID)
+            Try
+                'Code that might throw an exception goes here
+                SendConfirmationLink(entry.ParticipantID, entry.EntryID)
+                logText.ActionPerformed = "Email Sent Good"
+            Catch ex As Exception
+                'Exception handling code goes here
+                logText.ActionPerformed = ex.ToString()
+
+                If ModelState.IsValid Then
+                    db.SystemLogs.Add(logText)
+                    db.SaveChanges()
+                Else
+                    logText.ActionPerformed = "Ex String too Long"
+                    If ModelState.IsValid Then
+                        db.SystemLogs.Add(logText)
+                        db.SaveChanges()
+                    End If
+                End If
+
+                Return Result
+            End Try
+
+            db.SystemLogs.Add(logText)
+            db.SaveChanges()
             Return Result
         End Function
 
@@ -66,7 +101,7 @@ Namespace Controllers
 
             Dim msg As New MailMessage With {
             .From = New MailAddress(ConfigurationManager.AppSettings("Email").ToString())
-        }
+            }
             msg.To.Add(New MailAddress(Email))
             msg.Bcc.Add(New MailAddress("vdbergwe@gmail.com"))
             msg.Subject = "Entry Confirmation: " + EventName.ToString()
