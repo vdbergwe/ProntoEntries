@@ -395,7 +395,14 @@ Namespace Controllers
                 End If
             End If
 
-            If OptionID1 IsNot Nothing Then
+            Dim Flag As Boolean
+
+
+            If db.Sales.Where(Function(a) a.ParticipantID = Id And a.ItemID = ItemID).Count = 0 Then
+                Flag = True
+            End If
+
+            If OptionID1 IsNot Nothing And Flag = True Then
                 sale.ParticipantID = Id
                 sale.ItemID = ItemID
                 sale.OptionID = OptionID1
