@@ -156,8 +156,9 @@ Namespace Controllers
 
                 If EventID IsNot Nothing And Distance > 0 Then
                     '@Html.ActionLink("Enter Event", "VerifyEntry", "Entries", New With {.id = item.ParticipantID, .RaceID1 = ViewBag.RaceID, .DivisionID1 = ViewBag.DivisionSelect}, Nothing)
-                    Dim ParticipantID = db.Participants.Where(Function(a) a.IDNumber = participant.IDNumber).Select(Function(b) b.ParticipantID).FirstOrDefault()
-                    Return RedirectToAction("VerifyEntry", "Entries", New With {.id = ParticipantID, .RaceID1 = EventID, .DivisionID1 = Distance})
+                    'Dim ParticipantID = db.Participants.Where(Function(a) a.IDNumber = participant.IDNumber).Select(Function(b) b.ParticipantID).FirstOrDefault()
+                    Return RedirectToAction("NewEntry", "Entries", New With {.id = EventID, .DivisionSelect = Distance})
+                    'Return RedirectToAction("VerifyEntry", "Entries", New With {.id = ParticipantID, .RaceID1 = EventID, .DivisionID1 = Distance})
                 End If
             End If
 
