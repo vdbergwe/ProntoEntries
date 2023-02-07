@@ -123,6 +123,58 @@ Namespace Controllers
             Return View(db.Sales.ToList())
         End Function
 
+        Function Get_ItemImage(ByVal id As Integer?) As ActionResult
+            ViewBag.Image = db.RaceEvents.Where(Function(a) a.RaceID = id).Select(Function(b) b.Image).FirstOrDefault()
+
+            Return PartialView()
+        End Function
+
+        Function Get_ItemSize(ByVal id As Integer?) As ActionResult
+            ViewBag.Size = New SelectList(db.AddonOptions.Where(Function(a) a.ItemID = id), "OptionID", "Size")
+
+            Return PartialView()
+        End Function
+
+        ' GET: Shop
+        <Authorize>
+        Function Shop(ByVal Size As Integer?, ByVal ParticipantID As Integer?, ByVal Sale As Sale) As ActionResult
+            Dim AllOptions = db.AddonOptions.Where(Function(a) a.StopDate > Now())
+            Dim Items = db.AddonItems.Where(Function(a) AllOptions.Any(Function(c) c.ItemID = a.ItemID) And a.AllowedInShop = True)
+            ViewBag.ParticipantID = New SelectList(db.Participants.Where(Function(a) a.UserID = User.Identity.Name), "ParticipantID", "FirstName")
+
+            Dim ItemID = db.AddonOptions.Where(Function(a) a.OptionID = Size).Select(Function(b) b.ItemID).FirstOrDefault()
+
+            ViewBag.HasItem = False
+            If db.Sales.Where(Function(a) a.ParticipantID = ParticipantID And a.ItemID = ItemID And a.Pf_reference IsNot Nothing).Count() > 0 Then
+                ViewBag.HasItem = True
+            End If
+
+            ViewBag.ItemInCart = False
+            Dim CheckDB = db.Sales.Where(Function(a) a.ItemID = ItemID And a.ParticipantID = ParticipantID And a.UserID = User.Identity.Name).Count()
+
+            If CheckDB > 0 Then
+                ViewBag.ItemInCart = True
+            End If
+
+            If ViewBag.HasItem = False And CheckDB = 0 And Size IsNot Nothing And ParticipantID IsNot Nothing Then
+                Dim RaceID = db.AddonItems.Where(Function(a) a.ItemID = ItemID).Select(Function(b) b.RaceID).FirstOrDefault()
+                Sale.ItemID = ItemID
+                Sale.OptionID = Size
+                Sale.UserID = User.Identity.Name
+                Sale.ParticipantID = ParticipantID
+                Sale.M_reference = db.Sales.Where(Function(a) a.ParticipantID = ParticipantID And a.RaceID = RaceID).Select(Function(b) b.M_reference).FirstOrDefault()
+                Sale.SaleDate = Now()
+
+                If ModelState.IsValid Then
+                    db.Sales.Add(Sale)
+                    db.SaveChanges()
+                    'Return RedirectToAction("VerifyEntry", "Entries", New With {.id = Id, .RaceID1 = ViewBag.RaceID, .DivisionID1 = ViewBag.DivisionID})
+                End If
+            End If
+
+            Return View(Items.ToList())
+        End Function
+
         ' GET: Sales/Details/5
         <Authorize>
         Function Details(ByVal id As Integer?) As ActionResult

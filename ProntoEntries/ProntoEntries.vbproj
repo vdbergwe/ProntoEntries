@@ -1312,6 +1312,9 @@
     <Content Include="Views\Entries\Get_AddonDropdown.vbhtml" />
     <Content Include="Views\Entries\Update.vbhtml" />
     <Content Include="Views\Reports\Get_VerifiedTotals.vbhtml" />
+    <Content Include="Views\Sales\Shop.vbhtml" />
+    <Content Include="Views\Sales\Get_ItemImage.vbhtml" />
+    <Content Include="Views\Sales\Get_ItemSize.vbhtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />
