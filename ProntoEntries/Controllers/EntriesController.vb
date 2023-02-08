@@ -37,10 +37,14 @@ Namespace Controllers
 
                 Dim SingleTransaction As Sale = db.Sales.Where(Function(a) a.Pf_reference Is Nothing And a.UserID = paymentdata.custom_str1 And a.RaceID IsNot Nothing).FirstOrDefault()
                 Dim Transaction = db.Sales.Where(Function(a) a.Pf_reference Is Nothing And a.UserID = paymentdata.custom_str1)
+                Dim MREF = db.Sales.Where(Function(a) a.Pf_reference Is Nothing And a.UserID = paymentdata.custom_str1).Select(Function(b) b.M_reference).FirstOrDefault()
+                If SingleTransaction Is Nothing Then
+                    SingleTransaction = db.Sales.Where(Function(a) a.M_reference = MREF And a.UserID = paymentdata.custom_str1 And a.RaceID IsNot Nothing).FirstOrDefault()
+                End If
                 Dim OrgID = db.RaceEvents.Where(Function(a) a.RaceID = SingleTransaction.RaceID).Select(Function(b) b.OrgID).FirstOrDefault()
                 Dim OrgPassphrase = db.PaymentDetails.Where(Function(a) a.OrgID = OrgID).Select(Function(b) b.MerchantPassPhrase).FirstOrDefault()
 
-                Dim RaceID = Transaction.Where(Function(a) a.RaceID IsNot Nothing).Select(Function(b) b.RaceID).FirstOrDefault()
+                Dim RaceID = SingleTransaction.RaceID
                 Dim Admin_rate = db.RaceEvents.Where(Function(a) a.RaceID = RaceID).Select(Function(b) b.Admin_Rate).FirstOrDefault() / 100
                 Dim EntriesTotal = 0.00
 
@@ -149,12 +153,17 @@ Namespace Controllers
         Function SubmitToPayfast() As ActionResult
             Dim SingleTransaction As Sale = db.Sales.Where(Function(a) a.Pf_reference Is Nothing And a.UserID = User.Identity.Name And a.RaceID IsNot Nothing).FirstOrDefault()
             Dim Transaction = db.Sales.Where(Function(a) a.Pf_reference Is Nothing And a.UserID = User.Identity.Name)
+            Dim MREF = db.Sales.Where(Function(a) a.Pf_reference Is Nothing And a.UserID = User.Identity.Name).Select(Function(b) b.M_reference).FirstOrDefault()
+            If SingleTransaction Is Nothing Then
+                SingleTransaction = db.Sales.Where(Function(a) a.M_reference = MREF And a.UserID = User.Identity.Name And a.RaceID IsNot Nothing).FirstOrDefault()
+            End If
             Dim OrgID = db.RaceEvents.Where(Function(a) a.RaceID = SingleTransaction.RaceID).Select(Function(b) b.OrgID).FirstOrDefault()
             Dim OrgPassphrase = db.PaymentDetails.Where(Function(a) a.OrgID = OrgID).Select(Function(b) b.MerchantPassPhrase).FirstOrDefault()
             'Dim hosturl = "https://entries.prontocs.co.za"
             Dim hosturl = "https://9688-102-36-249-34.in.ngrok.io"
 
-            Dim RaceID = Transaction.Where(Function(a) a.RaceID IsNot Nothing).Select(Function(b) b.RaceID).FirstOrDefault()
+            Dim RaceID = SingleTransaction.RaceID
+
             Dim Admin_rate = db.RaceEvents.Where(Function(a) a.RaceID = RaceID).Select(Function(b) b.Admin_Rate).FirstOrDefault() / 100
             Dim EntriesTotal = 0.00
 
