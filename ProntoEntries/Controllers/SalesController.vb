@@ -143,6 +143,7 @@ Namespace Controllers
             ViewBag.ParticipantID = New SelectList(db.Participants.Where(Function(a) a.UserID = User.Identity.Name), "ParticipantID", "FirstName")
 
             Dim ItemID = db.AddonOptions.Where(Function(a) a.OptionID = Size).Select(Function(b) b.ItemID).FirstOrDefault()
+            Dim AllowFlag = True
 
             ViewBag.HasItem = False
             If db.Sales.Where(Function(a) a.ParticipantID = ParticipantID And a.ItemID = ItemID And a.Pf_reference IsNot Nothing).Count() > 0 Then
@@ -156,7 +157,20 @@ Namespace Controllers
                 ViewBag.ItemInCart = True
             End If
 
-            If ViewBag.HasItem = False And CheckDB = 0 And Size IsNot Nothing And ParticipantID IsNot Nothing Then
+            ViewBag.NoEntry = True
+            If ParticipantID Is Nothing Then
+                ViewBag.NoEntry = False
+            End If
+
+            If db.Entries.Where(Function(a) a.ParticipantID = ParticipantID And a.RaceID = db.AddonItems.Where(Function(b) b.ItemID = ItemID).Select(Function(c) c.RaceID).FirstOrDefault()).Count() = 1 Then
+                ViewBag.NoEntry = False
+            End If
+
+            If ViewBag.HasItem = True Or ViewBag.ItemInCart = True Or ViewBag.NoEntry = True Then
+                AllowFlag = False
+            End If
+
+            If AllowFlag = True And Size IsNot Nothing And ParticipantID IsNot Nothing Then
                 Dim RaceID = db.AddonItems.Where(Function(a) a.ItemID = ItemID).Select(Function(b) b.RaceID).FirstOrDefault()
                 Sale.ItemID = ItemID
                 Sale.OptionID = Size

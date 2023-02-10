@@ -49,6 +49,12 @@ End Code
                                 @<li style="color:red">
                                     This Selection Is In Your Cart
                                 </li>
+                            Else
+                                @If ViewBag.NoEntry = True Then
+                                    @<li style="color:red">
+                                        Item Can Only Be Added To Existing Race Entries
+                                    </li>
+                                End If
                             End If
                         End If
                     </ul>
