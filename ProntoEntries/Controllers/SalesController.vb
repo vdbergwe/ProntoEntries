@@ -271,11 +271,17 @@ Namespace Controllers
         <Authorize>
         Function DeleteConfirmed(ByVal id As Integer) As ActionResult
             Dim sale As Sale = db.Sales.Find(id)
-            Dim removesales = db.Sales.Where(Function(a) a.M_reference = sale.M_reference And a.ParticipantID = sale.ParticipantID).ToList()
-            For Each sale In removesales
+            If sale.RaceID IsNot Nothing Then
+                Dim removesales = db.Sales.Where(Function(a) a.M_reference = sale.M_reference And a.ParticipantID = sale.ParticipantID).ToList()
+                For Each sale In removesales
+                    db.Sales.Remove(sale)
+                    db.SaveChanges()
+                Next
+            Else
                 db.Sales.Remove(sale)
                 db.SaveChanges()
-            Next
+            End If
+
             Return RedirectToAction("Cart", "Entries")
 
         End Function

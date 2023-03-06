@@ -69,7 +69,7 @@ End Code
                                     <td>
                                         @*@Html.ActionLink("Edit", "Edit", New With {.id = item.EntryID}) |
                                             @Html.ActionLink("Details", "Details", New With {.id = item.EntryID}) |*@
-                                        @If item.RaceID IsNot Nothing Then
+                                        @If item.RaceID IsNot Nothing Or item.ItemID = 1 Then
                                             @Html.ActionLink("Remove", "Delete", "Sales", New With {.id = item.SaleID}, Nothing)
                                         Else
                                             @*@Html.Action("Get_ItemSize", "AddonOptions", New With {.Id = item.ItemID})*@

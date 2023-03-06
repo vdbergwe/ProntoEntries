@@ -160,7 +160,7 @@ Namespace Controllers
             Dim OrgID = db.RaceEvents.Where(Function(a) a.RaceID = SingleTransaction.RaceID).Select(Function(b) b.OrgID).FirstOrDefault()
             Dim OrgPassphrase = db.PaymentDetails.Where(Function(a) a.OrgID = OrgID).Select(Function(b) b.MerchantPassPhrase).FirstOrDefault()
             'Dim hosturl = "https://entries.prontocs.co.za"
-            Dim hosturl = "https://b91c-102-36-249-34.in.ngrok.io"
+            Dim hosturl = "https://fda7-102-36-249-34.in.ngrok.io"
 
             Dim RaceID = SingleTransaction.RaceID
 
