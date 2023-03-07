@@ -51,15 +51,18 @@
                         @<li>@Html.ActionLink("Dashboard", "Dashboard", "Reports")</li>
                     End If
                     @If User.Identity.IsAuthenticated And Not ((User.IsInRole("Admin") Or User.IsInRole("Org") Or User.IsInRole("SuperUser"))) Then
+                        @<li>@Html.ActionLink("Shop", "Shop", "Sales")</li>
+                    End If
+                    @If User.Identity.IsAuthenticated And Not ((User.IsInRole("Admin") Or User.IsInRole("Org") Or User.IsInRole("SuperUser"))) Then
                         @<li>@Html.ActionLink("Cart", "Cart", "Entries")</li>
                     End If
 
                     @If Request.IsAuthenticated Then
 
                         @*<li>
-                                @Html.ActionLink("Account", "Index", "Manage", routeValues:=Nothing, htmlAttributes:=New With {.title = "Manage"})
-                                "Hello " + User.Identity.GetUserName() + "!"
-                            </li>*@
+                @Html.ActionLink("Account", "Index", "Manage", routeValues:=Nothing, htmlAttributes:=New With {.title = "Manage"})
+                "Hello " + User.Identity.GetUserName() + "!"
+            </li>*@
                         @<li>
                             @Using Html.BeginForm("LogOff", "Account", FormMethod.Post, New With {.id = "logoutForm", .class = "sidebarMenuInnerMobile"})
                                 @Html.AntiForgeryToken()

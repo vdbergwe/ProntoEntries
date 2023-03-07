@@ -11,16 +11,19 @@ End Code
         <div>
             <ul>
                 <li>
-                    @Html.ActionLink("Cart", "Cart", "Entries", New With {.id = ViewBag.SelectedRace}, Nothing)
+                    @Html.ActionLink("Cart(" + ViewBag.CartCount.ToString() + ")", "Cart", "Entries", New With {.id = ViewBag.SelectedRace}, Nothing)
                 </li>
             </ul>
         </div>
     </div>
 
     <hr />
-    @*<div>
-            <h2>Available items</h2>
-        </div>*@
+    @If ViewBag.InCart = True Then
+        @<div class="linkbutton" style="margin:auto;width:30%;">
+    @Html.ActionLink("Cart(" + ViewBag.CartCount.ToString() + ")", "Cart", "Entries")
+</div>
+    End If
+
 
     <div class="raceflex">
         @For Each item In Model

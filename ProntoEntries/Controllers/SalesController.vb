@@ -185,6 +185,10 @@ Namespace Controllers
                     'Return RedirectToAction("VerifyEntry", "Entries", New With {.id = Id, .RaceID1 = ViewBag.RaceID, .DivisionID1 = ViewBag.DivisionID})
                 End If
             End If
+            ViewBag.CartCount = db.Sales.Where(Function(a) a.UserID = User.Identity.Name And a.Pf_reference Is Nothing).Count()
+            If db.Sales.Where(Function(a) a.ParticipantID = ParticipantID And a.OptionID = Size).Count() > 0 Then
+                ViewBag.InCart = True
+            End If
 
             Return View(Items.ToList())
         End Function
