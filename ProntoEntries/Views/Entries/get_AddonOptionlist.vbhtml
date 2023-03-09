@@ -20,15 +20,17 @@ End If
                 </li>
             </ul>
         </div>*@
-
-    @If item.Amount = 0 Then
-        @<div class="addonoptionlist">
-            @Html.ActionLink(item.Size.ToString(), "VerifyEntry", "Entries", New With {.id = ViewBag.ParticipantID, .RaceID1 = ViewBag.RaceID, .DivisionID1 = ViewBag.DivisionID, .OptionID1 = item.OptionID, .ItemID = item.ItemID}, Nothing)
-        </div>
-    Else
-        @<div class="addonoptionlist">
-            @Html.ActionLink(item.Size.ToString() + " - R" + item.Amount.ToString(), "VerifyEntry", "Entries", New With {.id = ViewBag.ParticipantID, .RaceID1 = ViewBag.RaceID, .DivisionID1 = ViewBag.DivisionID, .OptionID1 = item.OptionID, .ItemID = item.ItemID}, Nothing)
-        </div>
+    @If item.StopDate > Now() Then
+        @If item.Amount = 0 Then
+            @<div class="addonoptionlist">
+                @Html.ActionLink(item.Size.ToString(), "VerifyEntry", "Entries", New With {.id = ViewBag.ParticipantID, .RaceID1 = ViewBag.RaceID, .DivisionID1 = ViewBag.DivisionID, .OptionID1 = item.OptionID, .ItemID = item.ItemID}, Nothing)
+            </div>
+        Else
+            @<div class="addonoptionlist">
+                @Html.ActionLink(item.Size.ToString() + " - R" + item.Amount.ToString(), "VerifyEntry", "Entries", New With {.id = ViewBag.ParticipantID, .RaceID1 = ViewBag.RaceID, .DivisionID1 = ViewBag.DivisionID, .OptionID1 = item.OptionID, .ItemID = item.ItemID}, Nothing)
+            </div>
+        End If
     End If
+
 
 Next
