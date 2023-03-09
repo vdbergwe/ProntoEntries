@@ -32,7 +32,7 @@ End Code
                                 Category
                             </th>
                             <th>
-                                Collection Point
+                                @Html.DisplayNameFor(Function(model) model.Mobile)
                             </th>
                         </tr>
                         <tr>
@@ -43,7 +43,7 @@ End Code
                                 @ViewBag.Category
                             </td>
                             <td>
-                                @ViewBag.Collection
+                                @Html.DisplayFor(Function(model) model.Mobile)
                             </td>
                         </tr>
                     </Table>
