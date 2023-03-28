@@ -20,6 +20,7 @@ Partial Public Class Participant
     Public Property Gender As String
     Public Property RaceNumber As String
     Public Property EmailAddress As String
+    Public Property Mobile As String
     Public Property MedicalName As String
     Public Property MedicalNumber As String
     Public Property EmergencyContact As String
@@ -38,6 +39,5 @@ Partial Public Class Participant
     Public Property EventMailer As Boolean
     Public Property Offers As Boolean
     Public Property DateAdded As Nullable(Of Date)
-    Public Property Mobile As String
 
 End Class

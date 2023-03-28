@@ -614,6 +614,7 @@
     <Compile Include="Controllers\RaceEventsController.vb" />
     <Compile Include="Controllers\ReportsController.vb" />
     <Compile Include="Controllers\SalesController.vb" />
+    <Compile Include="Controllers\VouchersController.vb" />
     <Compile Include="C__MigrationHistory.vb">
       <DependentUpon>EntriesModel.tt</DependentUpon>
     </Compile>
@@ -699,6 +700,9 @@
       <DependentUpon>EntriesModel.tt</DependentUpon>
     </Compile>
     <Compile Include="TypeLookup.vb">
+      <DependentUpon>EntriesModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Voucher.vb">
       <DependentUpon>EntriesModel.tt</DependentUpon>
     </Compile>
   </ItemGroup>
@@ -1315,6 +1319,11 @@
     <Content Include="Views\Sales\Shop.vbhtml" />
     <Content Include="Views\Sales\Get_ItemImage.vbhtml" />
     <Content Include="Views\Sales\Get_ItemSize.vbhtml" />
+    <Content Include="Views\Vouchers\Create.vbhtml" />
+    <Content Include="Views\Vouchers\Delete.vbhtml" />
+    <Content Include="Views\Vouchers\Details.vbhtml" />
+    <Content Include="Views\Vouchers\Edit.vbhtml" />
+    <Content Include="Views\Vouchers\Index.vbhtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />

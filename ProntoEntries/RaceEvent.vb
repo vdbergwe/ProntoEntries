@@ -30,12 +30,12 @@ Partial Public Class RaceEvent
     Public Property DispClasses As Boolean
     Public Property DispAdmCharge As Boolean
     Public Property DispAddress As Boolean
+    Public Property PF_ToClient As Boolean
+    Public Property Admin_ToClient As Boolean
+    Public Property Admin_Rate As Decimal
     Public Property RaceHtmlPage As String
     Public Property Indemnity As String
     Public Property TandC As String
     Public Property EntriesCloseDate As Nullable(Of Date)
-    Public Property PF_ToClient As Boolean
-    Public Property Admin_ToClient As Boolean
-    Public Property Admin_Rate As Decimal
 
 End Class
