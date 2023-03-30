@@ -10,12 +10,29 @@ End Code
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Index</title>
+    <script>
+        function updateConverted() {
+            console.log("Function called");
+            document.getElementById("VoucherLink").innerHTML = '<a href="/Entries/Cart?Voucher=' + document.getElementById($(this).prop('id')).value + '">Apply Voucher</a>';
+        });
+    </script>
 </head>
 <body>
     <div class="orgcontainer create">
         <div class="titlediv">
             <h2>Cart</h2>
+            <ul>
+                <li>
+                    <input type="text" id="VoucherCode" onkeyup="updateConverted()" value=@ViewBag.VoucherCode />
+                </li>
+                <li id="VoucherLink">
+                    @Html.ActionLink("Apply Voucher", "Cart", "Entries")
+                </li>
+            </ul>
         </div>
+
+
+
         <hr />
 
         @If Model.Count > 0 Then
@@ -134,3 +151,29 @@ End Code
 </body>
 </html>
 
+@Section Scripts
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        function updateConverted() {
+            console.log("Function called");
+
+            // Get the input element
+            var input = document.getElementById("VoucherCode");
+
+            // Get the current value of the input
+            var inputValue = input.value;
+
+            // Do some conversion with the input value
+            var convertedValue = inputValue.toUpperCase();
+
+            // Update the output element with the converted value
+            if (convertedValue == "") {
+                document.getElementById("VoucherLink").innerHTML = '<a href="/Entries/Cart">Apply Voucher</a>';
+            } else {
+                    document.getElementById("VoucherLink").innerHTML = '<a href="/Entries/Cart?Voucher=' + convertedValue + '">Apply Voucher</a>';
+                }
+            
+            
+        }
+    </script>
+End Section

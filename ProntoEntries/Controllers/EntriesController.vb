@@ -231,12 +231,12 @@ Namespace Controllers
 
         ' GET: Entries/Cart
         <Authorize>
-        Function Cart(ByVal id As Integer?, ByVal DivisionSelect As Integer?) As ActionResult
+        Function Cart(ByVal id As Integer?, ByVal DivisionSelect As Integer?, ByVal Voucher As String) As ActionResult
 
             Dim CartContent = db.Sales.Where(Function(a) a.Pf_reference Is Nothing And a.UserID = User.Identity.Name).OrderBy(Function(b) b.ParticipantID).ThenByDescending(Function(b) b.RaceID)
             Dim ParticipantsInCart = CartContent.Select(Function(a) a.ParticipantID).Distinct().ToList()
             ViewBag.UniqueP = CartContent.Select(Function(a) a.ParticipantID).Distinct().ToList()
-
+            ViewBag.VoucherCode = Voucher
             Dim ShopSaleFlag As Boolean = False
 
             For Each Participant In ParticipantsInCart
