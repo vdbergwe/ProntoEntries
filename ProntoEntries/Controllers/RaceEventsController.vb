@@ -17,7 +17,16 @@ Namespace Controllers
 
         ' GET: RaceEvents
         Function Index() As ActionResult
+            Dim OrgId = db.CustomUserRoles.Where(Function(a) a.UserEmail = User.Identity.Name And a.Role = "Vouchers").Select(Function(b) b.OrgId).FirstOrDefault()
+            ViewBag.RaceID = db.RaceEvents.Where(Function(a) a.OrgID = OrgId).FirstOrDefault()
             Dim RaceEvents = db.RaceEvents.Where(Function(a) a.RaceDate > Now())
+
+            ViewBag.ViewVoucher = False
+
+            If OrgId IsNot Nothing Then
+                ViewBag.ViewVoucher = True
+            End If
+
             Return View(RaceEvents.ToList())
         End Function
 

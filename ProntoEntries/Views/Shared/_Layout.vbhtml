@@ -53,6 +53,11 @@
                     @If User.Identity.IsAuthenticated And Not ((User.IsInRole("Admin") Or User.IsInRole("Org") Or User.IsInRole("SuperUser"))) Then
                         @<li>@Html.ActionLink("Shop", "Shop", "Sales")</li>
                     End If
+                    @If ViewBag.ViewVoucher IsNot Nothing Then
+                        @If ViewBag.ViewVoucher = True Then
+                            @<li>@Html.ActionLink("Vouchers", "Index", "Vouchers")</li>
+                        End If
+                    End If
                     @If User.Identity.IsAuthenticated And Not ((User.IsInRole("Admin") Or User.IsInRole("Org") Or User.IsInRole("SuperUser"))) Then
                         @<li>@Html.ActionLink("Cart", "Cart", "Entries")</li>
                     End If

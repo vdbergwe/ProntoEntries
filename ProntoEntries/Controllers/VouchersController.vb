@@ -7,12 +7,27 @@ Imports System.Net
 Imports System.Web
 Imports System.Web.Mvc
 Imports ProntoEntries
+Imports System.Security.Cryptography
 
 Namespace Controllers
     Public Class VouchersController
         Inherits System.Web.Mvc.Controller
 
         Private db As New EntriesDBEntities
+
+        Private Shared rng As New RNGCryptoServiceProvider()
+
+        Public Shared Function GenerateVoucherCode(length As Integer) As String
+            Const chars As String = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+            Dim data(length - 1) As Byte
+            rng.GetBytes(data)
+            Dim result(length - 1) As Char
+            For i As Integer = 0 To length - 1
+                result(i) = chars(data(i) Mod chars.Length)
+            Next
+            Return New String(result)
+        End Function
+
 
         ' GET: Vouchers
         Function Index() As ActionResult
@@ -53,6 +68,21 @@ Namespace Controllers
         <HttpPost()>
         <ValidateAntiForgeryToken()>
         Function Create(<Bind(Include:="VoucherID,Code,Value,IssuedBy,Pf_Reference,M_Reference,Date,Status,UsedBy,UsedDate,UsedM_Reference")> ByVal voucher As Voucher) As ActionResult
+            voucher.Code = GenerateVoucherCode(8)
+            Dim flag As Boolean = False
+
+            While flag = False
+                If db.Vouchers.Where(Function(a) a.Code = voucher.Code).Count() = 0 Then
+                    flag = True
+                Else
+                    voucher.Code = GenerateVoucherCode(8)
+                End If
+            End While
+
+            voucher.IssuedBy = User.Identity.Name
+            voucher.Date = Now()
+            voucher.Status = "Active"
+
             If ModelState.IsValid Then
                 db.Vouchers.Add(voucher)
                 db.SaveChanges()
@@ -105,9 +135,15 @@ Namespace Controllers
         <ValidateAntiForgeryToken()>
         Function DeleteConfirmed(ByVal id As Integer) As ActionResult
             Dim voucher As Voucher = db.Vouchers.Find(id)
-            db.Vouchers.Remove(voucher)
-            db.SaveChanges()
-            Return RedirectToAction("Index")
+            voucher.Status = "Revoked"
+            voucher.UsedBy = User.Identity.Name
+            voucher.UsedDate = Now()
+            If ModelState.IsValid Then
+                db.Entry(voucher).State = EntityState.Modified
+                db.SaveChanges()
+                Return RedirectToAction("Index")
+            End If
+            Return View(voucher)
         End Function
 
         Protected Overrides Sub Dispose(ByVal disposing As Boolean)

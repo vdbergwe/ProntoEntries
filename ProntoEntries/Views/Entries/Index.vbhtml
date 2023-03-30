@@ -2,6 +2,7 @@
 
 @Code
     ViewData("Title") = "Entries"
+    Layout = "~/Views/Shared/_Layout.vbhtml"
 End Code
 
 <!DOCTYPE html>
