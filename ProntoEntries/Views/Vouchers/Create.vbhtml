@@ -241,15 +241,15 @@ End Code
 
             TotalID = "Total" + QtyID.charAt(3) + "-" + TotalID;
             var PriceID = "Amount" + QtyID.charAt(3) + "-" + QtyID.slice(-cut);
-            var Total = parseFloat(document.getElementById(TotalID).value)
-
+            var Total = parseFloat(document.getElementById(TotalID).innerHTML)
+            alert(Total);
             if (isNaN(Total)) {
-                alert(Total);
+                
                 Total = document.getElementById(QtyID).value * document.getElementById(PriceID).innerHTML - 0;
-                alert(Total);
+                alert("een");
             } else {
                 MainTotal = MainTotal - Total;
-                Total = document.getElementById(QtyID).value * document.getElementById(PriceID).innerHTML - parseFloat(document.getElementById(TotalID).value);
+                Total = document.getElementById(QtyID).value * document.getElementById(PriceID).innerHTML - parseFloat(document.getElementById(TotalID).innerHTML);
                 
                 alert("twee");
             }
