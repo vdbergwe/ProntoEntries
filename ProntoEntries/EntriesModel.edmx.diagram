@@ -30,6 +30,7 @@
         <AssociationConnector Association="EntriesDBModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" />
         <AssociationConnector Association="EntriesDBModel.AspNetUserRoles" />
         <EntityTypeShape EntityType="EntriesDBModel.Voucher" Width="1.5" PointX="3.375" PointY="13.75" />
+        <EntityTypeShape EntityType="EntriesDBModel.CustomUserRole" Width="1.5" PointX="5.375" PointY="13.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -37,5 +37,6 @@ Partial Public Class RaceEvent
     Public Property Indemnity As String
     Public Property TandC As String
     Public Property EntriesCloseDate As Nullable(Of Date)
+    Public Property OpenSubLinks As Nullable(Of Date)
 
 End Class

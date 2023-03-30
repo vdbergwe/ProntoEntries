@@ -615,6 +615,9 @@
     <Compile Include="Controllers\ReportsController.vb" />
     <Compile Include="Controllers\SalesController.vb" />
     <Compile Include="Controllers\VouchersController.vb" />
+    <Compile Include="CustomUserRole.vb">
+      <DependentUpon>EntriesModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="C__MigrationHistory.vb">
       <DependentUpon>EntriesModel.tt</DependentUpon>
     </Compile>
@@ -1324,6 +1327,7 @@
     <Content Include="Views\Vouchers\Details.vbhtml" />
     <Content Include="Views\Vouchers\Edit.vbhtml" />
     <Content Include="Views\Vouchers\Index.vbhtml" />
+    <Content Include="Views\Entries\Get_SubLink.vbhtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />

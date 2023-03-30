@@ -32,7 +32,18 @@ Namespace Controllers
         End Function
 
         ' GET: Vouchers/Create
-        Function Create() As ActionResult
+        <Authorize>
+        Function Create(Id As Integer?, RaceID As Integer?) As ActionResult
+            Dim OrgId = db.CustomUserRoles.Where(Function(a) a.UserEmail = User.Identity.Name And a.Role = "Vouchers").Select(Function(b) b.OrgId).FirstOrDefault()
+            ViewBag.RaceID = New SelectList(db.RaceEvents.Where(Function(a) a.OrgID = OrgId), "RaceID", "RaceName", RaceID)
+            Dim AddItems = db.AddonItems.Where(Function(a) a.RaceID = RaceID)
+            Dim ItemOption = db.AddonOptions.Where(Function(a) AddItems.Any(Function(b) b.ItemID <> a.ItemID) And a.Amount > 0).Distinct()
+            ViewBag.ItemList = db.AddonItems.Where(Function(a) ItemOption.Any(Function(b) b.ItemID = a.ItemID)).ToList()
+
+            ViewBag.ItemList = db.AddonOptions.Where(Function(a) a.Amount > 0 And AddItems.Any(Function(b) b.ItemID <> a.ItemID)).GroupBy(Function(a) a.ItemID).Select(Function(g) g.FirstOrDefault())
+            ViewBag.RaceOptions = db.Divisions.Where(Function(a) a.RaceID = RaceID).GroupBy(Function(a) a.Distance).Select(Function(g) g.FirstOrDefault())
+
+            ViewBag.RaceSeleted = RaceID
             Return View()
         End Function
 

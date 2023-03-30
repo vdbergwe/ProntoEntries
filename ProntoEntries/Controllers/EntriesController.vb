@@ -159,8 +159,8 @@ Namespace Controllers
             End If
             Dim OrgID = db.RaceEvents.Where(Function(a) a.RaceID = SingleTransaction.RaceID).Select(Function(b) b.OrgID).FirstOrDefault()
             Dim OrgPassphrase = db.PaymentDetails.Where(Function(a) a.OrgID = OrgID).Select(Function(b) b.MerchantPassPhrase).FirstOrDefault()
-            Dim hosturl = "https://entries.prontocs.co.za"
-            'Dim hosturl = "https://fda7-102-36-249-34.in.ngrok.io"
+            'Dim hosturl = "https://entries.prontocs.co.za"
+            Dim hosturl = "https://5f86-197-245-18-75.eu.ngrok.io"
 
             Dim RaceID = SingleTransaction.RaceID
 
@@ -196,10 +196,10 @@ Namespace Controllers
             ViewBag.MReference = db.Sales.Where(Function(a) a.Pf_reference Is Nothing And a.UserID = User.Identity.Name).Select(Function(b) b.M_reference).FirstOrDefault()
             ViewBag.EmailAddress = User.Identity.Name
             ViewBag.Emailconfirmation = "1"
-            ViewBag.MerchantID = db.PaymentDetails.Where(Function(a) a.OrgID = OrgID).Select(Function(b) b.MerchantID).FirstOrDefault()
-            ViewBag.Merchant_key = db.PaymentDetails.Where(Function(a) a.OrgID = OrgID).Select(Function(b) b.MerchantKey).FirstOrDefault()
-            'ViewBag.MerchantID = "10028506"
-            'ViewBag.Merchant_key = "ds0rpjbz65yub"
+            'ViewBag.MerchantID = db.PaymentDetails.Where(Function(a) a.OrgID = OrgID).Select(Function(b) b.MerchantID).FirstOrDefault()
+            'ViewBag.Merchant_key = db.PaymentDetails.Where(Function(a) a.OrgID = OrgID).Select(Function(b) b.MerchantKey).FirstOrDefault()
+            ViewBag.MerchantID = "10028506"
+            ViewBag.Merchant_key = "ds0rpjbz65yub"
             ViewBag.ReturnURL = hosturl + "/Entries/Index"
             ViewBag.CancelURL = hosturl + "/Entries/Cart"
             ViewBag.NotifyURL = hosturl + "/Entries/Confirmpayment"
@@ -226,7 +226,7 @@ Namespace Controllers
 
             TransactionString = TransactionString + "&" + "signature=" + ViewBag.Signature
 
-            Return Redirect("https://www.payfast.co.za/eng/process?" + TransactionString)
+            Return Redirect("https://sandbox.payfast.co.za/eng/process?" + TransactionString)
         End Function
 
         ' GET: Entries/Cart
@@ -524,6 +524,17 @@ Namespace Controllers
         Function Get_AddonDropDown(Id As Integer?, SaleID As Integer?) As ActionResult
             ViewBag.Addon = New SelectList(db.AddonOptions.Where(Function(a) a.ItemID = Id), "OptionID", "Size")
             ViewBag.SaleID = SaleID
+            Return PartialView()
+        End Function
+
+        Function Get_SubLink(Id As Integer?) As ActionResult
+            ViewBag.EntryID = Id
+            Dim RaceID = db.Entries.Where(Function(a) a.EntryID = Id).Select(Function(b) b.RaceID).FirstOrDefault()
+            If db.RaceEvents.Where(Function(a) a.RaceID = RaceID).Select(Function(b) b.OpenSubLinks).FirstOrDefault() < Now() Then
+                ViewBag.SubOpen = True
+            Else
+                ViewBag.SubOpen = False
+            End If
             Return PartialView()
         End Function
 

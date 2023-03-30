@@ -87,6 +87,15 @@
           <Property Name="AccessFailedCount" Type="int" Nullable="false" />
           <Property Name="UserName" Type="nvarchar" MaxLength="256" Nullable="false" />
         </EntityType>
+        <EntityType Name="CustomUserRoles">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserEmail" Type="nvarchar" MaxLength="100" />
+          <Property Name="OrgId" Type="int" />
+          <Property Name="Role" Type="nvarchar" MaxLength="100" />
+        </EntityType>
         <EntityType Name="Divisions">
           <Key>
             <PropertyRef Name="DivisionID" />
@@ -222,6 +231,7 @@
           <Property Name="Indemnity" Type="nvarchar" MaxLength="4000" />
           <Property Name="TandC" Type="nvarchar" MaxLength="4000" />
           <Property Name="EntriesCloseDate" Type="date" />
+          <Property Name="OpenSubLinks" Type="date" />
         </EntityType>
         <EntityType Name="Sales">
           <Key>
@@ -274,7 +284,7 @@
           <Key>
             <PropertyRef Name="VoucherID" />
           </Key>
-          <Property Name="VoucherID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="VoucherID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Code" Type="nvarchar" MaxLength="100" />
           <Property Name="Value" Type="decimal" Precision="18" Scale="2" />
           <Property Name="IssuedBy" Type="nvarchar" MaxLength="100" />
@@ -438,6 +448,7 @@ warning 6002: The table/view 'EntriesDB.dbo.ParticipantExport' does not have a p
           <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogins" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserRoles" EntityType="Self.AspNetUserRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CustomUserRoles" EntityType="Self.CustomUserRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Divisions" EntityType="Self.Divisions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Entries" EntityType="Self.Entries" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Organiser" EntityType="Self.Organiser" Schema="dbo" store:Type="Tables" />
@@ -581,6 +592,7 @@ warning 6002: The table/view 'EntriesDB.dbo.ParticipantExport' does not have a p
             <End Role="AspNetUser" EntitySet="AspNetUsers" />
           </AssociationSet>
           <EntitySet Name="Vouchers" EntityType="EntriesDBModel.Voucher" />
+          <EntitySet Name="CustomUserRoles" EntityType="EntriesDBModel.CustomUserRole" />
         </EntityContainer>
         <EntityType Name="C__MigrationHistory">
           <Key>
@@ -797,6 +809,7 @@ warning 6002: The table/view 'EntriesDB.dbo.ParticipantExport' does not have a p
           <Property Name="Indemnity" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
           <Property Name="TandC" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
           <Property Name="EntriesCloseDate" Type="DateTime" Precision="0" />
+          <Property Name="OpenSubLinks" Type="DateTime" Precision="0" />
         </EntityType>
         <EntityType Name="Sale">
           <Key>
@@ -973,6 +986,15 @@ warning 6002: The table/view 'EntriesDB.dbo.ParticipantExport' does not have a p
           <Property Name="UsedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="UsedDate" Type="DateTime" Precision="3" />
           <Property Name="UsedM_Reference" Type="Int32" />
+        </EntityType>
+        <EntityType Name="CustomUserRole">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserEmail" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="OrgId" Type="Int32" />
+          <Property Name="Role" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -1172,6 +1194,7 @@ warning 6002: The table/view 'EntriesDB.dbo.ParticipantExport' does not have a p
           <EntitySetMapping Name="RaceEvents">
             <EntityTypeMapping TypeName="EntriesDBModel.RaceEvent">
               <MappingFragment StoreEntitySet="RaceEvent">
+                <ScalarProperty Name="OpenSubLinks" ColumnName="OpenSubLinks" />
                 <ScalarProperty Name="EntriesCloseDate" ColumnName="EntriesCloseDate" />
                 <ScalarProperty Name="TandC" ColumnName="TandC" />
                 <ScalarProperty Name="Indemnity" ColumnName="Indemnity" />
@@ -1355,6 +1378,16 @@ warning 6002: The table/view 'EntriesDB.dbo.ParticipantExport' does not have a p
                 <ScalarProperty Name="Value" ColumnName="Value" />
                 <ScalarProperty Name="Code" ColumnName="Code" />
                 <ScalarProperty Name="VoucherID" ColumnName="VoucherID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CustomUserRoles">
+            <EntityTypeMapping TypeName="EntriesDBModel.CustomUserRole">
+              <MappingFragment StoreEntitySet="CustomUserRoles">
+                <ScalarProperty Name="Role" ColumnName="Role" />
+                <ScalarProperty Name="OrgId" ColumnName="OrgId" />
+                <ScalarProperty Name="UserEmail" ColumnName="UserEmail" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

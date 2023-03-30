@@ -44,5 +44,6 @@ Partial Public Class EntriesDBEntities
     Public Overridable Property PartDivs() As DbSet(Of PartDiv)
     Public Overridable Property ParticipantExports() As DbSet(Of ParticipantExport)
     Public Overridable Property Vouchers() As DbSet(Of Voucher)
+    Public Overridable Property CustomUserRoles() As DbSet(Of CustomUserRole)
 
 End Class
