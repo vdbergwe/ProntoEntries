@@ -29,6 +29,7 @@ Partial Public Class EntriesDBEntities
     Public Overridable Property AspNetUserClaims() As DbSet(Of AspNetUserClaim)
     Public Overridable Property AspNetUserLogins() As DbSet(Of AspNetUserLogin)
     Public Overridable Property AspNetUsers() As DbSet(Of AspNetUser)
+    Public Overridable Property CustomUserRoles() As DbSet(Of CustomUserRole)
     Public Overridable Property Divisions() As DbSet(Of Division)
     Public Overridable Property Entries() As DbSet(Of Entry)
     Public Overridable Property Organisers() As DbSet(Of Organiser)
@@ -40,10 +41,9 @@ Partial Public Class EntriesDBEntities
     Public Overridable Property Substitutions() As DbSet(Of Substitution)
     Public Overridable Property SystemLogs() As DbSet(Of SystemLog)
     Public Overridable Property TypeLookups() As DbSet(Of TypeLookup)
+    Public Overridable Property Vouchers() As DbSet(Of Voucher)
     Public Overridable Property AddonViews() As DbSet(Of AddonView)
     Public Overridable Property PartDivs() As DbSet(Of PartDiv)
     Public Overridable Property ParticipantExports() As DbSet(Of ParticipantExport)
-    Public Overridable Property Vouchers() As DbSet(Of Voucher)
-    Public Overridable Property CustomUserRoles() As DbSet(Of CustomUserRole)
 
 End Class

@@ -165,6 +165,9 @@ End Code
     Else
         @<div Class="button-cart">
             <div Class="linkbutton cart">
+                @*@If ViewBag.VoucherCode Is Nothing Then
+                    ViewBag.VoucherCode = "1"
+                End If*@
                 @Html.ActionLink("Payment", "SubmitToPayfast", "Entries", New With {.Voucher = ViewBag.VoucherCode}, Nothing)
             </div>
         </div>

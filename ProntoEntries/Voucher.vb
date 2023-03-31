@@ -12,7 +12,7 @@ Imports System.Collections.Generic
 
 Partial Public Class Voucher
     Public Property VoucherID As Integer
-    Public Property Code As String
+    Public Property Code As Nullable(Of Double)
     Public Property Value As Nullable(Of Decimal)
     Public Property IssuedBy As String
     Public Property Pf_Reference As String

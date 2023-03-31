@@ -284,8 +284,8 @@
           <Key>
             <PropertyRef Name="VoucherID" />
           </Key>
-          <Property Name="VoucherID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="Code" Type="nvarchar" MaxLength="100" />
+          <Property Name="VoucherID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Code" Type="float" />
           <Property Name="Value" Type="decimal" Precision="18" Scale="2" />
           <Property Name="IssuedBy" Type="nvarchar" MaxLength="100" />
           <Property Name="Pf_Reference" Type="nvarchar" MaxLength="100" />
@@ -565,6 +565,7 @@ warning 6002: The table/view 'EntriesDB.dbo.ParticipantExport' does not have a p
           <EntitySet Name="AspNetUserClaims" EntityType="EntriesDBModel.AspNetUserClaim" />
           <EntitySet Name="AspNetUserLogins" EntityType="EntriesDBModel.AspNetUserLogin" />
           <EntitySet Name="AspNetUsers" EntityType="EntriesDBModel.AspNetUser" />
+          <EntitySet Name="CustomUserRoles" EntityType="EntriesDBModel.CustomUserRole" />
           <EntitySet Name="Divisions" EntityType="EntriesDBModel.Division" />
           <EntitySet Name="Entries" EntityType="EntriesDBModel.Entry" />
           <EntitySet Name="Organisers" EntityType="EntriesDBModel.Organiser" />
@@ -576,6 +577,7 @@ warning 6002: The table/view 'EntriesDB.dbo.ParticipantExport' does not have a p
           <EntitySet Name="Substitutions" EntityType="EntriesDBModel.Substitution" />
           <EntitySet Name="SystemLogs" EntityType="EntriesDBModel.SystemLog" />
           <EntitySet Name="TypeLookups" EntityType="EntriesDBModel.TypeLookup" />
+          <EntitySet Name="Vouchers" EntityType="EntriesDBModel.Voucher" />
           <EntitySet Name="AddonViews" EntityType="EntriesDBModel.AddonView" />
           <EntitySet Name="PartDivs" EntityType="EntriesDBModel.PartDiv" />
           <EntitySet Name="ParticipantExports" EntityType="EntriesDBModel.ParticipantExport" />
@@ -591,8 +593,6 @@ warning 6002: The table/view 'EntriesDB.dbo.ParticipantExport' does not have a p
             <End Role="AspNetRole" EntitySet="AspNetRoles" />
             <End Role="AspNetUser" EntitySet="AspNetUsers" />
           </AssociationSet>
-          <EntitySet Name="Vouchers" EntityType="EntriesDBModel.Voucher" />
-          <EntitySet Name="CustomUserRoles" EntityType="EntriesDBModel.CustomUserRole" />
         </EntityContainer>
         <EntityType Name="C__MigrationHistory">
           <Key>
@@ -673,6 +673,15 @@ warning 6002: The table/view 'EntriesDB.dbo.ParticipantExport' does not have a p
           <NavigationProperty Name="AspNetUserClaims" Relationship="EntriesDBModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUser" ToRole="AspNetUserClaim" />
           <NavigationProperty Name="AspNetUserLogins" Relationship="EntriesDBModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUser" ToRole="AspNetUserLogin" />
           <NavigationProperty Name="AspNetRoles" Relationship="EntriesDBModel.AspNetUserRoles" FromRole="AspNetUser" ToRole="AspNetRole" />
+        </EntityType>
+        <EntityType Name="CustomUserRole">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserEmail" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="OrgId" Type="Int32" />
+          <Property Name="Role" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Division">
           <Key>
@@ -858,6 +867,22 @@ warning 6002: The table/view 'EntriesDB.dbo.ParticipantExport' does not have a p
           <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Value" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="Voucher">
+          <Key>
+            <PropertyRef Name="VoucherID" />
+          </Key>
+          <Property Name="VoucherID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Code" Type="Double" />
+          <Property Name="Value" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="IssuedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Pf_Reference" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="M_Reference" Type="Int32" />
+          <Property Name="Date" Type="DateTime" Precision="3" />
+          <Property Name="Status" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="UsedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="UsedDate" Type="DateTime" Precision="3" />
+          <Property Name="UsedM_Reference" Type="Int32" />
+        </EntityType>
         <EntityType Name="AddonView">
           <Key>
             <PropertyRef Name="ItemID" />
@@ -971,31 +996,6 @@ warning 6002: The table/view 'EntriesDB.dbo.ParticipantExport' does not have a p
           <End Type="EntriesDBModel.AspNetRole" Role="AspNetRole" Multiplicity="*" />
           <End Type="EntriesDBModel.AspNetUser" Role="AspNetUser" Multiplicity="*" />
         </Association>
-        <EntityType Name="Voucher">
-          <Key>
-            <PropertyRef Name="VoucherID" />
-          </Key>
-          <Property Name="VoucherID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Code" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Value" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="IssuedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Pf_Reference" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="M_Reference" Type="Int32" />
-          <Property Name="Date" Type="DateTime" Precision="3" />
-          <Property Name="Status" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="UsedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="UsedDate" Type="DateTime" Precision="3" />
-          <Property Name="UsedM_Reference" Type="Int32" />
-        </EntityType>
-        <EntityType Name="CustomUserRole">
-          <Key>
-            <PropertyRef Name="UserId" />
-          </Key>
-          <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserEmail" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="OrgId" Type="Int32" />
-          <Property Name="Role" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1077,6 +1077,16 @@ warning 6002: The table/view 'EntriesDB.dbo.ParticipantExport' does not have a p
                 <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CustomUserRoles">
+            <EntityTypeMapping TypeName="EntriesDBModel.CustomUserRole">
+              <MappingFragment StoreEntitySet="CustomUserRoles">
+                <ScalarProperty Name="Role" ColumnName="Role" />
+                <ScalarProperty Name="OrgId" ColumnName="OrgId" />
+                <ScalarProperty Name="UserEmail" ColumnName="UserEmail" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1275,6 +1285,23 @@ warning 6002: The table/view 'EntriesDB.dbo.ParticipantExport' does not have a p
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Vouchers">
+            <EntityTypeMapping TypeName="EntriesDBModel.Voucher">
+              <MappingFragment StoreEntitySet="Vouchers">
+                <ScalarProperty Name="UsedM_Reference" ColumnName="UsedM_Reference" />
+                <ScalarProperty Name="UsedDate" ColumnName="UsedDate" />
+                <ScalarProperty Name="UsedBy" ColumnName="UsedBy" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="M_Reference" ColumnName="M_Reference" />
+                <ScalarProperty Name="Pf_Reference" ColumnName="Pf_Reference" />
+                <ScalarProperty Name="IssuedBy" ColumnName="IssuedBy" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="VoucherID" ColumnName="VoucherID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="AddonViews">
             <EntityTypeMapping TypeName="EntriesDBModel.AddonView">
               <MappingFragment StoreEntitySet="AddonView">
@@ -1364,33 +1391,6 @@ warning 6002: The table/view 'EntriesDB.dbo.ParticipantExport' does not have a p
               <ScalarProperty Name="Id" ColumnName="RoleId" />
             </EndProperty>
           </AssociationSetMapping>
-          <EntitySetMapping Name="Vouchers">
-            <EntityTypeMapping TypeName="EntriesDBModel.Voucher">
-              <MappingFragment StoreEntitySet="Vouchers">
-                <ScalarProperty Name="UsedM_Reference" ColumnName="UsedM_Reference" />
-                <ScalarProperty Name="UsedDate" ColumnName="UsedDate" />
-                <ScalarProperty Name="UsedBy" ColumnName="UsedBy" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="Date" ColumnName="Date" />
-                <ScalarProperty Name="M_Reference" ColumnName="M_Reference" />
-                <ScalarProperty Name="Pf_Reference" ColumnName="Pf_Reference" />
-                <ScalarProperty Name="IssuedBy" ColumnName="IssuedBy" />
-                <ScalarProperty Name="Value" ColumnName="Value" />
-                <ScalarProperty Name="Code" ColumnName="Code" />
-                <ScalarProperty Name="VoucherID" ColumnName="VoucherID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="CustomUserRoles">
-            <EntityTypeMapping TypeName="EntriesDBModel.CustomUserRole">
-              <MappingFragment StoreEntitySet="CustomUserRoles">
-                <ScalarProperty Name="Role" ColumnName="Role" />
-                <ScalarProperty Name="OrgId" ColumnName="OrgId" />
-                <ScalarProperty Name="UserEmail" ColumnName="UserEmail" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

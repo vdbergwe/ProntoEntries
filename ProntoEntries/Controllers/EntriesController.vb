@@ -181,8 +181,7 @@ Namespace Controllers
 
         End Function
 
-        Function VoucherPayment(Voucher As String, ByVal entry As Entry) As ActionResult
-            Dim IntVoucher As Integer = Int64.Parse(Voucher)
+        Function VoucherPayment(ByVal Voucher As Integer?, ByVal entry As Entry) As ActionResult
             Dim SingleTransaction As Sale = db.Sales.Where(Function(a) a.Pf_reference Is Nothing And a.UserID = User.Identity.Name And a.RaceID IsNot Nothing).FirstOrDefault()
             Dim Transaction = db.Sales.Where(Function(a) a.Pf_reference Is Nothing And a.UserID = User.Identity.Name)
             Dim MREF = db.Sales.Where(Function(a) a.Pf_reference Is Nothing And a.UserID = User.Identity.Name).Select(Function(b) b.M_reference).FirstOrDefault()
@@ -242,7 +241,7 @@ Namespace Controllers
             ViewBag.Total = Math.Round(ViewBag.Total + AdminCharge - VoucherValue, 2)
             Dim MReference = db.Sales.Where(Function(a) a.Pf_reference Is Nothing And a.UserID = User.Identity.Name).Select(Function(b) b.M_reference).FirstOrDefault()
 
-            If db.Vouchers.Where(Function(a) a.Code = Voucher.ToString()).Select(Function(b) b.Status).FirstOrDefault() = "Active" Then
+            If db.Vouchers.Where(Function(a) a.Code = Voucher).Select(Function(b) b.Status).FirstOrDefault() = "Active" Then
                 Dim result As Boolean
                 Dim SControl As New Controllers.SalesController()
                 Dim AllSales = db.Sales.Where(Function(a) a.M_reference = MReference And a.Pf_reference Is Nothing)
@@ -257,7 +256,7 @@ Namespace Controllers
                     entry.Status = "Paid"
                     entry.PaymentReference = MReference
                     entry.MainUserID = User.Identity.Name
-                    entry.PayFastReference = IntVoucher.ToString()
+                    entry.PayFastReference = Voucher.ToString()
                     entry.PayFastStatus = "Voucher"
                     entry.EntrySubmitDate = Now()
                     result = SControl.UpdateEntries(entry)
@@ -265,7 +264,7 @@ Namespace Controllers
 
 
                 For Each sale In AllSales
-                    sale.Pf_reference = IntVoucher
+                    sale.Pf_reference = Voucher
                     sale.Verified = 1
                     result = SControl.UpdateSales(sale)
                 Next
@@ -291,7 +290,7 @@ Namespace Controllers
             Return RedirectToAction("Cart", "Entries")
         End Function
 
-        Function SubmitToPayfast(Voucher As String) As ActionResult
+        Function SubmitToPayfast(Voucher As Integer?) As ActionResult
             Dim SingleTransaction As Sale = db.Sales.Where(Function(a) a.Pf_reference Is Nothing And a.UserID = User.Identity.Name And a.RaceID IsNot Nothing).FirstOrDefault()
             Dim Transaction = db.Sales.Where(Function(a) a.Pf_reference Is Nothing And a.UserID = User.Identity.Name)
             Dim MREF = db.Sales.Where(Function(a) a.Pf_reference Is Nothing And a.UserID = User.Identity.Name).Select(Function(b) b.M_reference).FirstOrDefault()
@@ -301,7 +300,7 @@ Namespace Controllers
             Dim OrgID = db.RaceEvents.Where(Function(a) a.RaceID = SingleTransaction.RaceID).Select(Function(b) b.OrgID).FirstOrDefault()
             Dim OrgPassphrase = db.PaymentDetails.Where(Function(a) a.OrgID = OrgID).Select(Function(b) b.MerchantPassPhrase).FirstOrDefault()
             'Dim hosturl = "https://entries.prontocs.co.za"
-            Dim hosturl = "https://0f42-197-245-18-75.in.ngrok.io"
+            Dim hosturl = "https://85ee-102-36-249-34.in.ngrok.io"
 
             Dim RaceID = SingleTransaction.RaceID
 
@@ -371,7 +370,7 @@ Namespace Controllers
                  + "&notify_url=" + System.Net.WebUtility.UrlEncode(ViewBag.NotifyURL) + "&m_payment_id=" + System.Net.WebUtility.UrlEncode(ViewBag.MReference) _
                  + "&amount=" + System.Net.WebUtility.UrlEncode(Total) _
                  + "&item_name=" + System.Net.WebUtility.UrlEncode(ViewBag.item_name.ToString) + "&custom_str1=" _
-                 + System.Net.WebUtility.UrlEncode(ViewBag.EmailAddress) + "&custom_str2=" + System.Net.WebUtility.UrlEncode(Voucher)
+                 + System.Net.WebUtility.UrlEncode(ViewBag.EmailAddress) + "&custom_str2=" + System.Net.WebUtility.UrlEncode(Voucher.ToString())
 
             Dim Constring = TransactionString + "&passphrase=" + System.Net.WebUtility.UrlEncode(OrgPassphrase)
 

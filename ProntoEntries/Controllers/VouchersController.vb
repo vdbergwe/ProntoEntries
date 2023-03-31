@@ -73,14 +73,14 @@ Namespace Controllers
         <HttpPost()>
         <ValidateAntiForgeryToken()>
         Function Create(<Bind(Include:="VoucherID,Code,Value,IssuedBy,Pf_Reference,M_Reference,Date,Status,UsedBy,UsedDate,UsedM_Reference")> ByVal voucher As Voucher) As ActionResult
-            voucher.Code = GenerateVoucherCode(12)
+            voucher.Code = "22" + GenerateVoucherCode(7)
             Dim flag As Boolean = False
 
             While flag = False
                 If db.Vouchers.Where(Function(a) a.Code = voucher.Code).Count() = 0 Then
                     flag = True
                 Else
-                    voucher.Code = GenerateVoucherCode(8)
+                    voucher.Code = "22" + GenerateVoucherCode(7)
                 End If
             End While
 
