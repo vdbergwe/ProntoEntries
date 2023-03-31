@@ -22,17 +22,17 @@ End Code
                 </li>
             </ul>
             @*@If ViewBag.SelectedRace IsNot Nothing Then
-                @<div>
-                    <ul>
-                        <li>
-                            @Html.ActionLink("Export Race Detail", "ExporttoExcelRaceDetail", New With {.id = ViewBag.SelectedRace})
-                        </li>
-                        <li>
-                            @Html.ActionLink("Race Detail With Add-ons", "ExporttoExcelAddonSales", New With {.id = ViewBag.SelectedRace})
-                        </li>
-                    </ul>
-                </div>
-            End If*@
+                    @<div>
+                        <ul>
+                            <li>
+                                @Html.ActionLink("Export Race Detail", "ExporttoExcelRaceDetail", New With {.id = ViewBag.SelectedRace})
+                            </li>
+                            <li>
+                                @Html.ActionLink("Race Detail With Add-ons", "ExporttoExcelAddonSales", New With {.id = ViewBag.SelectedRace})
+                            </li>
+                        </ul>
+                    </div>
+                End If*@
         </div>
 
         <hr />
@@ -104,15 +104,19 @@ End Code
                     <td>
                         @Html.DisplayFor(Function(modelItem) item.UsedM_Reference)
                     </td>
-                    <td>
-                        @Html.ActionLink("Revoke", "Delete", New With {.id = item.VoucherID})
-                    </td>
+                    @If item.Status = "Active" Then
+                        @<td>
+                            @Html.ActionLink("Revoke", "Delete", New With {.id = item.VoucherID})
+                        </td>
+                    End If
+
+
                 </tr>
             Next
 
         </table>
     </div>
 
-        
+
 </body>
 </html>

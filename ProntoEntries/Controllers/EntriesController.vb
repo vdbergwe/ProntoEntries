@@ -30,6 +30,7 @@ Namespace Controllers
                 pftrans.amount_gross = paymentdata.amount_gross
                 pftrans.amount_fee = paymentdata.amount_fee
                 pftrans.amount_net = paymentdata.amount_net
+                pftrans.SaleID = db.Vouchers.Where(Function(a) a.Code = paymentdata.custom_str2).Select(Function(a) a.VoucherID).FirstOrDefault()
                 pftrans.TAdate = Now()
                 db.pflogs.Add(pftrans)
                 db.SaveChanges()
@@ -47,6 +48,7 @@ Namespace Controllers
                 Dim RaceID = SingleTransaction.RaceID
                 Dim Admin_rate = db.RaceEvents.Where(Function(a) a.RaceID = RaceID).Select(Function(b) b.Admin_Rate).FirstOrDefault() / 100
                 Dim EntriesTotal = 0.00
+                Dim Voucher = paymentdata.custom_str2
 
                 ViewBag.Total = 0.00
                 For Each sale In Transaction
@@ -66,13 +68,32 @@ Namespace Controllers
                     PCSAdminCharge = (EntriesTotal * Admin_rate)
                 End If
 
-                If db.RaceEvents.Where(Function(a) a.RaceID = RaceID).Select(Function(b) b.PF_ToClient).FirstOrDefault() = True Then
-                    PFAdminCharge = ((ViewBag.Total + PCSAdminCharge + 2) / 0.965) - ViewBag.Total - PCSAdminCharge
+
+                Dim VoucherValue As Decimal = 0
+                ViewBag.VoucherValid = False
+                If db.Vouchers.Where(Function(a) a.Code = Voucher).Select(Function(a) a.Status).FirstOrDefault() = "Active" Then
+                    VoucherValue = db.Vouchers.Where(Function(a) a.Code = Voucher).Select(Function(a) a.Value).FirstOrDefault()
+                    ViewBag.VoucherTotal = VoucherValue
+                    ViewBag.VoucherValid = True
+                    If VoucherValue < ViewBag.Total Then
+                        If db.RaceEvents.Where(Function(a) a.RaceID = RaceID).Select(Function(b) b.PF_ToClient).FirstOrDefault() = True Then
+                            Dim TAV As Decimal = ViewBag.Total - VoucherValue
+                            PFAdminCharge = ((TAV + PCSAdminCharge + 2) / 0.965) - TAV - PCSAdminCharge
+                        End If
+                    End If
+                Else
+                    If db.RaceEvents.Where(Function(a) a.RaceID = RaceID).Select(Function(b) b.PF_ToClient).FirstOrDefault() = True Then
+                        PFAdminCharge = ((ViewBag.Total + PCSAdminCharge + 2) / 0.965) - ViewBag.Total - PCSAdminCharge
+                    End If
                 End If
+
+                'If db.RaceEvents.Where(Function(a) a.RaceID = RaceID).Select(Function(b) b.PF_ToClient).FirstOrDefault() = True Then
+                '    PFAdminCharge = ((ViewBag.Total + PCSAdminCharge + 2) / 0.965) - ViewBag.Total - PCSAdminCharge
+                'End If
 
                 Dim AdminCharge = PCSAdminCharge + PFAdminCharge
 
-                ViewBag.Total = Math.Round(ViewBag.Total + AdminCharge, 2)
+                ViewBag.Total = Math.Round(ViewBag.Total + AdminCharge - VoucherValue, 2)
 
                 If (paymentdata.amount_gross = ViewBag.Total) Then
                     Dim MD5String = "m_payment_id=" + System.Net.WebUtility.UrlEncode(paymentdata.m_payment_id) _
@@ -112,6 +133,7 @@ Namespace Controllers
                         Dim SControl As New Controllers.SalesController()
                         Dim AllSales = db.Sales.Where(Function(a) a.M_reference = paymentdata.m_payment_id And a.Pf_reference Is Nothing)
                         Dim AllParticipantSales = db.Sales.Where(Function(a) a.M_reference = paymentdata.m_payment_id And a.RaceID IsNot Nothing And a.Pf_reference Is Nothing)
+                        Dim VoucherUsed = db.Vouchers.Where(Function(a) a.Code = Voucher)
 
                         For Each sale In AllParticipantSales
                             entry.ParticipantID = sale.ParticipantID
@@ -134,6 +156,15 @@ Namespace Controllers
                             result = SControl.UpdateSales(sale)
                         Next
 
+                        For Each item In VoucherUsed
+                            item.Status = "Redeemed"
+                            item.UsedBy = paymentdata.custom_str1
+                            item.UsedDate = Now()
+                            item.Pf_Reference = paymentdata.pf_payment_id.ToString()
+                            item.M_Reference = paymentdata.m_payment_id.ToString()
+                            result = SControl.UpdateVoucher(item)
+                        Next
+
                         If result Then
                             Return New HttpStatusCodeResult(HttpStatusCode.OK)
                         End If
@@ -150,7 +181,117 @@ Namespace Controllers
 
         End Function
 
-        Function SubmitToPayfast() As ActionResult
+        Function VoucherPayment(Voucher As String, ByVal entry As Entry) As ActionResult
+            Dim IntVoucher As Integer = Int64.Parse(Voucher)
+            Dim SingleTransaction As Sale = db.Sales.Where(Function(a) a.Pf_reference Is Nothing And a.UserID = User.Identity.Name And a.RaceID IsNot Nothing).FirstOrDefault()
+            Dim Transaction = db.Sales.Where(Function(a) a.Pf_reference Is Nothing And a.UserID = User.Identity.Name)
+            Dim MREF = db.Sales.Where(Function(a) a.Pf_reference Is Nothing And a.UserID = User.Identity.Name).Select(Function(b) b.M_reference).FirstOrDefault()
+            If SingleTransaction Is Nothing Then
+                SingleTransaction = db.Sales.Where(Function(a) a.M_reference = MREF And a.UserID = User.Identity.Name And a.RaceID IsNot Nothing).FirstOrDefault()
+            End If
+            Dim OrgID = db.RaceEvents.Where(Function(a) a.RaceID = SingleTransaction.RaceID).Select(Function(b) b.OrgID).FirstOrDefault()
+            Dim OrgPassphrase = db.PaymentDetails.Where(Function(a) a.OrgID = OrgID).Select(Function(b) b.MerchantPassPhrase).FirstOrDefault()
+
+            Dim RaceID = SingleTransaction.RaceID
+            Dim Admin_rate = db.RaceEvents.Where(Function(a) a.RaceID = RaceID).Select(Function(b) b.Admin_Rate).FirstOrDefault() / 100
+            Dim EntriesTotal = 0.00
+
+            ViewBag.Total = 0.00
+            For Each sale In Transaction
+                If sale.OptionID Is Nothing Then
+                    ViewBag.Total += db.Divisions.Where(Function(a) a.DivisionID = sale.DivisionID).Select(Function(b) b.Price).FirstOrDefault()
+                    EntriesTotal += db.Divisions.Where(Function(a) a.DivisionID = sale.DivisionID).Select(Function(b) b.Price).FirstOrDefault()
+                End If
+                If sale.RaceID Is Nothing Then
+                    ViewBag.Total += db.AddonOptions.Where(Function(a) a.OptionID = sale.OptionID).Select(Function(b) b.Amount).FirstOrDefault()
+                End If
+            Next
+
+            Dim PCSAdminCharge = 0.00
+            Dim PFAdminCharge = 0.00
+
+            If db.RaceEvents.Where(Function(a) a.RaceID = RaceID).Select(Function(b) b.Admin_ToClient).FirstOrDefault() = True Then
+                PCSAdminCharge = (EntriesTotal * Admin_rate)
+            End If
+
+
+            Dim VoucherValue As Decimal = 0
+            ViewBag.VoucherValid = False
+            If db.Vouchers.Where(Function(a) a.Code = Voucher).Select(Function(a) a.Status).FirstOrDefault() = "Active" Then
+                VoucherValue = db.Vouchers.Where(Function(a) a.Code = Voucher).Select(Function(a) a.Value).FirstOrDefault()
+                ViewBag.VoucherTotal = VoucherValue
+                ViewBag.VoucherValid = True
+                If VoucherValue < ViewBag.Total Then
+                    If db.RaceEvents.Where(Function(a) a.RaceID = RaceID).Select(Function(b) b.PF_ToClient).FirstOrDefault() = True Then
+                        Dim TAV As Decimal = ViewBag.Total - VoucherValue
+                        PFAdminCharge = ((TAV + PCSAdminCharge + 2) / 0.965) - TAV - PCSAdminCharge
+                    End If
+                End If
+            Else
+                If db.RaceEvents.Where(Function(a) a.RaceID = RaceID).Select(Function(b) b.PF_ToClient).FirstOrDefault() = True Then
+                    PFAdminCharge = ((ViewBag.Total + PCSAdminCharge + 2) / 0.965) - ViewBag.Total - PCSAdminCharge
+                End If
+            End If
+
+            'If db.RaceEvents.Where(Function(a) a.RaceID = RaceID).Select(Function(b) b.PF_ToClient).FirstOrDefault() = True Then
+            '    PFAdminCharge = ((ViewBag.Total + PCSAdminCharge + 2) / 0.965) - ViewBag.Total - PCSAdminCharge
+            'End If
+
+            Dim AdminCharge = PCSAdminCharge + PFAdminCharge
+
+            ViewBag.Total = Math.Round(ViewBag.Total + AdminCharge - VoucherValue, 2)
+            Dim MReference = db.Sales.Where(Function(a) a.Pf_reference Is Nothing And a.UserID = User.Identity.Name).Select(Function(b) b.M_reference).FirstOrDefault()
+
+            If db.Vouchers.Where(Function(a) a.Code = Voucher.ToString()).Select(Function(b) b.Status).FirstOrDefault() = "Active" Then
+                Dim result As Boolean
+                Dim SControl As New Controllers.SalesController()
+                Dim AllSales = db.Sales.Where(Function(a) a.M_reference = MReference And a.Pf_reference Is Nothing)
+                Dim AllParticipantSales = db.Sales.Where(Function(a) a.M_reference = MReference And a.RaceID IsNot Nothing And a.Pf_reference Is Nothing)
+                Dim VoucherUsed = db.Vouchers.Where(Function(a) a.Code = Voucher)
+
+                For Each sale In AllParticipantSales
+                    entry.ParticipantID = sale.ParticipantID
+                    entry.RaceID = sale.RaceID
+                    entry.DivisionID = sale.DivisionID
+                    entry.Amount = db.Divisions.Where(Function(a) a.DivisionID = entry.DivisionID).Select(Function(b) b.Price).FirstOrDefault()
+                    entry.Status = "Paid"
+                    entry.PaymentReference = MReference
+                    entry.MainUserID = User.Identity.Name
+                    entry.PayFastReference = IntVoucher.ToString()
+                    entry.PayFastStatus = "Voucher"
+                    entry.EntrySubmitDate = Now()
+                    result = SControl.UpdateEntries(entry)
+                Next
+
+
+                For Each sale In AllSales
+                    sale.Pf_reference = IntVoucher
+                    sale.Verified = 1
+                    result = SControl.UpdateSales(sale)
+                Next
+
+                For Each item In VoucherUsed
+                    item.Status = "Redeemed"
+                    item.UsedBy = User.Identity.Name
+                    item.UsedDate = Now()
+                    item.Pf_Reference = "FullVoucher"
+                    item.M_Reference = MReference
+                    result = SControl.UpdateVoucher(item)
+                Next
+
+                If result Then
+                    Return RedirectToAction("Index", "Entries")
+                End If
+                Return RedirectToAction("Cart", "Entries")
+
+
+            End If
+
+
+            Return RedirectToAction("Cart", "Entries")
+        End Function
+
+        Function SubmitToPayfast(Voucher As String) As ActionResult
             Dim SingleTransaction As Sale = db.Sales.Where(Function(a) a.Pf_reference Is Nothing And a.UserID = User.Identity.Name And a.RaceID IsNot Nothing).FirstOrDefault()
             Dim Transaction = db.Sales.Where(Function(a) a.Pf_reference Is Nothing And a.UserID = User.Identity.Name)
             Dim MREF = db.Sales.Where(Function(a) a.Pf_reference Is Nothing And a.UserID = User.Identity.Name).Select(Function(b) b.M_reference).FirstOrDefault()
@@ -160,7 +301,7 @@ Namespace Controllers
             Dim OrgID = db.RaceEvents.Where(Function(a) a.RaceID = SingleTransaction.RaceID).Select(Function(b) b.OrgID).FirstOrDefault()
             Dim OrgPassphrase = db.PaymentDetails.Where(Function(a) a.OrgID = OrgID).Select(Function(b) b.MerchantPassPhrase).FirstOrDefault()
             'Dim hosturl = "https://entries.prontocs.co.za"
-            Dim hosturl = "https://030b-102-36-249-34.in.ngrok.io"
+            Dim hosturl = "https://0f42-197-245-18-75.in.ngrok.io"
 
             Dim RaceID = SingleTransaction.RaceID
 
@@ -181,17 +322,37 @@ Namespace Controllers
             Dim PCSAdminCharge = 0.00
             Dim PFAdminCharge = 0.00
 
+
             If db.RaceEvents.Where(Function(a) a.RaceID = RaceID).Select(Function(b) b.Admin_ToClient).FirstOrDefault() = True Then
                 PCSAdminCharge = (EntriesTotal * Admin_rate)
             End If
 
-            If db.RaceEvents.Where(Function(a) a.RaceID = RaceID).Select(Function(b) b.PF_ToClient).FirstOrDefault() = True Then
-                PFAdminCharge = ((Total + PCSAdminCharge + 2) / 0.965) - Total - PCSAdminCharge
+            Dim VoucherValue As Decimal = 0
+            ViewBag.VoucherValid = False
+            If db.Vouchers.Where(Function(a) a.Code = Voucher).Select(Function(a) a.Status).FirstOrDefault() = "Active" Then
+                VoucherValue = db.Vouchers.Where(Function(a) a.Code = Voucher).Select(Function(a) a.Value).FirstOrDefault()
+                ViewBag.VoucherTotal = VoucherValue
+                ViewBag.VoucherValid = True
+                If VoucherValue < Total Then
+                    If db.RaceEvents.Where(Function(a) a.RaceID = RaceID).Select(Function(b) b.PF_ToClient).FirstOrDefault() = True Then
+                        Dim TAV As Decimal = Total - VoucherValue
+                        PFAdminCharge = ((TAV + PCSAdminCharge + 2) / 0.965) - TAV - PCSAdminCharge
+                    End If
+                End If
+            Else
+                If db.RaceEvents.Where(Function(a) a.RaceID = RaceID).Select(Function(b) b.PF_ToClient).FirstOrDefault() = True Then
+                    PFAdminCharge = ((Total + PCSAdminCharge + 2) / 0.965) - Total - PCSAdminCharge
+                End If
             End If
+
+
+            'If db.RaceEvents.Where(Function(a) a.RaceID = RaceID).Select(Function(b) b.PF_ToClient).FirstOrDefault() = True Then
+            '    PFAdminCharge = ((Total + PCSAdminCharge + 2) / 0.965) - Total - PCSAdminCharge
+            'End If
 
             Dim AdminCharge = PCSAdminCharge + PFAdminCharge
 
-            Total = Math.Round(Total + AdminCharge, 2)
+            Total = Math.Round(Total + AdminCharge - VoucherValue, 2)
 
             ViewBag.MReference = db.Sales.Where(Function(a) a.Pf_reference Is Nothing And a.UserID = User.Identity.Name).Select(Function(b) b.M_reference).FirstOrDefault()
             ViewBag.EmailAddress = User.Identity.Name
@@ -210,7 +371,7 @@ Namespace Controllers
                  + "&notify_url=" + System.Net.WebUtility.UrlEncode(ViewBag.NotifyURL) + "&m_payment_id=" + System.Net.WebUtility.UrlEncode(ViewBag.MReference) _
                  + "&amount=" + System.Net.WebUtility.UrlEncode(Total) _
                  + "&item_name=" + System.Net.WebUtility.UrlEncode(ViewBag.item_name.ToString) + "&custom_str1=" _
-                 + System.Net.WebUtility.UrlEncode(ViewBag.EmailAddress)
+                 + System.Net.WebUtility.UrlEncode(ViewBag.EmailAddress) + "&custom_str2=" + System.Net.WebUtility.UrlEncode(Voucher)
 
             Dim Constring = TransactionString + "&passphrase=" + System.Net.WebUtility.UrlEncode(OrgPassphrase)
 
@@ -237,6 +398,7 @@ Namespace Controllers
             Dim ParticipantsInCart = CartContent.Select(Function(a) a.ParticipantID).Distinct().ToList()
             ViewBag.UniqueP = CartContent.Select(Function(a) a.ParticipantID).Distinct().ToList()
             ViewBag.VoucherCode = Voucher
+
             Dim ShopSaleFlag As Boolean = False
 
             For Each Participant In ParticipantsInCart
@@ -284,16 +446,29 @@ Namespace Controllers
             If db.RaceEvents.Where(Function(a) a.RaceID = RaceID).Select(Function(b) b.Admin_ToClient).FirstOrDefault() = True Then
                 PCSAdminCharge = (EntriesTotal * Admin_rate)
             End If
-
-            If db.RaceEvents.Where(Function(a) a.RaceID = RaceID).Select(Function(b) b.PF_ToClient).FirstOrDefault() = True Then
-                PFAdminCharge = ((ViewBag.Total + PCSAdminCharge + 2) / 0.965) - ViewBag.Total - PCSAdminCharge
+            Dim VoucherValue As Decimal = 0
+            ViewBag.VoucherValid = False
+            If db.Vouchers.Where(Function(a) a.Code = Voucher).Select(Function(a) a.Status).FirstOrDefault() = "Active" Then
+                VoucherValue = db.Vouchers.Where(Function(a) a.Code = Voucher).Select(Function(a) a.Value).FirstOrDefault()
+                ViewBag.VoucherTotal = VoucherValue
+                ViewBag.VoucherValid = True
+                If VoucherValue < ViewBag.Total Then
+                    If db.RaceEvents.Where(Function(a) a.RaceID = RaceID).Select(Function(b) b.PF_ToClient).FirstOrDefault() = True Then
+                        Dim TAV As Decimal = ViewBag.Total - VoucherValue
+                        PFAdminCharge = ((TAV + PCSAdminCharge + 2) / 0.965) - TAV - PCSAdminCharge
+                    End If
+                End If
+            Else
+                If db.RaceEvents.Where(Function(a) a.RaceID = RaceID).Select(Function(b) b.PF_ToClient).FirstOrDefault() = True Then
+                    PFAdminCharge = ((ViewBag.Total + PCSAdminCharge + 2) / 0.965) - ViewBag.Total - PCSAdminCharge
+                End If
             End If
 
             Dim AdminCharge = PCSAdminCharge + PFAdminCharge
 
             ViewBag.AdminCharge = Math.Round(AdminCharge, 2)
-
             ViewBag.Total = Math.Round(ViewBag.Total + AdminCharge, 2)
+            ViewBag.Outstanding = ViewBag.Total - ViewBag.VoucherTotal
 
             Return View(CartContent.ToList())
         End Function

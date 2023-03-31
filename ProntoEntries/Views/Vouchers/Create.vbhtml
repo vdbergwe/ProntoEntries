@@ -100,9 +100,9 @@ End Code
                                     Dim lineTotali As Decimal = qtyi * item.Amount
                                 End Code
                                 @<tr>
-                                    <td>
-                                        @item.Size
-                                    </td>
+                                     <td>
+                                        @Html.Action("Get_ItemName", New With {.Id = item.ItemID})
+                                     </td>
                                     <td>
                                         <input type="text" id=QtyI-@item.OptionID value="@qtyi" min="0" />
                                     </td>

@@ -1328,6 +1328,7 @@
     <Content Include="Views\Vouchers\Edit.vbhtml" />
     <Content Include="Views\Vouchers\Index.vbhtml" />
     <Content Include="Views\Entries\Get_SubLink.vbhtml" />
+    <Content Include="Views\Vouchers\Get_ItemName.vbhtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />

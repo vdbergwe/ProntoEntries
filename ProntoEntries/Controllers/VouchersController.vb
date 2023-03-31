@@ -15,10 +15,15 @@ Namespace Controllers
 
         Private db As New EntriesDBEntities
 
+        Function Get_ItemName(Id As Integer?) As ActionResult
+            ViewBag.ItemName = db.AddonItems.Where(Function(a) a.ItemID = Id).Select(Function(b) b.Description).FirstOrDefault()
+            Return PartialView()
+        End Function
+
         Private Shared rng As New RNGCryptoServiceProvider()
 
         Public Shared Function GenerateVoucherCode(length As Integer) As String
-            Const chars As String = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+            Const chars As String = "0123456789"
             Dim data(length - 1) As Byte
             rng.GetBytes(data)
             Dim result(length - 1) As Char
@@ -68,7 +73,7 @@ Namespace Controllers
         <HttpPost()>
         <ValidateAntiForgeryToken()>
         Function Create(<Bind(Include:="VoucherID,Code,Value,IssuedBy,Pf_Reference,M_Reference,Date,Status,UsedBy,UsedDate,UsedM_Reference")> ByVal voucher As Voucher) As ActionResult
-            voucher.Code = GenerateVoucherCode(8)
+            voucher.Code = GenerateVoucherCode(12)
             Dim flag As Boolean = False
 
             While flag = False
