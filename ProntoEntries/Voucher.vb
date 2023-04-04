@@ -22,5 +22,6 @@ Partial Public Class Voucher
     Public Property UsedBy As String
     Public Property UsedDate As Nullable(Of Date)
     Public Property UsedM_Reference As Nullable(Of Integer)
+    Public Property RaceID As Nullable(Of Integer)
 
 End Class

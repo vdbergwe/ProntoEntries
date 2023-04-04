@@ -129,35 +129,35 @@ End Code
                 @Using (Html.BeginForm())
                     @Html.AntiForgeryToken()
                     @<div>
-                        @Html.ValidationSummary(True, "", New With {.class = "text-danger"})
-                        @Html.HiddenFor(Function(model) model.Code, New With {.htmlAttributes = New With {.class = "form-control"}})
-                        @Html.ValidationMessageFor(Function(model) model.Code, "", New With {.class = "text-danger"})
-                        @Html.HiddenFor(Function(model) model.Value, New With {.htmlAttributes = New With {.class = "form-control"}})
-                        @Html.ValidationMessageFor(Function(model) model.Value, "", New With {.class = "text-danger"})
-                        @Html.HiddenFor(Function(model) model.IssuedBy, New With {.htmlAttributes = New With {.class = "form-control"}})
-                        @Html.ValidationMessageFor(Function(model) model.IssuedBy, "", New With {.class = "text-danger"})
-                        @Html.HiddenFor(Function(model) model.Pf_Reference, New With {.htmlAttributes = New With {.class = "form-control"}})
-                        @Html.ValidationMessageFor(Function(model) model.Pf_Reference, "", New With {.class = "text-danger"})
-                        @Html.HiddenFor(Function(model) model.M_Reference, New With {.htmlAttributes = New With {.class = "form-control"}})
-                        @Html.ValidationMessageFor(Function(model) model.M_Reference, "", New With {.class = "text-danger"})
-                        @Html.HiddenFor(Function(model) model.Date, New With {.htmlAttributes = New With {.class = "form-control"}})
-                        @Html.ValidationMessageFor(Function(model) model.Date, "", New With {.class = "text-danger"})
-                        @Html.HiddenFor(Function(model) model.Status, New With {.htmlAttributes = New With {.class = "form-control"}})
-                        @Html.ValidationMessageFor(Function(model) model.Status, "", New With {.class = "text-danger"})
-                        @Html.HiddenFor(Function(model) model.UsedBy, New With {.htmlAttributes = New With {.class = "form-control"}})
-                        @Html.ValidationMessageFor(Function(model) model.UsedBy, "", New With {.class = "text-danger"})
-                        @Html.HiddenFor(Function(model) model.UsedDate, New With {.htmlAttributes = New With {.class = "form-control"}})
-                        @Html.ValidationMessageFor(Function(model) model.UsedDate, "", New With {.class = "text-danger"})
-                        @Html.HiddenFor(Function(model) model.UsedM_Reference, New With {.htmlAttributes = New With {.class = "form-control"}})
-                        @Html.ValidationMessageFor(Function(model) model.UsedM_Reference, "", New With {.class = "text-danger"})
+    @Html.ValidationSummary(True, "", New With {.class = "text-danger"})
+    @Html.HiddenFor(Function(model) model.Code, New With {.htmlAttributes = New With {.class = "form-control"}})
+    @Html.ValidationMessageFor(Function(model) model.Code, "", New With {.class = "text-danger"})
+    @Html.HiddenFor(Function(model) model.Value, New With {.htmlAttributes = New With {.class = "form-control"}})
+    @Html.ValidationMessageFor(Function(model) model.Value, "", New With {.class = "text-danger"})
+    @Html.HiddenFor(Function(model) model.IssuedBy, New With {.htmlAttributes = New With {.class = "form-control"}})
+    @Html.ValidationMessageFor(Function(model) model.IssuedBy, "", New With {.class = "text-danger"})
+    @Html.HiddenFor(Function(model) model.Pf_Reference, New With {.htmlAttributes = New With {.class = "form-control"}})
+    @Html.ValidationMessageFor(Function(model) model.Pf_Reference, "", New With {.class = "text-danger"})
+    @Html.HiddenFor(Function(model) model.M_Reference, New With {.htmlAttributes = New With {.class = "form-control"}})
+    @Html.ValidationMessageFor(Function(model) model.M_Reference, "", New With {.class = "text-danger"})
+    @Html.HiddenFor(Function(model) model.Date, New With {.htmlAttributes = New With {.class = "form-control"}})
+    @Html.ValidationMessageFor(Function(model) model.Date, "", New With {.class = "text-danger"})
+    @Html.HiddenFor(Function(model) model.Status, New With {.htmlAttributes = New With {.class = "form-control"}})
+    @Html.ValidationMessageFor(Function(model) model.Status, "", New With {.class = "text-danger"})
+    @Html.HiddenFor(Function(model) model.UsedBy, New With {.htmlAttributes = New With {.class = "form-control"}})
+    @Html.ValidationMessageFor(Function(model) model.UsedBy, "", New With {.class = "text-danger"})
+    @Html.HiddenFor(Function(model) model.UsedDate, New With {.htmlAttributes = New With {.class = "form-control"}})
+    @Html.ValidationMessageFor(Function(model) model.UsedDate, "", New With {.class = "text-danger"})
+    @Html.HiddenFor(Function(model) model.UsedM_Reference, New With {.htmlAttributes = New With {.class = "form-control"}})
+    @Html.ValidationMessageFor(Function(model) model.UsedM_Reference, "", New With {.class = "text-danger"})
+    @Html.HiddenFor(Function(model) model.RaceID, New With {.htmlAttributes = New With {.class = "form-control", .value = ViewBag.RaceID}})
 
-
-                        <div Class="form-group">
-                            <div Class="col-md-offset-2 col-md-10">
-                                <input type="submit" value="Create" Class="btn btn-default" />
-                            </div>
-                        </div>
-                    </div>
+    <div Class="form-group">
+        <div Class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Create" Class="btn btn-default" />
+        </div>
+    </div>
+</div>
 
                 End Using
             End If

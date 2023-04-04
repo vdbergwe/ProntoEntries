@@ -71,7 +71,7 @@ Namespace Controllers
 
                 Dim VoucherValue As Decimal = 0
                 ViewBag.VoucherValid = False
-                If db.Vouchers.Where(Function(a) a.Code = Voucher).Select(Function(a) a.Status).FirstOrDefault() = "Active" Then
+                If db.Vouchers.Where(Function(a) a.Code = Voucher And a.RaceID = RaceID).Select(Function(a) a.Status).FirstOrDefault() = "Active" Then
                     VoucherValue = db.Vouchers.Where(Function(a) a.Code = Voucher).Select(Function(a) a.Value).FirstOrDefault()
                     ViewBag.VoucherTotal = VoucherValue
                     ViewBag.VoucherValid = True
@@ -216,7 +216,7 @@ Namespace Controllers
 
             Dim VoucherValue As Decimal = 0
             ViewBag.VoucherValid = False
-            If db.Vouchers.Where(Function(a) a.Code = Voucher).Select(Function(a) a.Status).FirstOrDefault() = "Active" Then
+            If db.Vouchers.Where(Function(a) a.Code = Voucher And a.RaceID = RaceID).Select(Function(a) a.Status).FirstOrDefault() = "Active" Then
                 VoucherValue = db.Vouchers.Where(Function(a) a.Code = Voucher).Select(Function(a) a.Value).FirstOrDefault()
                 ViewBag.VoucherTotal = VoucherValue
                 ViewBag.VoucherValid = True
@@ -300,7 +300,7 @@ Namespace Controllers
             Dim OrgID = db.RaceEvents.Where(Function(a) a.RaceID = SingleTransaction.RaceID).Select(Function(b) b.OrgID).FirstOrDefault()
             Dim OrgPassphrase = db.PaymentDetails.Where(Function(a) a.OrgID = OrgID).Select(Function(b) b.MerchantPassPhrase).FirstOrDefault()
             'Dim hosturl = "https://entries.prontocs.co.za"
-            Dim hosturl = "https://85ee-102-36-249-34.in.ngrok.io"
+            Dim hosturl = "https://9dbd-197-245-18-75.in.ngrok.io"
 
             Dim RaceID = SingleTransaction.RaceID
 
@@ -328,7 +328,7 @@ Namespace Controllers
 
             Dim VoucherValue As Decimal = 0
             ViewBag.VoucherValid = False
-            If db.Vouchers.Where(Function(a) a.Code = Voucher).Select(Function(a) a.Status).FirstOrDefault() = "Active" Then
+            If db.Vouchers.Where(Function(a) a.Code = Voucher And a.RaceID = RaceID).Select(Function(a) a.Status).FirstOrDefault() = "Active" Then
                 VoucherValue = db.Vouchers.Where(Function(a) a.Code = Voucher).Select(Function(a) a.Value).FirstOrDefault()
                 ViewBag.VoucherTotal = VoucherValue
                 ViewBag.VoucherValid = True
@@ -447,7 +447,7 @@ Namespace Controllers
             End If
             Dim VoucherValue As Decimal = 0
             ViewBag.VoucherValid = False
-            If db.Vouchers.Where(Function(a) a.Code = Voucher).Select(Function(a) a.Status).FirstOrDefault() = "Active" Then
+            If db.Vouchers.Where(Function(a) a.Code = Voucher And a.RaceID = RaceID).Select(Function(a) a.Status).FirstOrDefault() = "Active" Then
                 VoucherValue = db.Vouchers.Where(Function(a) a.Code = Voucher).Select(Function(a) a.Value).FirstOrDefault()
                 ViewBag.VoucherTotal = VoucherValue
                 ViewBag.VoucherValid = True

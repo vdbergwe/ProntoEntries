@@ -285,6 +285,7 @@
             <PropertyRef Name="VoucherID" />
           </Key>
           <Property Name="VoucherID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RaceID" Type="int" />
           <Property Name="Code" Type="float" />
           <Property Name="Value" Type="decimal" Precision="18" Scale="2" />
           <Property Name="IssuedBy" Type="nvarchar" MaxLength="100" />
@@ -882,6 +883,7 @@ warning 6002: The table/view 'EntriesDB.dbo.ParticipantExport' does not have a p
           <Property Name="UsedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="UsedDate" Type="DateTime" Precision="3" />
           <Property Name="UsedM_Reference" Type="Int32" />
+          <Property Name="RaceID" Type="Int32" />
         </EntityType>
         <EntityType Name="AddonView">
           <Key>
@@ -1288,6 +1290,7 @@ warning 6002: The table/view 'EntriesDB.dbo.ParticipantExport' does not have a p
           <EntitySetMapping Name="Vouchers">
             <EntityTypeMapping TypeName="EntriesDBModel.Voucher">
               <MappingFragment StoreEntitySet="Vouchers">
+                <ScalarProperty Name="RaceID" ColumnName="RaceID" />
                 <ScalarProperty Name="UsedM_Reference" ColumnName="UsedM_Reference" />
                 <ScalarProperty Name="UsedDate" ColumnName="UsedDate" />
                 <ScalarProperty Name="UsedBy" ColumnName="UsedBy" />

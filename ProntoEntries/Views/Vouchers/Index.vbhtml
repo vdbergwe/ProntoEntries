@@ -108,6 +108,9 @@ End Code
                         @<td>
                             @Html.ActionLink("Revoke", "Delete", New With {.id = item.VoucherID})
                         </td>
+                        @<td>
+                            @Html.ActionLink("Download", "GenerateVoucher", New With {.id = item.VoucherID})
+                        </td>
                     End If
 
 
