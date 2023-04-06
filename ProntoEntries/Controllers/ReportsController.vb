@@ -260,6 +260,7 @@ Namespace Controllers
                 worksheet.Cell(1, 29).Value = "M_reference"
                 worksheet.Cell(1, 30).Value = "Pf_Reference"
                 worksheet.Cell(1, 31).Value = "RaceID"
+                worksheet.Cell(1, 32).Value = "ParticipantID"
 
                 Dim row = 2
                 Dim Newtime As DateTime
@@ -299,6 +300,7 @@ Namespace Controllers
                     worksheet.Cell(row, 29).Value = record.M_reference
                     worksheet.Cell(row, 30).Value = record.Pf_reference
                     worksheet.Cell(row, 31).Value = record.RaceID
+                    worksheet.Cell(row, 32).Value = record.ParticipantID
 
                     row += 1
 
