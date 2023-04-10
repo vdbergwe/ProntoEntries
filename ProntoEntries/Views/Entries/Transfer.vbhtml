@@ -1,7 +1,7 @@
 ﻿@ModelType ProntoEntries.Entry
 
 @Code
-
+    ViewData("Title") = "Transfer"
 End Code
 
 <!DOCTYPE html>
@@ -25,9 +25,10 @@ End Code
         <div style="text-align:center">
             <div style="align-items:center">
                 <p style="color:white;">
-                    Please Confirm Substitution Voucher For Entry ID: @Html.DisplayFor(Function(model) model.EntryID)
+                    Please confirm substitution voucher for Entry ID: @Html.DisplayFor(Function(model) model.EntryID)
                     <br />
-                    A R100-00 admin fee Will Be Charged.
+                    <br />
+                    A R100-00 admin fee will be charged.
                 </p>
             </div>
 
