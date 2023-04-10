@@ -86,16 +86,23 @@ End Code
 
                             </td>*@
                      <td class="PrintConfirmation">
+                         @If (item.Status = "Paid") Then
+                             @Html.ActionLink("Print Confirmation", "GenerateTicket", New With {.id = item.EntryID})
+                             @*@Html.ActionLink("Print Confirmation", "GenerateTicket", New With {.id = item.EntryID})*@
 
-                         @Html.ActionLink("Print Confirmation", "GenerateTicket", New With {.id = item.EntryID})
-                         @*@Html.ActionLink("Print Confirmation", "GenerateTicket", New With {.id = item.EntryID})*@
+                             @Html.Action("Get_SubLink", New With {.Id = item.EntryID})
 
-                         @Html.Action("Get_SubLink", New With {.Id = item.EntryID})
-
-                         @If User.Identity.IsAuthenticated And ((User.IsInRole("Admin"))) Then
-                             @<i> | </i>
-                             @Html.ActionLink("Edit", "Edit", New With {.id = item.EntryID})
+                             @If User.Identity.IsAuthenticated And ((User.IsInRole("Admin"))) Then
+                                 @<i> | </i>
+                                 @Html.ActionLink("Edit", "Edit", New With {.id = item.EntryID})
+                             End If
+                         Else
+                             @If (item.Status = "Substitute") Then
+                                 @Html.ActionLink("Download Voucher", "GenerateVoucherSub", "Vouchers", New With {.id = item.TransferID}, Nothing)
+                             End If
                          End If
+
+
 
                          @*  @Html.ActionLink("Details", "Details", New With {.id = item.EntryID}) |
         @Html.ActionLink("Delete", "Delete", New With {.id = item.EntryID})*@
