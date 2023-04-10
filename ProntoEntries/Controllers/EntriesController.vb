@@ -231,10 +231,6 @@ Namespace Controllers
                 End If
             End If
 
-            'If db.RaceEvents.Where(Function(a) a.RaceID = RaceID).Select(Function(b) b.PF_ToClient).FirstOrDefault() = True Then
-            '    PFAdminCharge = ((ViewBag.Total + PCSAdminCharge + 2) / 0.965) - ViewBag.Total - PCSAdminCharge
-            'End If
-
             Dim AdminCharge = PCSAdminCharge + PFAdminCharge
 
             ViewBag.Total = Math.Round(ViewBag.Total + AdminCharge - VoucherValue, 2)
@@ -594,8 +590,8 @@ Namespace Controllers
 
             Dim OrgID = db.RaceEvents.Where(Function(a) a.RaceID = SingleTransaction.RaceID).Select(Function(b) b.OrgID).FirstOrDefault()
             Dim OrgPassphrase = db.PaymentDetails.Where(Function(a) a.OrgID = OrgID).Select(Function(b) b.MerchantPassPhrase).FirstOrDefault()
-            'Dim hosturl = "https://entries.prontocs.co.za"
-            Dim hosturl = "https://ed66-197-245-32-250.ngrok-free.app"
+            Dim hosturl = "https://entries.prontocs.co.za"
+            'Dim hosturl = "https://ed66-197-245-32-250.ngrok-free.app"
 
             Dim RaceID = SingleTransaction.RaceID
 
@@ -628,10 +624,10 @@ Namespace Controllers
             ViewBag.MReference = SingleTransaction.M_reference
             ViewBag.EmailAddress = User.Identity.Name
             ViewBag.Emailconfirmation = "1"
-            'ViewBag.MerchantID = db.PaymentDetails.Where(Function(a) a.OrgID = OrgID).Select(Function(b) b.MerchantID).FirstOrDefault()
-            'ViewBag.Merchant_key = db.PaymentDetails.Where(Function(a) a.OrgID = OrgID).Select(Function(b) b.MerchantKey).FirstOrDefault()
-            ViewBag.MerchantID = "10028506"
-            ViewBag.Merchant_key = "ds0rpjbz65yub"
+            ViewBag.MerchantID = db.PaymentDetails.Where(Function(a) a.OrgID = OrgID).Select(Function(b) b.MerchantID).FirstOrDefault()
+            ViewBag.Merchant_key = db.PaymentDetails.Where(Function(a) a.OrgID = OrgID).Select(Function(b) b.MerchantKey).FirstOrDefault()
+            'ViewBag.MerchantID = "10028506"
+            'ViewBag.Merchant_key = "ds0rpjbz65yub"
             ViewBag.ReturnURL = hosturl + "/Entries/Index"
             ViewBag.CancelURL = hosturl + "/Entries/Index"
             ViewBag.NotifyURL = hosturl + "/Entries/Confirmadmin"
@@ -659,13 +655,10 @@ Namespace Controllers
 
             TransactionString = TransactionString + "&" + "signature=" + ViewBag.Signature
 
-            Return Redirect("https://sandbox.payfast.co.za/eng/process?" + TransactionString)
+            Return Redirect("https://www.payfast.co.za/eng/process?" + TransactionString)
         End Function
 
         Function AdminUpgradeToPayfast(Id As Integer?, DivisionID As Integer?, Price As Double?, Type As Integer?) As ActionResult
-
-            'Return RedirectToAction("AdminUpgradeToPayfast", "Entries", New With {.id = Id, .divisionID = NewDivision.DivisionID, .Price = PriceDifference, .Type = 2})
-
             Dim entry As Entry = db.Entries.Where(Function(a) a.EntryID = Id).FirstOrDefault()
             Dim SingleTransaction As Sale = db.Sales.Where(Function(a) a.Pf_reference = entry.PayFastReference And a.UserID = User.Identity.Name And a.RaceID = entry.RaceID).FirstOrDefault()
             Dim Transaction = db.Sales.Where(Function(a) a.Pf_reference = entry.PayFastReference And a.ParticipantID = entry.ParticipantID)
@@ -673,8 +666,8 @@ Namespace Controllers
 
             Dim OrgID = db.RaceEvents.Where(Function(a) a.RaceID = SingleTransaction.RaceID).Select(Function(b) b.OrgID).FirstOrDefault()
             Dim OrgPassphrase = db.PaymentDetails.Where(Function(a) a.OrgID = OrgID).Select(Function(b) b.MerchantPassPhrase).FirstOrDefault()
-            'Dim hosturl = "https://entries.prontocs.co.za"
-            Dim hosturl = "https://ed66-197-245-32-250.ngrok-free.app"
+            Dim hosturl = "https://entries.prontocs.co.za"
+            'Dim hosturl = "https://ed66-197-245-32-250.ngrok-free.app"
 
             Dim RaceID = SingleTransaction.RaceID
 
@@ -698,10 +691,10 @@ Namespace Controllers
             ViewBag.MReference = SingleTransaction.M_reference
             ViewBag.EmailAddress = User.Identity.Name
             ViewBag.Emailconfirmation = "1"
-            'ViewBag.MerchantID = db.PaymentDetails.Where(Function(a) a.OrgID = OrgID).Select(Function(b) b.MerchantID).FirstOrDefault()
-            'ViewBag.Merchant_key = db.PaymentDetails.Where(Function(a) a.OrgID = OrgID).Select(Function(b) b.MerchantKey).FirstOrDefault()
-            ViewBag.MerchantID = "10028506"
-            ViewBag.Merchant_key = "ds0rpjbz65yub"
+            ViewBag.MerchantID = db.PaymentDetails.Where(Function(a) a.OrgID = OrgID).Select(Function(b) b.MerchantID).FirstOrDefault()
+            ViewBag.Merchant_key = db.PaymentDetails.Where(Function(a) a.OrgID = OrgID).Select(Function(b) b.MerchantKey).FirstOrDefault()
+            'ViewBag.MerchantID = "10028506"
+            'ViewBag.Merchant_key = "ds0rpjbz65yub"
             ViewBag.ReturnURL = hosturl + "/Entries/Index"
             ViewBag.CancelURL = hosturl + "/Entries/Index"
             ViewBag.NotifyURL = hosturl + "/Entries/Confirmadmin"
@@ -730,7 +723,7 @@ Namespace Controllers
 
             TransactionString = TransactionString + "&" + "signature=" + ViewBag.Signature
 
-            Return Redirect("https://sandbox.payfast.co.za/eng/process?" + TransactionString)
+            Return Redirect("https://www.payfast.co.za/eng/process?" + TransactionString)
         End Function
 
         ' GET: Entries/Cart

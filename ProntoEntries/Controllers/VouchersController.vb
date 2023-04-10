@@ -25,7 +25,7 @@ Namespace Controllers
         <Authorize>
         Function GenerateVoucher(Id As Integer?) As FileResult
 
-            Dim url As String = "https://localhost:44386/Vouchers/IssueVoucher/" + Id.ToString()
+            Dim url As String = "https://192.168.1.20/Vouchers/IssueVoucher/" + Id.ToString()
             Dim converter As New HtmlToPdf()
             Dim doc As PdfDocument = converter.ConvertUrl(url)
             Dim stream As New MemoryStream()
@@ -40,7 +40,7 @@ Namespace Controllers
 
             Dim VoucherID = db.Vouchers.Where(Function(a) a.Code = Id).Select(Function(b) b.VoucherID).FirstOrDefault()
 
-            Dim url As String = "https://localhost:44386/Vouchers/IssueVoucher/" + VoucherID.ToString()
+            Dim url As String = "https://192.168.1.20/Vouchers/IssueVoucher/" + VoucherID.ToString()
             Dim converter As New HtmlToPdf()
             Dim doc As PdfDocument = converter.ConvertUrl(url)
             Dim stream As New MemoryStream()
