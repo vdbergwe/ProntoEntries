@@ -35,7 +35,7 @@
                     @If User.Identity.IsAuthenticated And (User.IsInRole("Admin") Or User.IsInRole("SuperUser")) Then
                         @<li>@Html.ActionLink("Addons", "Index", "AddonItems")</li>
                     End If
-                    @If User.Identity.IsAuthenticated And Not (User.IsInRole("Org")) Then
+                    @If User.Identity.IsAuthenticated Then
                         @<li>@Html.ActionLink("Entries", "Index", "Entries")</li>
                     End If
                     @If User.Identity.IsAuthenticated And Not ((User.IsInRole("Org"))) Then

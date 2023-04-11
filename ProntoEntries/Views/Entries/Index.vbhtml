@@ -21,7 +21,7 @@ End Code
                 @Html.ActionLink("Change Event", "Index", "RaceEvents")*@
         </div>
 
-        @If User.Identity.IsAuthenticated And ((User.IsInRole("Admin"))) Then
+        @If User.Identity.IsAuthenticated And (User.IsInRole("Admin") Or User.IsInRole("Org")) Then
             @<form action="" method="get">
                 <div Class="DropdownSearches">
                     <div Class="DropdownSearches item">
@@ -92,7 +92,7 @@ End Code
 
                          @Html.Action("Get_SubLink", New With {.Id = item.EntryID})
 
-                         @If User.Identity.IsAuthenticated And ((User.IsInRole("Admin"))) Then
+                         @If User.Identity.IsAuthenticated And (User.IsInRole("Admin") Or User.IsInRole("Org")) Then
                              @<i> | </i>
                              @Html.ActionLink("Edit", "Edit", New With {.id = item.EntryID})
                          End If
