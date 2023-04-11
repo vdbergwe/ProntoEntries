@@ -35,7 +35,6 @@ Namespace Controllers
                 db.pflogs.Add(pftrans)
                 db.SaveChanges()
 
-
                 Dim SingleTransaction As Sale = db.Sales.Where(Function(a) a.Pf_reference Is Nothing And a.UserID = paymentdata.custom_str1 And a.RaceID IsNot Nothing).FirstOrDefault()
                 Dim Transaction = db.Sales.Where(Function(a) a.Pf_reference Is Nothing And a.UserID = paymentdata.custom_str1)
                 Dim MREF = db.Sales.Where(Function(a) a.Pf_reference Is Nothing And a.UserID = paymentdata.custom_str1).Select(Function(b) b.M_reference).FirstOrDefault()
@@ -232,10 +231,6 @@ Namespace Controllers
                 End If
             End If
 
-            'If db.RaceEvents.Where(Function(a) a.RaceID = RaceID).Select(Function(b) b.PF_ToClient).FirstOrDefault() = True Then
-            '    PFAdminCharge = ((ViewBag.Total + PCSAdminCharge + 2) / 0.965) - ViewBag.Total - PCSAdminCharge
-            'End If
-
             Dim AdminCharge = PCSAdminCharge + PFAdminCharge
 
             ViewBag.Total = Math.Round(ViewBag.Total + AdminCharge - VoucherValue, 2)
@@ -344,11 +339,6 @@ Namespace Controllers
                 End If
             End If
 
-
-            'If db.RaceEvents.Where(Function(a) a.RaceID = RaceID).Select(Function(b) b.PF_ToClient).FirstOrDefault() = True Then
-            '    PFAdminCharge = ((Total + PCSAdminCharge + 2) / 0.965) - Total - PCSAdminCharge
-            'End If
-
             Dim AdminCharge = PCSAdminCharge + PFAdminCharge
 
             Total = Math.Round(Total + AdminCharge - VoucherValue, 2)
@@ -371,6 +361,353 @@ Namespace Controllers
                  + "&amount=" + System.Net.WebUtility.UrlEncode(Total) _
                  + "&item_name=" + System.Net.WebUtility.UrlEncode(ViewBag.item_name.ToString) + "&custom_str1=" _
                  + System.Net.WebUtility.UrlEncode(ViewBag.EmailAddress) + "&custom_str2=" + System.Net.WebUtility.UrlEncode(Voucher.ToString())
+
+            Dim Constring = TransactionString + "&passphrase=" + System.Net.WebUtility.UrlEncode(OrgPassphrase)
+
+            Dim md5 As MD5 = MD5.Create()
+            Dim Bytes As Byte() = Encoding.ASCII.GetBytes(Constring)
+            Dim hash As Byte() = md5.ComputeHash(Bytes)
+            Dim sBuilder As New StringBuilder()
+            For i As Integer = 0 To hash.Length - 1
+                sBuilder.Append(hash(i).ToString("x2"))
+            Next
+
+            ViewBag.Signature = sBuilder.ToString
+
+            TransactionString = TransactionString + "&" + "signature=" + ViewBag.Signature
+
+            Return Redirect("https://www.payfast.co.za/eng/process?" + TransactionString)
+        End Function
+
+        Function Confirmadmin(ByVal paymentdata As ITN_Payload, ByVal pftrans As pflog, ByVal entry As Entry, NewVoucher As Voucher) As ActionResult
+
+            If db.pflogs.Where(Function(a) a.Pf_reference = paymentdata.pf_payment_id And a.Pf_status = "COMPLETE").Count() = 0 Then
+
+                pftrans.Pf_status = paymentdata.payment_status
+                pftrans.M_reference = paymentdata.m_payment_id
+                pftrans.Pf_reference = paymentdata.pf_payment_id
+                pftrans.Merchant_id = paymentdata.merchant_id
+                pftrans.amount_gross = paymentdata.amount_gross
+                pftrans.amount_fee = paymentdata.amount_fee
+                pftrans.amount_net = paymentdata.amount_net
+                pftrans.SaleID = 9999999
+                pftrans.TAdate = Now()
+                db.pflogs.Add(pftrans)
+                db.SaveChanges()
+
+                entry = db.Entries.Where(Function(a) a.EntryID = paymentdata.custom_str2).FirstOrDefault()
+                Dim SingleTransaction As Sale = db.Sales.Where(Function(a) a.Pf_reference = entry.PayFastReference And a.UserID = paymentdata.custom_str1 And a.RaceID = entry.RaceID).FirstOrDefault()
+                Dim Transaction = db.Sales.Where(Function(a) a.Pf_reference = entry.PayFastReference And a.UserID = paymentdata.custom_str1)
+                Dim MREF = entry.PayFastReference
+
+                Dim OrgID = db.RaceEvents.Where(Function(a) a.RaceID = SingleTransaction.RaceID).Select(Function(b) b.OrgID).FirstOrDefault()
+                Dim OrgPassphrase = db.PaymentDetails.Where(Function(a) a.OrgID = OrgID).Select(Function(b) b.MerchantPassPhrase).FirstOrDefault()
+
+                Dim RaceID = SingleTransaction.RaceID
+                Dim Admin_rate = db.RaceEvents.Where(Function(a) a.RaceID = RaceID).Select(Function(b) b.Admin_Rate).FirstOrDefault() / 100
+                Dim EntriesTotal = 0.00
+
+                ViewBag.Total = 0.00
+                For Each sale In Transaction
+                    If sale.OptionID Is Nothing Then
+                        ViewBag.Total += db.Divisions.Where(Function(a) a.DivisionID = sale.DivisionID).Select(Function(b) b.Price).FirstOrDefault()
+                        EntriesTotal += db.Divisions.Where(Function(a) a.DivisionID = sale.DivisionID).Select(Function(b) b.Price).FirstOrDefault()
+                    End If
+                    If sale.RaceID Is Nothing Then
+                        ViewBag.Total += db.AddonOptions.Where(Function(a) a.OptionID = sale.OptionID).Select(Function(b) b.Amount).FirstOrDefault()
+                    End If
+                Next
+
+                Dim PCSAdminCharge = 0.00
+
+                If db.RaceEvents.Where(Function(a) a.RaceID = RaceID).Select(Function(b) b.Admin_ToClient).FirstOrDefault() = True Then
+                    PCSAdminCharge = (EntriesTotal * Admin_rate)
+                End If
+
+                Dim AdminCharge = PCSAdminCharge
+
+                ViewBag.Total = Math.Round(ViewBag.Total + AdminCharge, 2)
+                Dim VoucherValue As Decimal = ViewBag.Total
+
+                Dim AdminFee = db.RaceEvents.Where(Function(a) a.RaceID = entry.RaceID).Select(Function(b) b.AdminCharge).FirstOrDefault()
+
+                If (paymentdata.amount_gross = paymentdata.custom_str4) Then
+                    Dim MD5String = "m_payment_id=" + System.Net.WebUtility.UrlEncode(paymentdata.m_payment_id) _
+                                + "&pf_payment_id=" + System.Net.WebUtility.UrlEncode(paymentdata.pf_payment_id) _
+                                + "&payment_status=" + System.Net.WebUtility.UrlEncode(paymentdata.payment_status) _
+                                + "&item_name=" + System.Net.WebUtility.UrlEncode(paymentdata.item_name) _
+                                + "&item_description=" + System.Net.WebUtility.UrlEncode(paymentdata.item_description) _
+                                + "&amount_gross=" + System.Net.WebUtility.UrlEncode(paymentdata.amount_gross) _
+                                + "&amount_fee=" + System.Net.WebUtility.UrlEncode(paymentdata.amount_fee) _
+                                + "&amount_net=" + System.Net.WebUtility.UrlEncode(paymentdata.amount_net) _
+                                + "&custom_str1=" + System.Net.WebUtility.UrlEncode(paymentdata.custom_str1) _
+                                + "&custom_str2=" + System.Net.WebUtility.UrlEncode(paymentdata.custom_str2) _
+                                + "&custom_str3=" + System.Net.WebUtility.UrlEncode(paymentdata.custom_str3) _
+                                + "&custom_str4=" + System.Net.WebUtility.UrlEncode(paymentdata.custom_str4) _
+                                + "&custom_str5=" + System.Net.WebUtility.UrlEncode(paymentdata.custom_str5) _
+                                + "&custom_int1=" _
+                                + "&custom_int2=" _
+                                + "&custom_int3=" _
+                                + "&custom_int4=" _
+                                + "&custom_int5=" _
+                                + "&name_first=" + System.Net.WebUtility.UrlEncode(paymentdata.name_first) _
+                                + "&name_last=" + System.Net.WebUtility.UrlEncode(paymentdata.name_last) _
+                                + "&email_address=" + System.Net.WebUtility.UrlEncode(paymentdata.email_address) _
+                                + "&merchant_id=" + System.Net.WebUtility.UrlEncode(paymentdata.merchant_id) _
+                                + "&passphrase=" + System.Net.WebUtility.UrlEncode(OrgPassphrase)
+
+                    Dim md5 As MD5 = MD5.Create()
+                    Dim Bytes As Byte() = Encoding.ASCII.GetBytes(MD5String)
+                    Dim hash As Byte() = md5.ComputeHash(Bytes)
+                    Dim sBuilder As New StringBuilder()
+                    For i As Integer = 0 To hash.Length - 1
+                        sBuilder.Append(hash(i).ToString("x2"))
+                    Next
+
+                    If (paymentdata.signature = sBuilder.ToString()) Then
+                        Dim result As Boolean
+
+                        If paymentdata.custom_str3 = "1" Then
+
+                            Dim EntryID As Integer = paymentdata.custom_str2
+                            NewVoucher.Value = VoucherValue
+                            NewVoucher.Pf_Reference = paymentdata.pf_payment_id
+                            NewVoucher.M_Reference = paymentdata.m_payment_id
+                            Dim Code = IssueVoucher(NewVoucher, RaceID, paymentdata.custom_str1)
+                            Dim Vouchercode As Integer = Int32.Parse(Code)
+                            result = UpdateSale(EntryID, Nothing)
+                            result = UpdateEntry(EntryID, Vouchercode, paymentdata.pf_payment_id, Nothing)
+                        End If
+
+                        If paymentdata.custom_str3 = "2" Then
+                            Dim EntryID As Integer = paymentdata.custom_str2
+                            Dim DivisionID As Integer = paymentdata.custom_str5
+                            result = UpdateSale(EntryID, DivisionID)
+                            result = UpdateEntry(EntryID, Nothing, paymentdata.pf_payment_id, DivisionID)
+                        End If
+
+                        If result Then
+                            Return New HttpStatusCodeResult(HttpStatusCode.OK)
+                        End If
+
+                        Return New HttpStatusCodeResult(HttpStatusCode.Unauthorized)
+                    Else
+                        Return New HttpStatusCodeResult(HttpStatusCode.Unauthorized)
+                    End If
+                Else
+                    Return New HttpStatusCodeResult(HttpStatusCode.Unauthorized)
+                End If
+            End If
+            Return New HttpStatusCodeResult(HttpStatusCode.Unauthorized)
+
+        End Function
+
+        Function UpdateEntry(EntryId As Integer?, VoucherID As Integer?, PFRef As Integer?, DivisionID As Integer?)
+            Dim result As Boolean = False
+            Dim Entry As Entry = db.Entries.Where(Function(a) a.EntryID = EntryId).FirstOrDefault()
+
+            If DivisionID IsNot Nothing Then
+                Entry.DistanceChange = True
+                Entry.DivisionID = DivisionID
+                Entry.Amount = db.Divisions.Where(Function(a) a.DivisionID = DivisionID).Select(Function(b) b.Price).FirstOrDefault()
+                Entry.ChangePaymentRef = PFRef.ToString()
+                db.Entry(Entry).State = EntityState.Modified
+                db.SaveChanges()
+                result = True
+            Else
+                Entry.Status = "Substitute"
+                Entry.TransferID = VoucherID
+                Entry.ChangePaymentRef = PFRef.ToString()
+                db.Entry(Entry).State = EntityState.Modified
+                db.SaveChanges()
+                result = True
+            End If
+
+            Return (result)
+        End Function
+
+        Function UpdateSale(EntryId As Integer?, DivisionID As Integer?)
+            Dim result As Boolean = False
+            Dim ParticipantID = db.Entries.Where(Function(a) a.EntryID = EntryId).Select(Function(b) b.ParticipantID).FirstOrDefault()
+            Dim Mref = db.Entries.Where(Function(a) a.EntryID = EntryId).Select(Function(b) b.PaymentReference).FirstOrDefault()
+
+
+            If DivisionID IsNot Nothing Then
+                Dim sale As Sale = db.Sales.Where(Function(a) a.ParticipantID = ParticipantID And a.M_reference = Mref And a.RaceID IsNot Nothing).FirstOrDefault()
+                sale.DivisionID = DivisionID
+                db.Entry(sale).State = EntityState.Modified
+                db.SaveChanges()
+                result = True
+            Else
+                Dim Sales = db.Sales.Where(Function(a) a.ParticipantID = ParticipantID And a.M_reference = Mref)
+                For Each UpdateSale In Sales
+                    UpdateSale.Pf_reference = Nothing
+                    UpdateSale.Verified = Nothing
+                    If ModelState.IsValid Then
+                        db.Entry(UpdateSale).State = EntityState.Modified
+                        db.SaveChanges()
+                        result = True
+                    Else
+                        result = False
+                    End If
+                Next
+            End If
+
+
+            Return (result)
+        End Function
+
+        Function IssueVoucher(ByVal voucher As Voucher, RaceID As Integer?, UserIdentity As String)
+            Dim VControl As New Controllers.VouchersController()
+            voucher.Code = "22" + VControl.GenerateVoucherCode(7)
+
+            Dim flag As Boolean = False
+
+            While flag = False
+                If db.Vouchers.Where(Function(a) a.Code = voucher.Code).Count() = 0 Then
+                    flag = True
+                Else
+                    voucher.Code = "22" + VControl.GenerateVoucherCode(7)
+                End If
+            End While
+
+            voucher.RaceID = RaceID
+            voucher.IssuedBy = UserIdentity
+            voucher.Date = Now()
+            voucher.Status = "Active"
+
+            db.Vouchers.Add(voucher)
+            db.SaveChanges()
+
+            Return (voucher.Code)
+        End Function
+
+        Function AdminToPayfast(Id As Integer?, Type As Integer?) As ActionResult
+            Dim entry As Entry = db.Entries.Where(Function(a) a.EntryID = Id).FirstOrDefault()
+            Dim SingleTransaction As Sale = db.Sales.Where(Function(a) a.Pf_reference = entry.PayFastReference And a.UserID = User.Identity.Name And a.RaceID = entry.RaceID).FirstOrDefault()
+            Dim Transaction = db.Sales.Where(Function(a) a.Pf_reference = entry.PayFastReference And a.ParticipantID = entry.ParticipantID)
+            Dim MREF = SingleTransaction.M_reference
+
+            Dim OrgID = db.RaceEvents.Where(Function(a) a.RaceID = SingleTransaction.RaceID).Select(Function(b) b.OrgID).FirstOrDefault()
+            Dim OrgPassphrase = db.PaymentDetails.Where(Function(a) a.OrgID = OrgID).Select(Function(b) b.MerchantPassPhrase).FirstOrDefault()
+            Dim hosturl = "https://entries.prontocs.co.za"
+            'Dim hosturl = "https://ed66-197-245-32-250.ngrok-free.app"
+
+            Dim RaceID = SingleTransaction.RaceID
+
+            Dim Admin_rate = db.RaceEvents.Where(Function(a) a.RaceID = RaceID).Select(Function(b) b.Admin_Rate).FirstOrDefault() / 100
+            Dim EntriesTotal = 0.00
+
+            Dim Total = 0.00
+            For Each sale In Transaction
+                If sale.OptionID Is Nothing Then
+                    Total += db.Divisions.Where(Function(a) a.DivisionID = sale.DivisionID).Select(Function(b) b.Price).FirstOrDefault()
+                    EntriesTotal += db.Divisions.Where(Function(a) a.DivisionID = sale.DivisionID).Select(Function(b) b.Price).FirstOrDefault()
+                End If
+                If sale.RaceID Is Nothing Then
+                    Total += db.AddonOptions.Where(Function(a) a.OptionID = sale.OptionID).Select(Function(b) b.Amount).FirstOrDefault()
+                End If
+            Next
+
+            Dim PCSAdminCharge = 0.00
+
+            If db.RaceEvents.Where(Function(a) a.RaceID = RaceID).Select(Function(b) b.Admin_ToClient).FirstOrDefault() = True Then
+                PCSAdminCharge = (EntriesTotal * Admin_rate)
+            End If
+
+            Dim AdminCharge = PCSAdminCharge
+
+            Total = Math.Round(Total + AdminCharge, 2)
+
+            Dim AdminFee = db.RaceEvents.Where(Function(a) a.RaceID = RaceID).Select(Function(b) b.AdminCharge).FirstOrDefault()
+
+            ViewBag.MReference = SingleTransaction.M_reference
+            ViewBag.EmailAddress = User.Identity.Name
+            ViewBag.Emailconfirmation = "1"
+            ViewBag.MerchantID = db.PaymentDetails.Where(Function(a) a.OrgID = OrgID).Select(Function(b) b.MerchantID).FirstOrDefault()
+            ViewBag.Merchant_key = db.PaymentDetails.Where(Function(a) a.OrgID = OrgID).Select(Function(b) b.MerchantKey).FirstOrDefault()
+            'ViewBag.MerchantID = "10028506"
+            'ViewBag.Merchant_key = "ds0rpjbz65yub"
+            ViewBag.ReturnURL = hosturl + "/Entries/Index"
+            ViewBag.CancelURL = hosturl + "/Entries/Index"
+            ViewBag.NotifyURL = hosturl + "/Entries/Confirmadmin"
+            ViewBag.item_name = "Substitution"
+
+            Dim TransactionString = "merchant_id=" + System.Net.WebUtility.UrlEncode(ViewBag.MerchantID) + "&merchant_key=" + System.Net.WebUtility.UrlEncode(ViewBag.Merchant_key) _
+                 + "&return_url=" + System.Net.WebUtility.UrlEncode(ViewBag.ReturnURL) + "&cancel_url=" + System.Net.WebUtility.UrlEncode(ViewBag.CancelURL) _
+                 + "&notify_url=" + System.Net.WebUtility.UrlEncode(ViewBag.NotifyURL) + "&m_payment_id=" + System.Net.WebUtility.UrlEncode(ViewBag.MReference) _
+                 + "&amount=" + System.Net.WebUtility.UrlEncode(AdminFee) _
+                 + "&item_name=" + System.Net.WebUtility.UrlEncode(ViewBag.item_name.ToString) + "&custom_str1=" _
+                 + System.Net.WebUtility.UrlEncode(ViewBag.EmailAddress) + "&custom_str2=" + System.Net.WebUtility.UrlEncode(Id.ToString()) _
+                 + "&custom_str3=" + System.Net.WebUtility.UrlEncode(Type.ToString())
+
+            Dim Constring = TransactionString + "&passphrase=" + System.Net.WebUtility.UrlEncode(OrgPassphrase)
+
+            Dim md5 As MD5 = MD5.Create()
+            Dim Bytes As Byte() = Encoding.ASCII.GetBytes(Constring)
+            Dim hash As Byte() = md5.ComputeHash(Bytes)
+            Dim sBuilder As New StringBuilder()
+            For i As Integer = 0 To hash.Length - 1
+                sBuilder.Append(hash(i).ToString("x2"))
+            Next
+
+            ViewBag.Signature = sBuilder.ToString
+
+            TransactionString = TransactionString + "&" + "signature=" + ViewBag.Signature
+
+            Return Redirect("https://www.payfast.co.za/eng/process?" + TransactionString)
+        End Function
+
+        Function AdminUpgradeToPayfast(Id As Integer?, DivisionID As Integer?, Price As Double?, Type As Integer?) As ActionResult
+            Dim entry As Entry = db.Entries.Where(Function(a) a.EntryID = Id).FirstOrDefault()
+            Dim SingleTransaction As Sale = db.Sales.Where(Function(a) a.Pf_reference = entry.PayFastReference And a.UserID = User.Identity.Name And a.RaceID = entry.RaceID).FirstOrDefault()
+            Dim Transaction = db.Sales.Where(Function(a) a.Pf_reference = entry.PayFastReference And a.ParticipantID = entry.ParticipantID)
+            Dim MREF = SingleTransaction.M_reference
+
+            Dim OrgID = db.RaceEvents.Where(Function(a) a.RaceID = SingleTransaction.RaceID).Select(Function(b) b.OrgID).FirstOrDefault()
+            Dim OrgPassphrase = db.PaymentDetails.Where(Function(a) a.OrgID = OrgID).Select(Function(b) b.MerchantPassPhrase).FirstOrDefault()
+            Dim hosturl = "https://entries.prontocs.co.za"
+            'Dim hosturl = "https://ed66-197-245-32-250.ngrok-free.app"
+
+            Dim RaceID = SingleTransaction.RaceID
+
+            Dim Admin_rate = db.RaceEvents.Where(Function(a) a.RaceID = RaceID).Select(Function(b) b.Admin_Rate).FirstOrDefault() / 100
+
+            Dim PCSAdminCharge = 0.00
+            Dim Total = 0.00
+            Total = Price
+
+            If db.RaceEvents.Where(Function(a) a.RaceID = RaceID).Select(Function(b) b.Admin_ToClient).FirstOrDefault() = True Then
+                PCSAdminCharge = (Price * Admin_rate)
+            End If
+
+            Dim AdminCharge = PCSAdminCharge
+
+            Dim AdminFee = db.RaceEvents.Where(Function(a) a.RaceID = RaceID).Select(Function(b) b.AdminCharge).FirstOrDefault()
+            Total = Total + AdminFee
+
+            Total = Math.Round(Total + AdminCharge, 2)
+
+            ViewBag.MReference = SingleTransaction.M_reference
+            ViewBag.EmailAddress = User.Identity.Name
+            ViewBag.Emailconfirmation = "1"
+            ViewBag.MerchantID = db.PaymentDetails.Where(Function(a) a.OrgID = OrgID).Select(Function(b) b.MerchantID).FirstOrDefault()
+            ViewBag.Merchant_key = db.PaymentDetails.Where(Function(a) a.OrgID = OrgID).Select(Function(b) b.MerchantKey).FirstOrDefault()
+            'ViewBag.MerchantID = "10028506"
+            'ViewBag.Merchant_key = "ds0rpjbz65yub"
+            ViewBag.ReturnURL = hosturl + "/Entries/Index"
+            ViewBag.CancelURL = hosturl + "/Entries/Index"
+            ViewBag.NotifyURL = hosturl + "/Entries/Confirmadmin"
+            ViewBag.item_name = "Distance_Change"
+
+            Dim TransactionString = "merchant_id=" + System.Net.WebUtility.UrlEncode(ViewBag.MerchantID) + "&merchant_key=" + System.Net.WebUtility.UrlEncode(ViewBag.Merchant_key) _
+                 + "&return_url=" + System.Net.WebUtility.UrlEncode(ViewBag.ReturnURL) + "&cancel_url=" + System.Net.WebUtility.UrlEncode(ViewBag.CancelURL) _
+                 + "&notify_url=" + System.Net.WebUtility.UrlEncode(ViewBag.NotifyURL) + "&m_payment_id=" + System.Net.WebUtility.UrlEncode(ViewBag.MReference) _
+                 + "&amount=" + System.Net.WebUtility.UrlEncode(Total) _
+                 + "&item_name=" + System.Net.WebUtility.UrlEncode(ViewBag.item_name.ToString) + "&custom_str1=" _
+                 + System.Net.WebUtility.UrlEncode(ViewBag.EmailAddress) + "&custom_str2=" + System.Net.WebUtility.UrlEncode(Id.ToString()) _
+                 + "&custom_str3=" + System.Net.WebUtility.UrlEncode(Type.ToString()) + "&custom_str4=" + System.Net.WebUtility.UrlEncode(Total.ToString()) _
+                 + "&custom_str5=" + System.Net.WebUtility.UrlEncode(DivisionID.ToString())
 
             Dim Constring = TransactionString + "&passphrase=" + System.Net.WebUtility.UrlEncode(OrgPassphrase)
 
@@ -704,6 +1041,7 @@ Namespace Controllers
         Function Get_SubLink(Id As Integer?) As ActionResult
             ViewBag.EntryID = Id
             Dim RaceID = db.Entries.Where(Function(a) a.EntryID = Id).Select(Function(b) b.RaceID).FirstOrDefault()
+            ViewBag.Upgrade = db.Entries.Where(Function(a) a.EntryID = Id).Select(Function(b) b.DistanceChange).FirstOrDefault()
             If db.RaceEvents.Where(Function(a) a.RaceID = RaceID).Select(Function(b) b.OpenSubLinks).FirstOrDefault() < Now() Then
                 ViewBag.SubOpen = True
             Else
@@ -860,6 +1198,68 @@ Namespace Controllers
                 db.SaveChanges()
                 Return RedirectToAction("Index")
             End If
+            Return View(entry)
+        End Function
+
+        ' GET: Entries/Transfer/5
+        <Authorize>
+        Function Transfer(ByVal id As Integer?) As ActionResult
+            If IsNothing(id) Then
+                Return New HttpStatusCodeResult(HttpStatusCode.BadRequest)
+            End If
+            Dim entry As Entry = db.Entries.Find(id)
+            If IsNothing(entry) Then
+                Return HttpNotFound()
+            End If
+            Return View(entry)
+        End Function
+
+        ' POST: Entries/Transfer/5
+        <HttpPost()>
+        <ActionName("Transfer")>
+        <ValidateAntiForgeryToken()>
+        <Authorize>
+        Function Transfer(ByVal id As Integer) As ActionResult
+            Return RedirectToAction("AdminToPayfast", "Entries", New With {.id = id, .Type = 1})
+        End Function
+
+        ' GET: Entries/Upgrade/5
+        <Authorize>
+        Function Upgrade(ByVal id As Integer?, ByVal DivisionSelect As Decimal?) As ActionResult
+            Dim RaceID = db.Entries.Where(Function(a) a.EntryID = id).Select(Function(b) b.RaceID).FirstOrDefault()
+
+            If IsNothing(id) Then
+                Return New HttpStatusCodeResult(HttpStatusCode.BadRequest)
+            End If
+            Dim entry As Entry = db.Entries.Find(id)
+            Dim DistanceSelected = db.Divisions.Where(Function(a) a.DivisionID = entry.DivisionID).Select(Function(b) b.Distance).FirstOrDefault()
+            ViewBag.CurrentDistance = DistanceSelected
+            ViewBag.DivisionSelect = DivisionSelect
+
+            Dim Distances = db.Divisions.Where(Function(a) a.RaceID = RaceID And a.Distance <> DistanceSelected).Select(Function(b) b.Distance).Distinct()
+            ViewBag.Distance = New SelectList(Distances, Nothing, Nothing, DivisionSelect)
+
+            If IsNothing(entry) Then
+                Return HttpNotFound()
+            End If
+            Return View(entry)
+        End Function
+
+        ' POST: Entries/Upgrade/5
+        <Authorize>
+        Function PerformUpgrade(ByVal id As Integer, ByVal DivisionSelect As Decimal?) As ActionResult
+            Dim entry As Entry = db.Entries.Find(id)
+            Dim CurrentDivision = db.Divisions.Where(Function(a) a.DivisionID = entry.DivisionID).FirstOrDefault()
+            Dim NewDivision = db.Divisions.Where(Function(a) a.Distance = DivisionSelect And a.Category = CurrentDivision.Category).FirstOrDefault()
+            Dim PriceDifference = NewDivision.Price - CurrentDivision.Price
+
+            If PriceDifference > 0 Then
+                Return RedirectToAction("AdminUpgradeToPayfast", "Entries", New With {.id = id, .divisionID = NewDivision.DivisionID, .Price = PriceDifference, .Type = 2})
+            Else
+                Return RedirectToAction("AdminUpgradeToPayfast", "Entries", New With {.id = id, .divisionID = NewDivision.DivisionID, .Price = 0.00, .Type = 2})
+            End If
+
+
             Return View(entry)
         End Function
 

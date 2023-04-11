@@ -55,7 +55,7 @@ Namespace Controllers
 
             ViewBag.SelectedRace = RaceId
 
-            Dim RaceParticipants = db.Entries.Where(Function(a) a.RaceID = RaceId)
+            Dim RaceParticipants = db.Entries.Where(Function(a) a.RaceID = RaceId And a.Status = "Paid")
             Dim results = db.Participants.Where(Function(a) RaceParticipants.Any(Function(b) b.ParticipantID = a.ParticipantID))
             If SearchValue IsNot Nothing Then
                 Dim PayRef = RaceParticipants.Where(Function(a) a.PayFastReference.Contains(SearchValue))
@@ -74,9 +74,8 @@ Namespace Controllers
 
         <HttpGet>
         Function Get_TotalEntries(ByVal RaceId As Integer?) As JsonResult
-            Dim RaceParticipants = db.Entries.Where(Function(a) a.RaceID = RaceId)
+            Dim RaceParticipants = db.Entries.Where(Function(a) a.RaceID = RaceId And a.Status = "Paid")
             Dim myObject As New With {.number = RaceParticipants.Count().ToString}
-
 
             Dim jsonData = JsonConvert.SerializeObject(myObject)
 
@@ -153,7 +152,7 @@ Namespace Controllers
                 AddonTotal += db.AddonOptions.Where(Function(a) a.OptionID = item.OptionID).Select(Function(b) b.Amount).FirstOrDefault()
             Next
 
-            ViewBag.EntryTotal = db.Entries.Where(Function(a) a.RaceID = RaceId).Select(Function(b) b.Amount).Sum()
+            ViewBag.EntryTotal = db.Entries.Where(Function(a) a.RaceID = RaceId And a.Status = "Paid").Select(Function(b) b.Amount).Sum()
             ViewBag.AddonTotal = AddonTotal
             ViewBag.ProntoFee = ViewBag.EntryTotal * 0.03
             ViewBag.GlobalTotal = ViewBag.EntryTotal + ViewBag.AddonTotal + ViewBag.ProntoFee
@@ -189,7 +188,7 @@ Namespace Controllers
 
         <Authorize>
         Function ExporttoExcel(Id As Integer?)
-            Dim RaceParticipants = db.Entries.Where(Function(a) a.RaceID = Id)
+            Dim RaceParticipants = db.Entries.Where(Function(a) a.RaceID = Id And a.Status = "Paid")
             Dim results = db.ParticipantExports.Where(Function(a) RaceParticipants.Any(Function(b) b.ParticipantID = a.ParticipantID))
             Dim MyData = results.ToList()
             Dim Grid = New GridView With {
@@ -217,7 +216,7 @@ Namespace Controllers
 
         <Authorize>
         Function ExporttoExcelRaceDetail(Id As Integer?)
-            Dim RaceParticipants = db.Entries.Where(Function(a) a.RaceID = Id)
+            Dim RaceParticipants = db.Entries.Where(Function(a) a.RaceID = Id And a.Status = "Paid")
             Dim results = db.PartDivs.Where(Function(a) RaceParticipants.Any(Function(b) b.ParticipantID = a.ParticipantID))
             Dim MyData = results.ToList()
 
@@ -323,7 +322,7 @@ Namespace Controllers
 
         <Authorize>
         Function ExporttoExcelAddonSales(Id As Integer?)
-            Dim RaceParticipants = db.Entries.Where(Function(a) a.RaceID = Id)
+            Dim RaceParticipants = db.Entries.Where(Function(a) a.RaceID = Id And a.Status = "Paid")
             Dim results = db.PartDivs.Where(Function(a) RaceParticipants.Any(Function(b) b.ParticipantID = a.ParticipantID))
             Dim MyData = results.ToList()
 

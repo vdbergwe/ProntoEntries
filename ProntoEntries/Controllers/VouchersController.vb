@@ -35,6 +35,21 @@ Namespace Controllers
 
         End Function
 
+        <Authorize>
+        Function GenerateVoucherSub(Id As Integer?) As FileResult
+
+            Dim VoucherID = db.Vouchers.Where(Function(a) a.Code = Id).Select(Function(b) b.VoucherID).FirstOrDefault()
+
+            Dim url As String = "https://192.168.1.20/Vouchers/IssueVoucher/" + VoucherID.ToString()
+            Dim converter As New HtmlToPdf()
+            Dim doc As PdfDocument = converter.ConvertUrl(url)
+            Dim stream As New MemoryStream()
+            doc.Save(stream)
+            doc.Close()
+            Return File(stream.ToArray(), "application/pdf", "ProntoEntries_Voucher_" + VoucherID.ToString() + ".pdf")
+
+        End Function
+
 
         Function IssueVoucher(Id As Integer?) As ActionResult
             Dim Voucher = db.Vouchers.Where(Function(b) b.VoucherID = Id).FirstOrDefault()
@@ -48,7 +63,7 @@ Namespace Controllers
 
         Private Shared rng As New RNGCryptoServiceProvider()
 
-        Public Shared Function GenerateVoucherCode(length As Integer) As String
+        Function GenerateVoucherCode(length As Integer) As String
             Const chars As String = "0123456789"
             Dim data(length - 1) As Byte
             rng.GetBytes(data)
